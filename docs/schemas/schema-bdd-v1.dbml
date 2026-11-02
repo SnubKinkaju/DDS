@@ -1,0 +1,164 @@
+Project refuge_climatique_v1 {
+  database_type: "SQLite"
+  Note: "Schéma minimal de la première version de l'application"
+}
+
+Enum statut_logement {
+  brouillon
+  publie
+  indisponible
+}
+
+Enum role_utilisateur {
+  client
+  proprietaire
+}
+
+Enum statut_reservation {
+  en_attente
+  acceptee
+  refusee
+  annulee
+  terminee
+}
+
+Enum statut_facture {
+  brouillon
+  emise
+  annulee
+}
+
+Table adresse {
+  id integer [pk, increment]
+  rue text [not null]
+  code_postal text [not null]
+  ville text [not null]
+}
+
+Table utilisateur {
+  id integer [pk, increment]
+  adresse_id integer
+  prenom text [not null]
+  nom text [not null]
+  email text [not null, unique]
+  mot_de_passe_hash text [not null]
+  telephone text
+  role role_utilisateur [not null, default: 'client', note: "Un propriétaire peut également réserver un logement"]
+  date_creation datetime [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table logement {
+  id integer [pk, increment]
+  proprietaire_id integer [not null]
+  adresse_id integer [not null]
+  titre text [not null]
+  description text [not null]
+  type_logement text [not null]
+  capacite integer [not null, note: "Strictement supérieure à zéro"]
+  prix_nuit_centimes integer [not null, note: "Montant positif ou nul"]
+  statut statut_logement [not null, default: 'brouillon']
+  date_creation datetime [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    proprietaire_id
+    statut
+  }
+}
+
+Table photo_logement {
+  id integer [pk, increment]
+  logement_id integer [not null]
+  url text [not null]
+  position integer [not null, default: 0]
+
+  indexes {
+    (logement_id, position) [unique]
+  }
+}
+
+Table equipement {
+  id integer [pk, increment]
+  nom text [not null, unique]
+}
+
+Table logement_equipement {
+  logement_id integer [not null]
+  equipement_id integer [not null]
+
+  indexes {
+    (logement_id, equipement_id) [pk]
+  }
+}
+
+Table disponibilite {
+  id integer [pk, increment]
+  logement_id integer [not null]
+  date_debut date [not null]
+  date_fin date [not null, note: "Postérieure à date_debut"]
+
+  indexes {
+    (logement_id, date_debut, date_fin)
+  }
+}
+
+Table favori {
+  utilisateur_id integer [not null]
+  logement_id integer [not null]
+  date_creation datetime [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    (utilisateur_id, logement_id) [pk]
+  }
+}
+
+Table reservation {
+  id integer [pk, increment]
+  logement_id integer [not null]
+  demandeur_id integer [not null]
+  date_debut date [not null]
+  date_fin date [not null, note: "Postérieure à date_debut"]
+  nombre_voyageurs integer [not null, note: "Strictement supérieur à zéro"]
+  prix_nuit_centimes integer [not null, note: "Prix conservé lors de la réservation"]
+  montant_total_centimes integer [not null]
+  statut statut_reservation [not null, default: 'en_attente']
+  date_creation datetime [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    logement_id
+    demandeur_id
+    statut
+  }
+}
+
+Table facture {
+  id integer [pk, increment]
+  reservation_id integer [not null, unique]
+  numero text [not null, unique]
+  date_emission date [not null]
+  total_centimes integer [not null]
+  devise text [not null, default: 'EUR']
+  statut statut_facture [not null, default: 'emise']
+}
+
+Table ligne_facture {
+  id integer [pk, increment]
+  facture_id integer [not null]
+  libelle text [not null]
+  quantite integer [not null, default: 1]
+  prix_unitaire_centimes integer [not null]
+  montant_centimes integer [not null]
+}
+
+Ref: utilisateur.adresse_id > adresse.id
+Ref: logement.proprietaire_id > utilisateur.id
+Ref: logement.adresse_id > adresse.id
+Ref: photo_logement.logement_id > logement.id [delete: cascade]
+Ref: logement_equipement.logement_id > logement.id [delete: cascade]
+Ref: logement_equipement.equipement_id > equipement.id [delete: cascade]
+Ref: disponibilite.logement_id > logement.id [delete: cascade]
+Ref: favori.utilisateur_id > utilisateur.id [delete: cascade]
+Ref: favori.logement_id > logement.id [delete: cascade]
+Ref: reservation.logement_id > logement.id
+Ref: reservation.demandeur_id > utilisateur.id
+Ref: facture.reservation_id - reservation.id
+Ref: ligne_facture.facture_id > facture.id [delete: cascade]
