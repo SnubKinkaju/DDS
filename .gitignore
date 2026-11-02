@@ -9,3 +9,5 @@ src/server/instance/*.db
 src/server/instance/*.sqlite-journal
 src/server/instance/*.sqlite-shm
 src/server/instance/*.sqlite-wal
+src/db/data/*.sqlite*
+!src/db/data/.gitkeep
