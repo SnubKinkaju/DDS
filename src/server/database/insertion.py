@@ -48,7 +48,7 @@ def _inserer_personne(db, table, personne):
 def _inserer_logements(db, offre, id_emetteur):
     for logement in offre["logement"]:
         id_adresse = _inserer_adresse(db, logement["adresse"])
-        meuble = 1 if logement.get("@meuble") == "oui" else 0
+        meuble = logement.get("@meuble", "non")
 
         db.execute(
             """
