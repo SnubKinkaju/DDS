@@ -138,6 +138,14 @@ Table facture {
   total_centimes integer [not null]
   devise text [not null, default: 'EUR']
   statut statut_facture [not null, default: 'emise']
+  contexte_json text [not null, note: "JSON figé à l'émission : émetteur, client, logement et séjour"]
+  taux_commission integer [not null, default: 5, note: "Pourcentage entier, entre 0 et 100 ; inclus dans le total"]
+  commission_centimes integer [not null, default: 0]
+}
+
+Table compteur_facture {
+  annee integer [pk]
+  dernier_numero integer [not null, note: "Compteur annuel alloué dans la transaction d'acceptation"]
 }
 
 Table ligne_facture {
