@@ -1,44 +1,57 @@
 import { Link } from "react-router";
 
-import Brand from "./Brand.jsx";
+const columns = [
+  {
+    title: "Découvrir",
+    links: [
+      { to: "/logements", label: "Tous les logements" },
+      { to: "/carte", label: "Carte des logements" },
+    ],
+  },
+  {
+    title: "Héberger",
+    links: [
+      { to: "/publier", label: "Publier un logement" },
+      { to: "/mes-logements", label: "Gérer mes logements" },
+    ],
+  },
+  {
+    title: "Votre compte",
+    links: [
+      { to: "/compte", label: "Mon compte" },
+      { to: "/reservations", label: "Mes réservations" },
+    ],
+  },
+];
 
-function Footer() {
+export default function Footer() {
   return (
-    <footer className="border-t border-hairline-soft bg-surface-soft">
-      <div className="mx-auto grid w-full max-w-[1920px] gap-10 px-5 py-12 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr] xl:px-12">
-        <div>
-          <Brand />
-          <p className="mt-4 max-w-sm text-sm leading-6 text-muted">
-            Une plateforme locale pour trouver un logement temporaire au frais
-            pendant les périodes de forte chaleur.
-          </p>
+    <footer className="mt-8 border-t border-hairline-soft bg-surface-soft">
+      <div className="page-container">
+        <div className="grid grid-cols-2 gap-8 py-10 sm:grid-cols-3 sm:gap-6 md:py-12">
+          {columns.map((column) => (
+            <div key={column.title}>
+              <h2 className="text-sm font-semibold text-ink">{column.title}</h2>
+              <ul className="mt-3 space-y-3">
+                {column.links.map((link) => (
+                  <li key={link.to}>
+                    <Link
+                      to={link.to}
+                      className="text-sm text-ink hover:underline"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        <div>
-          <h2 className="text-sm font-semibold">Découvrir</h2>
-          <ul className="mt-4 space-y-3 text-sm text-muted">
-            <li>
-              <Link className="hover:underline" to="/logements">
-                Les logements
-              </Link>
-            </li>
-          </ul>
+        <div className="flex flex-col gap-1 border-t border-hairline py-6 text-[13px] text-muted sm:flex-row sm:justify-between">
+          <p>© 2026 Refuge climatique · La Clusaz</p>
+          <p>Projet universitaire · Documents et données structurées</p>
         </div>
-        <div>
-          <h2 className="text-sm font-semibold">Participer</h2>
-          <ul className="mt-4 space-y-3 text-sm text-muted">
-            <li>
-              <Link className="hover:underline" to="/publier">
-                Proposer un logement
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className="border-t border-hairline px-5 py-5 text-center text-[13px] text-muted sm:px-8">
-        © 2026 Refuge climatique · Projet universitaire
       </div>
     </footer>
   );
 }
-
-export default Footer;

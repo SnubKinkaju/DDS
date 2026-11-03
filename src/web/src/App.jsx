@@ -8,6 +8,9 @@ import LoginPage from "./pages/LoginPage.jsx";
 import PublishListingPage from "./pages/PublishListingPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 
+import UpcomingPage from "./pages/UpcomingPage.jsx";
+import { upcomingPages } from "./data/navigation.js";
+
 function App() {
   return (
     <Routes>
@@ -31,6 +34,10 @@ function App() {
           </ProtectedRoute>
         }
       />
+      {upcomingPages.map(({ path, title, description, Icon }) => (
+        <Route key={path} path={path}
+          element={<UpcomingPage title={title} description={description} Icon={Icon} />} />
+      ))}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
