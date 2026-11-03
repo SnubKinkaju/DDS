@@ -9,9 +9,12 @@ src/db/
 ├── connection.py
 ├── migrate.py
 ├── migrations/
-│   └── 001_initial_schema.sql
+│   ├── 001_initial_schema.sql
+│   ├── 002_email_unique_case_insensitive.sql
+│   └── 003_equipements.sql
 └── data/
-    └── refuge_climatique.sqlite3
+    ├── refuge_climatique.sqlite3
+    └── photos/                   # images importées, ignorées par Git
 ```
 
 Chaque modification du schéma doit être ajoutée dans un nouveau fichier :
