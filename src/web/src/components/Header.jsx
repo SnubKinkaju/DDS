@@ -1,4 +1,4 @@
-import { Map, Search } from "lucide-react";
+import { House, Map, Search } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router";
 
 import AccountMenu from "./AccountMenu.jsx";
@@ -6,10 +6,16 @@ import Brand from "./Brand.jsx";
 
 const tabs = [
   {
+    to: "/",
+    label: "Accueil",
+    Icon: House,
+    match: (path) => path === "/",
+  },
+  {
     to: "/logements",
     label: "Logements",
     Icon: Search,
-    match: (path) => path === "/" || path.startsWith("/logements"),
+    match: (path) => path === "/logements" || path.startsWith("/logements/"),
   },
   {
     to: "/carte",
@@ -37,6 +43,7 @@ export default function Header() {
               <NavLink
                 key={to}
                 to={to}
+                end={to === "/"}
                 aria-current={active ? "page" : undefined}
                 className={`group relative flex items-center gap-2 px-1 text-base font-semibold transition-colors ${active ? "text-ink" : "text-muted hover:text-ink"}`}
               >
