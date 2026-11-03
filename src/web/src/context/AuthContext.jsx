@@ -46,6 +46,11 @@ function AuthProvider({ children }) {
         await authApi.logout();
         setUtilisateur(null);
       },
+      async actualiserUtilisateur() {
+        const response = await authApi.getCurrentUser();
+        setUtilisateur(response.utilisateur);
+        return response.utilisateur;
+      },
     }),
     [utilisateur, chargement],
   );

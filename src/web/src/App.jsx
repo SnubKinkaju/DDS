@@ -12,6 +12,7 @@ import UpcomingPage from "./pages/UpcomingPage.jsx";
 import { upcomingPages } from "./data/navigation.js";
 import ListingDetailPage from "./pages/ListingDetailPage.jsx";
 import MyListingsPage from "./pages/MyListingsPage.jsx";
+import EditListingPage from "./pages/EditListingPage.jsx";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
       ))}
       <Route path="/logements/:logementId" element={<ListingDetailPage />} />
       <Route path="/mes-logements" element={<ProtectedRoute><MyListingsPage /></ProtectedRoute>} />
+      <Route path="/mes-logements/:logementId/modifier" element={<ProtectedRoute><EditListingPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

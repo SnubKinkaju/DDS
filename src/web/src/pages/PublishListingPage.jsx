@@ -1,28 +1,34 @@
-import Footer from "../components/Footer.jsx";
-import Header from "../components/Header.jsx";
+import { useNavigate } from "react-router";
 
-function PublishListingPage() {
+import PageLayout from "../components/PageLayout.jsx";
+import ListingForm from "../components/listings/ListingForm.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import { createLogement } from "../services/logementApi.js";
+
+export default function PublishListingPage() {
+  const navigate = useNavigate();
+  const { actualiserUtilisateur } = useAuth();
+
+  async function save(data) {
+    const response = await createLogement(data);
+    // La publication réussie ne doit pas être répétée si le rafraîchissement échoue.
+    actualiserUtilisateur().catch(() => {});
+    navigate(`/mes-logements/${response.logement.id}/modifier`, {
+      replace: true,
+      state: { created: true },
+    });
+  }
+
   return (
-    <div className="min-h-screen bg-surface-soft">
-      <Header />
-
-      <main className="mx-auto max-w-4xl px-5 py-12 sm:px-8 sm:py-16">
-        <p className="text-sm font-semibold text-primary">Espace propriétaire</p>
-        <h1 className="mt-2 text-[32px] font-semibold tracking-[-0.035em] text-ink">
-          Publier un logement
-        </h1>
-        <div className="mt-8 rounded-[20px] border border-hairline-soft bg-white px-6 py-12 text-center shadow-floating sm:px-10">
-          <h2 className="text-lg font-semibold text-ink">Formulaire en préparation</h2>
-          <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-muted">
-            Cette page accueillera le prochain parcours : création et publication
-            d’un logement dans le catalogue.
-          </p>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+    <PageLayout width="narrow">
+      <header className="mb-8 border-b border-hairline-soft pb-8">
+        <h1 className="text-[32px] font-semibold text-ink">Publier un logement</h1>
+        <p className="mt-2 max-w-xl text-base text-muted">
+          Décrivez votre logement en quelques étapes. Vous ajouterez les photos
+          juste après.
+        </p>
+      </header>
+      <ListingForm onSave={save} />
+    </PageLayout>
   );
 }
-
-export default PublishListingPage;
