@@ -17,6 +17,13 @@ function createLogement(data) {
 
 export { createLogement, getLogement, listLogements };
 
+export const prefillLogement = (description, signal) =>
+  request("/api/logements/pre-remplir", {
+    method: "POST",
+    body: JSON.stringify({ description }),
+    signal,
+  });
+
 export const listMyLogements = () => request("/api/logements/mes-logements");
 export const getOwnedLogement = (id) => request(`/api/logements/${id}/gestion`);
 export const listEquipements = () => request("/api/logements/equipements");
