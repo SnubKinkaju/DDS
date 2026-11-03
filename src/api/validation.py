@@ -16,6 +16,29 @@ def _load_schema(schema_name):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _translate_message(error):
+    messages = {
+        "required": "Un champ obligatoire est manquant.",
+        "additionalProperties": "Un champ inattendu a été envoyé.",
+        "format": "Le format de cette valeur est invalide.",
+        "type": "Le type de cette valeur est invalide.",
+        "enum": "Cette valeur ne fait pas partie des choix autorisés.",
+        "const": "Cette valeur n'est pas autorisée.",
+        "pattern": "Le format de cette valeur est invalide.",
+    }
+
+    if error.validator == "minLength":
+        return f"Cette valeur doit contenir au moins {error.validator_value} caractères."
+    if error.validator == "maxLength":
+        return f"Cette valeur doit contenir au maximum {error.validator_value} caractères."
+    if error.validator == "minimum":
+        return f"Cette valeur doit être supérieure ou égale à {error.validator_value}."
+    if error.validator == "maximum":
+        return f"Cette valeur doit être inférieure ou égale à {error.validator_value}."
+
+    return messages.get(error.validator, error.message)
+
+
 def validate_json(payload, schema_name):
     if not isinstance(payload, dict):
         raise ValidationError("Le corps de la requête doit être un objet JSON.")
@@ -32,7 +55,7 @@ def validate_json(payload, schema_name):
     details = [
         {
             "champ": ".".join(str(part) for part in error.path) or "$",
-            "message": error.message,
+            "message": _translate_message(error),
         }
         for error in errors
     ]
