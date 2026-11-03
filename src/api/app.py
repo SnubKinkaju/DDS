@@ -30,6 +30,9 @@ def create_app(test_config=None):
         UPLOAD_FOLDER=Path(__file__).resolve().parents[1] / "db/data/photos",
         MAX_CONTENT_LENGTH=6 * 1024 * 1024,
         COMMISSION_POURCENT=int(os.getenv('REFUGE_COMMISSION_POURCENT', '5')),
+        ILAAS_API_KEY=os.getenv('ILAAS_API_KEY'),
+        ILAAS_API_URL=os.getenv('ILAAS_API_URL', 'https://llm.ilaas.fr/v1'),
+        ILAAS_MODEL=os.getenv('ILAAS_MODEL', 'mistral-small-4-119b'),
     )
     app.json.sort_keys = False
 
