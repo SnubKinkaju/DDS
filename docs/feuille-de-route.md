@@ -55,7 +55,22 @@ de tests, facturation et modération ne sont pas couvertes par ce lot.
       lignes d'hébergement, commission de 5 % incluse côté propriétaire,
       validation JSON et règles de cohérence, consultation privée via l'API.
       Annulation du séjour = facture conservée avec statut `annulee`.
-- [ ] Factures de la nouvelle app : export XML/XSD et présentation XSLT.
+- [x] Factures de la nouvelle app : export XML validé par XSD, transformation
+      XSLT côté serveur en HTML et texte. Aperçu React depuis les réservations :
+      onglets imprimable/JSON/texte, téléchargements HTML/JSON/TXT/XML et impression.
+      Accès limité aux deux parties, y compris après annulation.
+      DTD, XML global et transformation XSLT côté navigateur restent à porter.
+
+### Préremplissage des logements par texte libre
+
+- [x] Zone « Décrivez votre logement » sur la page de publication, appel ILaaS
+      côté serveur, JSON partiel validé avec des définitions partagées.
+- [x] Formulaire prérempli et modifiable ; les valeurs absentes restent à compléter,
+      les valeurs saisies et non remplacées sont conservées. Publication séparée,
+      avec le schéma complet et les contrôles existants.
+- [x] Vérification sur base temporaire et fournisseur simulé : erreurs, données
+      partielles, absence d'écriture avant publication, parcours navigateur.
+- [ ] Vérifier l'extraction avec une clé ILaaS réelle dans l'environnement de démonstration.
 
 ### Vue d'ensemble initiale
 
