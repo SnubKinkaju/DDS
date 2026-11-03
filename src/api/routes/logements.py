@@ -2,7 +2,7 @@ from flask import Blueprint, current_app, jsonify, request, send_from_directory,
 
 from src.api.errors import AuthenticationError, NotFoundError
 from src.api.repositories import owner_repository
-from src.api.services import logement_service, owner_service, photo_service
+from src.api.services import auth_service, logement_prefill, logement_service, owner_service, photo_service
 from src.db.flask import get_db
 
 
@@ -45,6 +45,17 @@ def current_user_id():
     if user_id is None:
         raise AuthenticationError("Connectez-vous pour gérer vos logements.")
     return user_id
+
+
+@logements_blueprint.post('/pre-remplir')
+def prefill_listing():
+    auth_service.get_current_user(get_db(), current_user_id())
+    proposal = logement_prefill.from_description(
+        get_db(), request.get_json(silent=True), current_app.config,
+    )
+    response = jsonify(proposition=proposal)
+    response.headers['Cache-Control'] = 'private, no-store'
+    return response
 
 
 @logements_blueprint.get('/mes-logements')
