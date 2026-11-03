@@ -1,5 +1,6 @@
 from src.api.errors import ConflictError, ForbiddenError, NotFoundError, ValidationError
-from src.api.repositories import logement_repository, owner_repository
+from src.api.repositories import logement_repository, owner_repository, reservation_repository
+from src.api.services.reservation_service import today
 from src.api.services.logement_service import _required_text, serialize_detail
 from src.api.validation import validate_json
 
@@ -36,6 +37,9 @@ def update(connection, listing_id, owner_id, payload):
     payload['description'] = _required_text(payload['description'], 'description', 10)
     payload['adresse']['rue'] = _required_text(payload['adresse']['rue'], 'adresse.rue', 3)
     with connection:
+        connection.execute('BEGIN IMMEDIATE')
+        if payload['capacite'] < reservation_repository.required_capacity(connection, listing_id, today().isoformat()):
+            raise ConflictError('Une réservation acceptée nécessite une capacité supérieure. Conservez les places prévues pour ce séjour.')
         owner_repository.update(connection, row, payload)
         owner_repository.replace_equipment(connection, listing_id, payload.get('equipements', []))
     return get_owned(connection, listing_id, owner_id)
