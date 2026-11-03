@@ -23,6 +23,42 @@ Deux exigences de l'énoncé sont faciles à oublier et doivent apparaître dans
 
 ## 1. État des lieux (novembre 2026)
 
+### Avancement du portage DDS — document logement
+
+- [x] Schéma du document JSON public du logement et définitions partagées avec la saisie.
+- [x] Validation des annonces publiques relues depuis SQLite avant diffusion.
+- [x] Fiche HTML et texte imprimable générés à partir du même JSON validé.
+- [x] Accès aux documents depuis la fiche React et commande `make verifier-documents`.
+- [x] Fiche publique d'utilisateur annotée en RDFa : l'utilisateur qui propose
+      des logements joue le rôle de propriétaire, sans entité distincte.
+      Ouverte en fenêtre depuis « Proposé par » (avatar inclus), HTML généré par Flask :
+      `/api/utilisateurs/{id}/profil.html`. Nom, prénom, email et téléphone annotés
+      avec schema.org ; extraction RDFa vérifiée. Réservée aux utilisateurs ayant
+      au moins une annonce publiée.
+
+Ce lot est décrit dans [src/formats/README.md](../src/formats/README.md).
+La fiche privée « Mon compte » reste distincte de la fiche publique.
+Les éléments ci-dessous constituent la feuille de route initiale ; les cases
+de tests, facturation et modération ne sont pas couvertes par ce lot.
+
+### Réservations V1
+
+- [x] Demande de séjour depuis une annonce : dates, voyageurs, JSON Schema,
+      prix calculé côté serveur et conservé avec la demande.
+- [x] Mes séjours et demandes reçues, acceptation/refus par l'hôte, annulation
+      par le voyageur jusqu'au jour d'arrivée inclus.
+- [x] Contrôle des chevauchements en transaction, refus automatique des demandes
+      concurrentes à l'acceptation, vérification de deux acceptations simultanées.
+- [x] Vérification API et navigateur sur base temporaire, sans modifier les données existantes.
+- [ ] Plages d'ouverture explicites : pour l'instant, publié = réservable hors séjours acceptés.
+- [x] Facturation backend à l'acceptation : numéro annuel unique, contexte figé,
+      lignes d'hébergement, commission de 5 % incluse côté propriétaire,
+      validation JSON et règles de cohérence, consultation privée via l'API.
+      Annulation du séjour = facture conservée avec statut `annulee`.
+- [ ] Factures de la nouvelle app : export XML/XSD et présentation XSLT.
+
+### Vue d'ensemble initiale
+
 | Bloc | État | Remarque |
 |---|---|---|
 | Front React (`src/web`) | ✅ Refait selon `docs/Design.md` | On n'y touche plus, sauf pour brancher les nouvelles API |
