@@ -1,9 +1,11 @@
-"""Demandes de séjour et décisions, sans paiement ni facturation à ce stade."""
+"""Demandes de séjour, décisions et émission de la facture à l'acceptation."""
 from datetime import date, datetime
 from zoneinfo import ZoneInfo
 
 from src.api.errors import ConflictError, ForbiddenError, NotFoundError, ValidationError
 from src.api.repositories import logement_repository, reservation_repository as repository
+from src.api.repositories import facture_repository
+from src.api.services import facture_service
 from src.api.validation import validate_json
 
 
@@ -31,6 +33,9 @@ def serialize(row, user_id):
                      'ville': row['ville'], 'statut': row['logement_statut']},
         'voyageur': {'prenom': row['voyageur_prenom'], 'nom': row['voyageur_nom']},
         'proprietaire': {'prenom': row['hote_prenom'], 'nom': row['hote_nom']},
+        'facture': ({'numero': row['facture_numero'], 'statut': row['facture_statut'],
+                     'url': f"/api/factures/{row['facture_numero']}"}
+                    if row['facture_numero'] else None),
     }
 
 
@@ -78,7 +83,7 @@ def create(connection, user_id, payload):
     return result
 
 
-def change_status(connection, reservation_id, user_id, payload):
+def change_status(connection, reservation_id, user_id, payload, commission_rate=5):
     validate_json(payload, 'update-reservation.schema.json')
     status = payload['statut']
     with connection:
@@ -89,6 +94,10 @@ def change_status(connection, reservation_id, user_id, payload):
         expected_user = row['demandeur_id'] if status == 'annulee' else row['proprietaire_id']
         if user_id != expected_user:
             raise ForbiddenError("Vous n'êtes pas autorisé à effectuer cette action.")
+        if status == 'acceptee' and row['statut'] == 'acceptee':
+            # Une réponse perdue puis une nouvelle tentative ne crée pas de doublon.
+            facture_service.issue(connection, row, today(), commission_rate)
+            return serialize(repository.find_by_id(connection, reservation_id), user_id)
         allowed_states = ('en_attente', 'acceptee') if status == 'annulee' else ('en_attente',)
         if row['statut'] not in allowed_states:
             raise ConflictError('Cette demande a déjà été traitée. Actualisez la liste.')
@@ -102,5 +111,9 @@ def change_status(connection, reservation_id, user_id, payload):
                 raise ConflictError('Une autre réservation occupe déjà ces dates.')
             repository.refuse_overlapping_requests(connection, row)
         repository.set_status(connection, reservation_id, status)
+        if status == 'acceptee':
+            facture_service.issue(connection, repository.find_by_id(connection, reservation_id), today(), commission_rate)
+        elif status == 'annulee':
+            facture_repository.cancel(connection, reservation_id)
         result = serialize(repository.find_by_id(connection, reservation_id), user_id)
     return result

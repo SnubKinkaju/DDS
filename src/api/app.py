@@ -10,6 +10,7 @@ from src.api.routes.health import health_blueprint
 from src.api.routes.logements import logements_blueprint
 from src.api.routes.documents import documents_blueprint
 from src.api.routes.reservations import reservations_blueprint
+from src.api.routes.factures import factures_blueprint
 from src.db.connection import get_database_path
 from src.db.flask import init_app as init_database
 
@@ -28,6 +29,7 @@ def create_app(test_config=None):
         SESSION_COOKIE_SECURE=False,
         UPLOAD_FOLDER=Path(__file__).resolve().parents[1] / "db/data/photos",
         MAX_CONTENT_LENGTH=6 * 1024 * 1024,
+        COMMISSION_POURCENT=int(os.getenv('REFUGE_COMMISSION_POURCENT', '5')),
     )
     app.json.sort_keys = False
 
@@ -41,6 +43,7 @@ def create_app(test_config=None):
     app.register_blueprint(logements_blueprint)
     app.register_blueprint(documents_blueprint)
     app.register_blueprint(reservations_blueprint)
+    app.register_blueprint(factures_blueprint)
     return app
 
 

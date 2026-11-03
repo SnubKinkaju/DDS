@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, session
+from flask import Blueprint, current_app, jsonify, request, session
 
 from src.api.errors import AuthenticationError
 from src.api.services import auth_service, reservation_service
@@ -36,6 +36,7 @@ def create_reservation():
 def update_reservation(reservation_id):
     result = reservation_service.change_status(
         get_db(), reservation_id, current_user_id(), request.get_json(silent=True),
+        commission_rate=current_app.config['COMMISSION_POURCENT'],
     )
     return jsonify(reservation=result)
 

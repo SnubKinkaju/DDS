@@ -4,12 +4,14 @@ SELECT_DETAIL = """
     SELECT r.*, l.proprietaire_id, l.titre, l.statut AS logement_statut,
            l.capacite, a.ville,
            voyageur.prenom AS voyageur_prenom, voyageur.nom AS voyageur_nom,
-           hote.prenom AS hote_prenom, hote.nom AS hote_nom
+           hote.prenom AS hote_prenom, hote.nom AS hote_nom,
+           f.numero AS facture_numero, f.statut AS facture_statut
     FROM reservation r
     JOIN logement l ON l.id = r.logement_id
     JOIN adresse a ON a.id = l.adresse_id
     JOIN utilisateur voyageur ON voyageur.id = r.demandeur_id
     JOIN utilisateur hote ON hote.id = l.proprietaire_id
+    LEFT JOIN facture f ON f.reservation_id = r.id
 """
 
 
