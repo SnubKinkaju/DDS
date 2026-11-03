@@ -9,6 +9,20 @@ def find_by_id(connection, utilisateur_id):
     ).fetchone()
 
 
+def find_public_profile(connection, utilisateur_id):
+    return connection.execute(
+        """
+        SELECT utilisateur.id, prenom, nom, email, telephone,
+               COUNT(logement.id) AS nombre_logements
+        FROM utilisateur
+        JOIN logement ON logement.proprietaire_id = utilisateur.id
+        WHERE utilisateur.id = ? AND logement.statut = 'publie'
+        GROUP BY utilisateur.id
+        """,
+        (utilisateur_id,),
+    ).fetchone()
+
+
 def find_by_email(connection, email):
     return connection.execute(
         """

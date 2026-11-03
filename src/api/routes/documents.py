@@ -1,7 +1,9 @@
 from pathlib import Path
 
-from flask import Blueprint, Response, abort, request, send_from_directory
+from flask import Blueprint, Response, abort, render_template, request, send_from_directory
 
+from src.api.errors import NotFoundError
+from src.api.repositories.utilisateur_repository import find_public_profile
 from src.api.services.logement_service import get_published
 from src.api.services.logement_documents import render_logement
 from src.api.validation import FORMATS_DIR, SCHEMAS_DIR
@@ -15,6 +17,14 @@ PUBLIC_SCHEMAS = {
     'logement-commun.schema.json': FORMATS_DIR,
     'create-logement.schema.json': SCHEMAS_DIR,
 }
+
+
+@documents_blueprint.get('/utilisateurs/<int:utilisateur_id>/profil.html')
+def utilisateur_html(utilisateur_id):
+    utilisateur = find_public_profile(get_db(), utilisateur_id)
+    if utilisateur is None:
+        raise NotFoundError('Ce profil public est introuvable.')
+    return render_template('utilisateur.html', utilisateur=utilisateur)
 
 
 @documents_blueprint.get('/formats/json/<filename>')
