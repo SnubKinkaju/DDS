@@ -1,14 +1,17 @@
-function FormField({ label, id, hint, ...inputProps }) {
+function FormField({ label, id, hint, className = "", ...inputProps }) {
+  const hintId = hint ? `${id}-hint` : undefined;
   return (
-    <label className="block" htmlFor={id}>
-      <span className="text-sm font-medium text-ink">{label}</span>
-      <input
-        id={id}
-        className="mt-2 h-14 w-full rounded-lg border border-hairline bg-white px-4 text-base text-ink outline-none transition-colors placeholder:text-muted-soft focus:border-ink focus:ring-1 focus:ring-ink"
-        {...inputProps}
-      />
-      {hint && <span className="mt-2 block text-xs text-muted">{hint}</span>}
-    </label>
+    <div className={className}>
+      <label className="field-label" htmlFor={id}>
+        {label}
+      </label>
+      <input id={id} aria-describedby={hintId} className="form-control" {...inputProps} />
+      {hint && (
+        <p id={hintId} className="mt-2 text-xs text-muted">
+          {hint}
+        </p>
+      )}
+    </div>
   );
 }
 
