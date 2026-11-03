@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router";
 import EmptyState from "../components/EmptyState.jsx";
 import PageLayout from "../components/PageLayout.jsx";
 import PhotoGallery from "../components/listings/PhotoGallery.jsx";
+import OwnerProfileDialog from "../components/listings/OwnerProfileDialog.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { amenityIcon, typeLabel } from "../data/listingTypes.js";
 import { getLogement } from "../services/logementApi.js";
@@ -69,6 +70,7 @@ function ListingDetailPage() {
 
 function Listing({ logement, isOwner }) {
   const { adresse, proprietaire } = logement;
+  const [profileOpen, setProfileOpen] = useState(false);
 
   return (
     <>
@@ -104,17 +106,30 @@ function Listing({ logement, isOwner }) {
             </p>
           </section>
 
-          <section className="flex items-center gap-4 border-y border-hairline-soft py-6">
+          <a
+            href={`/api/utilisateurs/${proprietaire.id}/profil.html`}
+            aria-haspopup="dialog"
+            onClick={(event) => {
+              if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+              event.preventDefault();
+              setProfileOpen(true);
+            }}
+            className="group flex items-center gap-4 border-y border-hairline-soft py-6 transition-colors hover:bg-surface-soft"
+          >
             <span className="grid size-12 shrink-0 place-items-center rounded-full bg-ink text-sm font-semibold text-white">
               {initials(proprietaire)}
             </span>
             <div>
-              <p className="text-base font-semibold text-ink">
+              <p className="text-base font-semibold text-ink group-hover:underline">
                 Proposé par {proprietaire.prenom} {proprietaire.nom}
               </p>
-              <p className="text-sm text-muted">Habitant de {adresse.ville}</p>
+              <p className="text-sm text-muted">Voir le profil</p>
             </div>
-          </section>
+          </a>
+
+          {profileOpen && (
+            <OwnerProfileDialog proprietaire={proprietaire} onClose={() => setProfileOpen(false)} />
+          )}
 
           <section className="border-b border-hairline-soft py-8">
             <h2 className="sr-only">Description</h2>
