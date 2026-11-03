@@ -1,15 +1,16 @@
-import { MapPin, Pencil, SearchX, UsersRound } from "lucide-react";
+import { MapPin, Pencil, SearchX } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 
 import EmptyState from "../components/EmptyState.jsx";
 import PageLayout from "../components/PageLayout.jsx";
 import PhotoGallery from "../components/listings/PhotoGallery.jsx";
+import ReservationForm from "../components/listings/ReservationForm.jsx";
 import OwnerProfileDialog from "../components/listings/OwnerProfileDialog.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { amenityIcon, typeLabel } from "../data/listingTypes.js";
 import { getLogement } from "../services/logementApi.js";
-import { formatPrice, initials, plural } from "../utils/format.js";
+import { initials, plural } from "../utils/format.js";
 
 function ListingDetailPage() {
   const { logementId } = useParams();
@@ -218,35 +219,7 @@ function Listing({ logement, isOwner }) {
         </div>
 
         <aside className="lg:sticky lg:top-28 lg:h-fit">
-          <div className="rounded-md border border-hairline p-6 shadow-floating">
-            <p className="text-ink">
-              <span className="text-[22px] font-semibold">
-                {formatPrice(logement.prixNuitCentimes)}
-              </span>{" "}
-              <span className="text-base">par nuit</span>
-            </p>
-            <dl className="mt-6 divide-y divide-border-strong rounded-sm border border-border-strong text-sm">
-              <div className="px-4 py-3">
-                <dt className="text-[10px] font-bold tracking-wide text-ink uppercase">Ville</dt>
-                <dd className="mt-0.5 text-body">{adresse.ville}</dd>
-              </div>
-              <div className="flex items-center justify-between px-4 py-3">
-                <div>
-                  <dt className="text-[10px] font-bold tracking-wide text-ink uppercase">
-                    Voyageurs
-                  </dt>
-                  <dd className="mt-0.5 text-body">{plural(logement.capacite, "voyageur")} max.</dd>
-                </div>
-                <UsersRound aria-hidden="true" size={18} className="text-muted" />
-              </div>
-            </dl>
-            <button type="button" className="button-primary mt-4 w-full" disabled>
-              Réserver
-            </button>
-            <p className="mt-3 text-center text-sm text-muted">
-              La réservation en ligne arrive bientôt.
-            </p>
-          </div>
+          <ReservationForm key={logement.id} logement={logement} isOwner={isOwner} />
         </aside>
       </div>
     </>
