@@ -49,3 +49,27 @@ def delete(connection, row):
            AND NOT EXISTS (SELECT 1 FROM utilisateur WHERE adresse_id=?)""",
         (row['adresse_id'],) * 3,
     )
+
+
+def add_photo(connection, listing_id, url):
+    cursor = connection.execute(
+        """INSERT INTO photo_logement (logement_id, url, position)
+           SELECT ?, ?, COALESCE(MAX(position), -1) + 1
+           FROM photo_logement WHERE logement_id=?""",
+        (listing_id, url, listing_id),
+    )
+    return cursor.lastrowid
+
+
+def delete_photo(connection, listing_id, photo_id):
+    connection.execute(
+        "DELETE FROM photo_logement WHERE logement_id=? AND id=?", (listing_id, photo_id),
+    )
+
+
+def photo_owner(connection, url):
+    return connection.execute(
+        """SELECT logement.proprietaire_id, logement.statut FROM photo_logement
+           JOIN logement ON logement.id=photo_logement.logement_id WHERE url=?""",
+        (url,),
+    ).fetchone()

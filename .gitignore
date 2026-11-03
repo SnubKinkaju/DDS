@@ -11,3 +11,4 @@ src/server/instance/*.sqlite-shm
 src/server/instance/*.sqlite-wal
 src/db/data/*.sqlite*
 !src/db/data/.gitkeep
+src/db/data/photos/

@@ -39,6 +39,10 @@ class NotFoundError(ApiError):
 
 
 def register_error_handlers(app):
+    @app.errorhandler(413)
+    def handle_large_upload(error):
+        return jsonify(error={"message": "La photo ne doit pas dépasser 5 Mo."}), 413
+
     @app.errorhandler(ApiError)
     def handle_api_error(error):
         content = {

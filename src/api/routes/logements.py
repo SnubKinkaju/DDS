@@ -1,8 +1,8 @@
-from flask import Blueprint, jsonify, request, session
+from flask import Blueprint, current_app, jsonify, request, send_from_directory, session
 
-from src.api.errors import AuthenticationError
+from src.api.errors import AuthenticationError, NotFoundError
 from src.api.repositories import owner_repository
-from src.api.services import logement_service, owner_service
+from src.api.services import logement_service, owner_service, photo_service
 from src.db.flask import get_db
 
 
@@ -75,5 +75,33 @@ def change_status(listing_id):
 
 @logements_blueprint.delete('/<int:listing_id>')
 def delete_listing(listing_id):
-    owner_service.delete(get_db(), listing_id, current_user_id())
+    photos = owner_service.delete(get_db(), listing_id, current_user_id())
+    photo_service.remove_files(photos, current_app.config['UPLOAD_FOLDER'])
     return '', 204
+
+
+@logements_blueprint.post('/<int:listing_id>/photos')
+def upload_photo(listing_id):
+    user_id = current_user_id()
+    photo_service.upload(get_db(), listing_id, user_id,
+                         request.files.get('photo'), current_app.config['UPLOAD_FOLDER'])
+    return jsonify(logement=owner_service.get_owned(get_db(), listing_id, user_id)), 201
+
+
+@logements_blueprint.delete('/<int:listing_id>/photos/<int:photo_id>')
+def delete_photo(listing_id, photo_id):
+    user_id = current_user_id()
+    photo_service.delete(get_db(), listing_id, photo_id, user_id,
+                         current_app.config['UPLOAD_FOLDER'])
+    return jsonify(logement=owner_service.get_owned(get_db(), listing_id, user_id))
+
+
+@logements_blueprint.get('/photos/fichier/<filename>')
+def photo_file(filename):
+    row = owner_repository.photo_owner(get_db(), photo_service.URL_PREFIX + filename)
+    if row is None or (row['statut'] != 'publie'
+                       and row['proprietaire_id'] != session.get('utilisateur_id')):
+        raise NotFoundError("Cette photo n'est pas disponible.")
+    response = send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+    response.headers['Cache-Control'] = 'private, no-cache'
+    return response

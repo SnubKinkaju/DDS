@@ -1,5 +1,6 @@
 import os
 from datetime import timedelta
+from pathlib import Path
 
 from flask import Flask
 
@@ -23,6 +24,8 @@ def create_app(test_config=None):
         SESSION_COOKIE_HTTPONLY=True,
         SESSION_COOKIE_SAMESITE="Lax",
         SESSION_COOKIE_SECURE=False,
+        UPLOAD_FOLDER=Path(__file__).resolve().parents[1] / "db/data/photos",
+        MAX_CONTENT_LENGTH=6 * 1024 * 1024,
     )
     app.json.sort_keys = False
 
