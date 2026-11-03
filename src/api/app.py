@@ -8,12 +8,13 @@ from src.api.errors import register_error_handlers
 from src.api.routes.auth import auth_blueprint
 from src.api.routes.health import health_blueprint
 from src.api.routes.logements import logements_blueprint
+from src.api.routes.documents import documents_blueprint
 from src.db.connection import get_database_path
 from src.db.flask import init_app as init_database
 
 
 def create_app(test_config=None):
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="documents")
     app.config.from_mapping(
         DATABASE=get_database_path(),
         SECRET_KEY=os.getenv(
@@ -37,6 +38,7 @@ def create_app(test_config=None):
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(health_blueprint)
     app.register_blueprint(logements_blueprint)
+    app.register_blueprint(documents_blueprint)
     return app
 
 

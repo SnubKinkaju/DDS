@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, jsonify, request, send_from_directory, session
+from flask import Blueprint, current_app, jsonify, request, send_from_directory, session, url_for
 
 from src.api.errors import AuthenticationError, NotFoundError
 from src.api.repositories import owner_repository
@@ -34,7 +34,10 @@ def create_logement():
 
 @logements_blueprint.get("/<int:logement_id>")
 def get_logement(logement_id):
-    return jsonify(logement_service.get_published(get_db(), logement_id))
+    response = jsonify(logement_service.get_published(get_db(), logement_id))
+    schema_url = url_for('documents.json_schema', filename='logement.schema.json')
+    response.headers['Link'] = f'<{schema_url}>; rel="describedby"; type="application/schema+json"'
+    return response
 
 
 def current_user_id():
