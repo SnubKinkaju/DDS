@@ -1,5 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://refuge.example/api/formats/json/create-logement.schema.json",
+  "title": "Saisie d'un logement",
+  "description": "Document envoyé par le formulaire de création ou de modification. Les identifiants du logement et de son propriétaire sont déterminés par le serveur.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,53 +14,30 @@
     "adresse"
   ],
   "properties": {
+    "titre": {
+      "$ref": "logement-commun.schema.json#/$defs/titre"
+    },
+    "description": {
+      "$ref": "logement-commun.schema.json#/$defs/description"
+    },
+    "typeLogement": {
+      "$ref": "logement-commun.schema.json#/$defs/typeLogement"
+    },
+    "capacite": {
+      "$ref": "logement-commun.schema.json#/$defs/capacite"
+    },
+    "prixNuitCentimes": {
+      "$ref": "logement-commun.schema.json#/$defs/prixNuitCentimes"
+    },
+    "adresse": {
+      "$ref": "logement-commun.schema.json#/$defs/adresse"
+    },
     "equipements": {
       "type": "array",
       "uniqueItems": true,
       "maxItems": 50,
-      "items": {"type": "integer", "minimum": 1}
-    },
-    "titre": {
-      "type": "string",
-      "minLength": 3,
-      "maxLength": 120
-    },
-    "description": {
-      "type": "string",
-      "minLength": 10,
-      "maxLength": 2000
-    },
-    "typeLogement": {
-      "type": "string",
-      "enum": ["appartement", "maison", "chalet", "studio", "chambre"]
-    },
-    "capacite": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 20
-    },
-    "prixNuitCentimes": {
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 1000000
-    },
-    "adresse": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["rue", "codePostal", "ville"],
-      "properties": {
-        "rue": {
-          "type": "string",
-          "minLength": 3,
-          "maxLength": 160
-        },
-        "codePostal": {
-          "type": "string",
-          "pattern": "^74220$"
-        },
-        "ville": {
-          "const": "La Clusaz"
-        }
+      "items": {
+        "$ref": "logement-commun.schema.json#/$defs/identifiant"
       }
     }
   }
