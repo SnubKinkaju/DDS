@@ -62,13 +62,22 @@ est une répartition du total, pas un supplément. Tous les calculs utilisent de
 Pour changer le taux des prochaines factures : `export REFUGE_COMMISSION_POURCENT=5`
 puis relancer le backend. Les factures déjà émises conservent leur taux.
 
-Après connexion, ouvrir `/api/factures` pour obtenir ses factures, puis
-`/api/factures/FAC-2026-000001` (avec le numéro retourné) pour consulter le JSON.
+Dans **Mes réservations**, cliquer sur **Voir la facture** après acceptation :
+une fenêtre s'ouvre sans quitter la page, depuis **Mes séjours** ou **Demandes reçues**.
+Ses trois onglets présentent la facture imprimable, le JSON et le texte brut.
+**Télécharger** enregistre le format sélectionné ; **Exporter XML** fournit le
+document XML validé. **Imprimer** imprime uniquement la facture et permet aussi
+de choisir « Enregistrer au format PDF » dans la boîte d'impression du navigateur.
+
+Après connexion, `/api/factures` liste les factures et
+`/api/factures/FAC-2026-000001` (avec le numéro retourné) fournit le JSON.
 La réponse d'une réservation contient également `facture.numero`, `facture.statut`
 et `facture.url`. Seuls l'hébergeur et le voyageur concernés y ont accès.
 Une annulation conserve la facture et ses montants avec le statut `annulee`.
-Le JSON est validé avec `src/formats/json/facture.schema.json` ; les exports
-XML et les présentations XSLT de la nouvelle app restent à intégrer.
+Le JSON est validé avec `src/formats/json/facture.schema.json`. Le serveur génère
+ensuite le XML, le valide avec `src/formats/xml/facture.xsd`, puis applique les
+feuilles XSLT de `src/formats/xslt` pour produire le HTML et le texte.
+Voir [les formats de documents](src/formats/README.md).
 
 ### Peupler la nouvelle base
 
@@ -99,8 +108,9 @@ les empreintes des mots de passe varient. Pour choisir une autre base, ajouter
 
 ## Prototype DDS conservé
 
-Le reste de ce document décrit le prototype dans `src/server` et `src/client`,
-dont les factures et exports ne sont pas encore intégrés à la nouvelle app.
+Le reste de ce document décrit le prototype dans `src/server` et `src/client`.
+La nouvelle app possède désormais sa propre facturation de séjour ; l'export XML
+global et l’import par LLM du prototype restent à porter.
 
 Application Flask du projet « Ville refuge climatique » (cours DDS). Elle suit
 les parcours demandés en cours :

@@ -1,7 +1,8 @@
 # Documents de la nouvelle application
 
 Ce dossier décrit les documents échangés par la V1. Le prototype DDS conserve
-ses propres schémas dans `src/server/schema` jusqu'au portage des factures.
+ses propres schémas dans `src/server/schema`. Les nouveaux formats de facture
+décrits ici sont adaptés aux réservations, utilisateurs et logements de la V1.
 
 ## Logement : de la saisie au document
 
@@ -50,8 +51,49 @@ renvoie 500 et les détails sont consignés côté serveur. Une saisie incorrect
 reste une erreur 400 : ce sont deux contrôles distincts.
 
 La transformation JSON → HTML/texte est réalisée par Python et les gabarits
-Jinja de `src/api/documents`. **XSLT sera utilisé pour les factures XML**.
-Le RDFa sera ajouté lors du travail sur la fiche publique d'utilisateur.
+Jinja de `src/api/documents`. Les factures, elles, utilisent **XML et XSLT**.
+La fiche publique d'utilisateur utilise RDFa avec le vocabulaire schema.org.
+
+## Facture : XML validé et transformations XSLT
+
+```text
+SQLite → document de facture → validation JSON Schema + règles métier
+                             → XML → validation XSD → XSLT → HTML / texte
+```
+
+| Fichier | Rôle |
+|---|---|
+| `json/facture.schema.json` | Document JSON complet, identités figées, séjour et montants |
+| `xml/facture.xsd` | Structure et types du XML, dates, montants positifs ou nuls, statuts |
+| `xslt/facture.xsl` | Présentation HTML avec parties, logement, séjour, lignes et commission |
+| `xslt/facture-texte.xsl` | Présentation différente en texte brut |
+| `xslt/facture-commun.xsl` | Templates partagés de formatage des dates et des euros |
+| `../api/documents/facture.css` | Style écran et impression A4, inclus dans le HTML téléchargé |
+
+La génération est dans `src/api/services/facture_documents.py`. Chaque rendu XML,
+HTML ou texte passe par la validation XSD. Le XSD contrôle la structure ; Python
+contrôle les calculs (nuits × tarif, somme des lignes, commission et part nette).
+Les montants du JSON et du XML sont en **centimes entiers**. Seul l'affichage
+XSLT les convertit en euros. Une adresse personnelle non renseignée n'est pas
+inventée : `null` en JSON, élément absent en XML.
+
+Les routes privées suivent `/api/factures/{numero}/document.{json|xml|html|txt}`.
+Ajouter `?telecharger=1` pour recevoir un fichier joint. Le XSD public se trouve
+à `/api/formats/xml/facture.xsd`. Le XML n'est pas transformé par le navigateur :
+la transformation XSLT est exécutée côté Flask avec lxml.
+
+Depuis **Mes réservations → Voir la facture**, React ouvre une fenêtre avec
+trois onglets : **Imprimable**, **JSON**, **Texte**. L'onglet imprimable affiche
+le HTML produit par XSLT dans une iframe ; React ne reconstruit pas la facture.
+On peut télécharger chaque format, exporter le XML ou imprimer la facture seule.
+Pour un PDF, sélectionner l'enregistrement PDF dans la boîte d'impression.
+Le HTML téléchargé contient ses styles et peut aussi être imprimé hors ligne.
+
+Pour vérifier le parcours : accepter une demande avec l'hébergeur, ouvrir la
+facture dans **Demandes reçues**, puis dans **Mes séjours** avec le voyageur.
+Comparer le total et la commission dans les trois onglets. Annuler le séjour,
+rouvrir la facture : son numéro et ses montants restent identiques, son statut
+devient **Annulée**. Une demande en attente ou refusée n'a pas de facture.
 
 ## Vérifier
 

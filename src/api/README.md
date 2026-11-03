@@ -52,6 +52,8 @@ PATCH /api/reservations/{id}
 GET /api/logements/{id}/dates-reservees
 GET /api/factures
 GET /api/factures/{numero}
+GET /api/factures/{numero}/document.{json|xml|html|txt}
+GET /api/formats/xml/facture.xsd
 ```
 
 La session est conservée dans un cookie HTTP-only signé par Flask. En
@@ -145,7 +147,19 @@ les dates, quantités, montants, total et commission avant insertion définitive
 à la relecture. Les routes de consultation sont privées (client ou émetteur de
 la facture), sans endpoint de création/modification manuelle. Une annulation
 du séjour marque la facture `annulee`, en conservant ses données et son numéro.
-Pas de paiement, de remboursement ni d'export XML à ce stade.
+Pas de paiement ni de remboursement à ce stade.
+
+`GET /api/factures/{numero}/document.{json|xml|html|txt}` produit les formats
+consultables dans l'aperçu React. Tous exigent la session de l'une des deux
+parties, y compris les téléchargements (`?telecharger=1`). Les réponses ne sont
+pas mises en cache. Les autres utilisateurs reçoivent 404 ; sans session, 401.
+
+`facture_documents.py` construit le XML depuis le document JSON relu et validé,
+le contrôle avec `src/formats/xml/facture.xsd`, puis transforme ce même XML
+avec lxml et les XSLT locales en HTML ou texte. Les accès réseau et fichiers
+pendant la transformation sont interdits. Le HTML inclut son CSS pour rester
+imprimable après téléchargement, sans dépendre du serveur. Le schéma XSD est
+public ; les factures restent privées.
 
 Vérifications sur base temporaire : documents et arrondis, identités figées après
 modification des profils, taux figé, accès privés, acceptations concurrentes,
