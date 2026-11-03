@@ -9,6 +9,7 @@ DB := src/server/instance/refuge_climatique.sqlite
 NEW_DB ?= src/db/data/refuge_climatique.sqlite3
 DELETE_SQL := src/server/schema/delete.sql
 COUNT ?= 100
+USERS ?= 20
 SEED ?= 1
 SQL := src/server/data/peuplement.sql
 WEB_DIR := src/web
@@ -16,7 +17,7 @@ WEB_NODE_MODULES := $(WEB_DIR)/node_modules/.package-lock.json
 
 .DEFAULT_GOAL := help
 
-.PHONY: help install run dev backend-dev frontend-install frontend-dev db-migrate populate verifier verifier-documents drop clean
+.PHONY: help install run dev backend-dev frontend-install frontend-dev db-migrate populate populate-legacy verifier verifier-documents drop clean
 
 help:
 	@echo "Commandes disponibles :"
@@ -26,7 +27,8 @@ help:
 	@echo "  make backend-dev   Lance uniquement le backend Flask en mode debug"
 	@echo "  make frontend-dev  Lance uniquement le frontend React avec Vite"
 	@echo "  make db-migrate  Applique les migrations de la nouvelle base SQLite"
-	@echo "  make populate COUNT=100 SEED=1  Génère les factures et écrit $(SQL)"
+	@echo "  make populate COUNT=100 USERS=20 SEED=1  Ajoute des logements et utilisateurs dans la V1"
+	@echo "  make populate-legacy COUNT=100  Remplace les factures de l'ancien prototype"
 	@echo "  make verifier Vérifie les exemples contre les schémas JSON, DTD et XSD"
 	@echo "  make verifier-documents  Vérifie les documents JSON de la nouvelle app"
 	@echo "  make drop     Supprime les tables de la base de données"
@@ -63,6 +65,9 @@ db-migrate: $(VENV_PYTHON)
 	$(VENV_PYTHON) -m src.db.migrate --database $(NEW_DB)
 
 populate: install
+	$(VENV_PYTHON) -m src.api.scripts.populate --count $(COUNT) --users $(USERS) --seed $(SEED) --database $(NEW_DB)
+
+populate-legacy: install
 	$(VENV_PYTHON) -m src.server.scripts.populate --count $(COUNT) --seed $(SEED) --sql $(SQL)
 
 verifier: install
