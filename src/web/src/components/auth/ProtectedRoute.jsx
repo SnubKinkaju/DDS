@@ -15,7 +15,7 @@ function ProtectedRoute({ children }) {
   }
 
   if (!utilisateur) {
-    return <Navigate to="/connexion" state={{ from: location.pathname }} replace />;
+    return <Navigate to="/connexion" state={{ from: location.pathname + location.search }} replace />;
   }
 
   return children;

@@ -2,24 +2,15 @@ import { CalendarDays, Heart, House, MessageCircle, UserRound } from "lucide-rea
 
 export const upcomingPages = [
   {
-    path: "/reservations",
-    title: "Mes réservations",
-    description:
-      "Vous retrouverez ici vos séjours et les demandes reçues pour vos logements.",
-    Icon: CalendarDays,
-  },
-  {
     path: "/favoris",
     title: "Mes favoris",
-    description:
-      "Vous pourrez enregistrer vos logements préférés pour les retrouver facilement.",
+    description: "Vous pourrez enregistrer vos logements préférés pour les retrouver facilement.",
     Icon: Heart,
   },
   {
     path: "/messages",
     title: "Messages",
-    description:
-      "Vous pourrez échanger avec les propriétaires et les voyageurs depuis cet espace.",
+    description: "Vous pourrez échanger avec les propriétaires et les voyageurs depuis cet espace.",
     Icon: MessageCircle,
   },
 ];
@@ -28,16 +19,22 @@ export const upcomingPages = [
 export const accountLinks = [
   {
     label: "Voyager",
-    items: upcomingPages.map(({ path, title, Icon }) => ({
-      to: path,
-      label: title,
-      Icon,
-      upcoming: true,
-    })),
+    items: [
+      { to: "/reservations", label: "Mes séjours", Icon: CalendarDays },
+      ...upcomingPages.map(({ path, title, Icon }) => ({
+        to: path,
+        label: title,
+        Icon,
+        upcoming: true,
+      })),
+    ],
   },
   {
     label: "Héberger",
-    items: [{ to: "/mes-logements", label: "Mes logements", Icon: House }],
+    items: [
+      { to: "/mes-logements", label: "Mes logements", Icon: House },
+      { to: "/reservations?vue=recues", label: "Demandes reçues", Icon: CalendarDays },
+    ],
   },
   {
     label: "Profil",

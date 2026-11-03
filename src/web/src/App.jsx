@@ -12,6 +12,7 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import MyListingsPage from "./pages/MyListingsPage.jsx";
 import EditListingPage from "./pages/EditListingPage.jsx";
 import UpcomingPage from "./pages/UpcomingPage.jsx";
+import ReservationsPage from "./pages/ReservationsPage.jsx";
 import { upcomingPages } from "./data/navigation.js";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
       <Route path="/logements" element={<CataloguePage />} />
       <Route path="/logements/:logementId" element={<ListingDetailPage />} />
       <Route path="/carte" element={<MapPage />} />
+      <Route path="/reservations" element={<ProtectedRoute><ReservationsPage /></ProtectedRoute>} />
       {upcomingPages.map(({ path, title, description, Icon }) => (
         <Route
           key={path}
