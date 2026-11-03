@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 
+import ErrorMessage from "../components/ErrorMessage.jsx";
 import AuthLayout from "../components/auth/AuthLayout.jsx";
 import FormField from "../components/auth/FormField.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -59,8 +60,9 @@ function RegisterPage() {
 
   return (
     <AuthLayout
-      title="Créer un compte"
-      description="Un seul compte permet de réserver un logement et, plus tard, d’en proposer un."
+      title="Inscription"
+      heading="Bienvenue sur Refuge climatique"
+      description="Un seul compte pour réserver un logement et proposer le vôtre."
       footer={
         <>
           Vous avez déjà un compte ?{" "}
@@ -70,17 +72,10 @@ function RegisterPage() {
         </>
       }
     >
-      <form className="space-y-5" onSubmit={handleSubmit}>
-        {erreur && (
-          <p
-            className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-800"
-            role="alert"
-          >
-            {erreur}
-          </p>
-        )}
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <ErrorMessage error={erreur} className="" />
 
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           <FormField
             id="prenom"
             label="Prénom"
@@ -155,7 +150,7 @@ function RegisterPage() {
         />
 
         <button
-          className="h-12 w-full rounded-lg bg-primary px-6 text-base font-semibold text-white transition-colors hover:bg-primary-active disabled:cursor-wait disabled:bg-primary-soft"
+          className="button-primary w-full"
           type="submit"
           disabled={envoi}
         >

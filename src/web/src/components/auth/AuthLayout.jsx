@@ -1,38 +1,34 @@
-import { ArrowLeft } from "lucide-react";
+import { X } from "lucide-react";
 import { Link } from "react-router";
 
 import Brand from "../Brand.jsx";
 
-function AuthLayout({ title, description, children, footer }) {
+function AuthLayout({ title, heading, description, children, footer }) {
   return (
-    <div className="min-h-screen bg-surface-soft">
+    <div className="min-h-screen bg-white md:bg-surface-soft">
       <header className="border-b border-hairline-soft bg-white">
-        <div className="mx-auto flex h-20 w-full max-w-[1920px] items-center justify-between px-5 sm:px-8 xl:px-12">
+        <div className="page-container flex h-16 items-center md:h-20">
           <Brand />
-          <Link
-            className="flex items-center gap-2 text-sm font-medium text-muted hover:text-ink"
-            to="/"
-          >
-            <ArrowLeft aria-hidden="true" size={17} />
-            Retour à l’accueil
-          </Link>
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-[1920px] justify-center px-5 py-12 sm:px-8 sm:py-16 xl:px-12">
-        <section className="w-full max-w-[520px] rounded-[20px] border border-hairline-soft bg-white p-6 shadow-floating sm:p-10">
-          <div>
-            <p className="text-sm font-semibold text-primary">Votre compte</p>
-            <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.03em] text-ink">
-              {title}
-            </h1>
-            <p className="mt-3 text-sm leading-6 text-muted">{description}</p>
+      <main className="md:px-6 md:py-14">
+        <section className="mx-auto w-full max-w-[568px] bg-white md:rounded-lg md:shadow-floating">
+          <div className="relative flex h-16 items-center justify-center border-b border-hairline-soft px-14">
+            <Link to="/" className="icon-button absolute left-4" aria-label="Fermer et revenir à l’accueil">
+              <X aria-hidden="true" size={18} />
+            </Link>
+            <p className="text-base font-bold text-ink">{title}</p>
           </div>
 
-          <div className="mt-8">{children}</div>
+          <div className="p-6 md:p-8">
+            <h1 className="text-[22px] font-semibold text-ink">{heading}</h1>
+            {description && <p className="mt-2 text-base text-muted">{description}</p>}
+            <div className="mt-6">{children}</div>
+          </div>
 
           {footer && (
-            <div className="mt-8 border-t border-hairline-soft pt-6 text-center text-sm text-muted">
+            <div className="border-t border-hairline-soft px-6 py-6 text-center text-sm text-muted md:px-8">
               {footer}
             </div>
           )}
