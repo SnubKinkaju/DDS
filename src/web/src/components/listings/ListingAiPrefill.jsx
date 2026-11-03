@@ -103,7 +103,7 @@ export default function ListingAiPrefill({ disabled, onApply, onBusyChange }) {
           ) : (
             <Sparkles size={16} aria-hidden="true" />
           )}
-          {busy ? "Préremplissage…" : "Préremplir avec l’IA"}
+          {busy ? "Préremplissage…" : "Préremplir avec l'IA"}
         </button>
       </div>
       {busy && (
