@@ -82,7 +82,7 @@ export default function HomePage() {
                   aria-controls="latest-listings"
                   disabled={!canScrollLeft}
                   onClick={() => scrollListings(-1)}
-                  className="grid size-9 place-items-center rounded-full border border-hairline-soft hover:bg-surface-soft disabled:cursor-default disabled:opacity-30"
+                  className="grid size-9 place-items-center rounded-full bg-primary text-white shadow-sm transition duration-150 enabled:hover:scale-105 enabled:hover:bg-primary-active enabled:active:scale-95 disabled:cursor-default disabled:bg-primary/10 disabled:text-primary/35 disabled:shadow-none motion-reduce:transform-none motion-reduce:transition-none"
                 >
                   <ChevronLeft aria-hidden="true" size={18} />
                 </button>
@@ -92,7 +92,7 @@ export default function HomePage() {
                   aria-controls="latest-listings"
                   disabled={!canScrollRight}
                   onClick={() => scrollListings(1)}
-                  className="grid size-9 place-items-center rounded-full border border-hairline-soft hover:bg-surface-soft disabled:cursor-default disabled:opacity-30"
+                  className="grid size-9 place-items-center rounded-full bg-primary text-white shadow-sm transition duration-150 enabled:hover:scale-105 enabled:hover:bg-primary-active enabled:active:scale-95 disabled:cursor-default disabled:bg-primary/10 disabled:text-primary/35 disabled:shadow-none motion-reduce:transform-none motion-reduce:transition-none"
                 >
                   <ChevronRight aria-hidden="true" size={18} />
                 </button>
