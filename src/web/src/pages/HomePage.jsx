@@ -1,16 +1,50 @@
-import { ArrowRight, House } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, ChevronLeft, ChevronRight, House } from "lucide-react";
 import { Link } from "react-router";
 
 import EmptyState from "../components/EmptyState.jsx";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import PageLayout from "../components/PageLayout.jsx";
-import ListingGrid, { ListingGridSkeleton } from "../components/listings/ListingGrid.jsx";
+import ListingCard from "../components/ListingCard.jsx";
+import { ListingGridSkeleton } from "../components/listings/ListingGrid.jsx";
 import ListingSearch from "../components/listings/ListingSearch.jsx";
 import TypeFilter from "../components/listings/TypeFilter.jsx";
 import useListings from "../hooks/useListings.js";
 
 export default function HomePage() {
   const { logements, loading, error } = useListings();
+  const latestLogements = logements.slice(0, 10);
+  const carouselRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    function updateControls() {
+      setCanScrollLeft(carousel.scrollLeft > 1);
+      setCanScrollRight(carousel.scrollLeft + carousel.clientWidth < carousel.scrollWidth - 1);
+    }
+
+    updateControls();
+    carousel.addEventListener("scroll", updateControls, { passive: true });
+    const observer = new ResizeObserver(updateControls);
+    observer.observe(carousel);
+    return () => {
+      carousel.removeEventListener("scroll", updateControls);
+      observer.disconnect();
+    };
+  }, [loading, logements.length]);
+
+  function scrollListings(direction) {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    carousel.scrollBy({
+      left: direction * carousel.clientWidth,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+    });
+  }
 
   return (
     <PageLayout>
@@ -31,15 +65,39 @@ export default function HomePage() {
       </div>
 
       <section aria-labelledby="latest-title" className="mt-10">
-        <div className="mb-6 flex items-end justify-between gap-4">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <h2 id="latest-title" className="text-[22px] font-semibold text-ink">
             Les derniers logements
           </h2>
           {logements.length > 0 && (
-            <Link to="/logements" className="button-tertiary shrink-0">
-              Tout afficher
-              <ArrowRight aria-hidden="true" size={16} />
-            </Link>
+            <div className="flex items-center gap-4">
+              <Link to="/logements" className="button-tertiary shrink-0">
+                Tout afficher
+                <ArrowRight aria-hidden="true" size={16} />
+              </Link>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  aria-label="Voir les logements précédents"
+                  aria-controls="latest-listings"
+                  disabled={!canScrollLeft}
+                  onClick={() => scrollListings(-1)}
+                  className="grid size-9 place-items-center rounded-full border border-hairline-soft hover:bg-surface-soft disabled:cursor-default disabled:opacity-30"
+                >
+                  <ChevronLeft aria-hidden="true" size={18} />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Voir les logements suivants"
+                  aria-controls="latest-listings"
+                  disabled={!canScrollRight}
+                  onClick={() => scrollListings(1)}
+                  className="grid size-9 place-items-center rounded-full border border-hairline-soft hover:bg-surface-soft disabled:cursor-default disabled:opacity-30"
+                >
+                  <ChevronRight aria-hidden="true" size={18} />
+                </button>
+              </div>
+            </div>
           )}
         </div>
 
@@ -59,7 +117,23 @@ export default function HomePage() {
           </EmptyState>
         )}
         {!loading && logements.length > 0 && (
-          <ListingGrid logements={logements.slice(0, 8)} />
+          <div
+            id="latest-listings"
+            ref={carouselRef}
+            role="region"
+            aria-labelledby="latest-title"
+            tabIndex={0}
+            className="flex snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain p-1 -m-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {latestLogements.map((logement) => (
+              <div
+                key={logement.id}
+                className="w-[85%] shrink-0 snap-start sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48px)/3)] xl:w-[calc((100%-72px)/4)]"
+              >
+                <ListingCard logement={logement} />
+              </div>
+            ))}
+          </div>
         )}
       </section>
 
