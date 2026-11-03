@@ -24,8 +24,78 @@ Pour essayer : se connecter, publier un logement, ajouter ses photos,
 puis ouvrir **Mes logements**. Une annonce désactivée disparaît du catalogue
 mais reste modifiable dans cet espace.
 
-Les pages **Réservations**, **Favoris** et **Messages** indiquent pour l'instant
+Les pages **Favoris** et **Messages** indiquent pour l'instant
 « Prochainement ». La carte affiche La Clusaz, sans positions des logements.
+
+Sur une fiche logement, **Documents du logement** donne accès au JSON validé,
+à son JSON Schema, à une fiche HTML imprimable et à une version texte.
+`make verifier-documents` contrôle les exemples de la nouvelle application.
+Voir [le parcours documentaire du logement](src/formats/README.md).
+
+### Essayer les réservations
+
+1. Avec un compte voyageur, ouvrir un logement, choisir les dates et le nombre
+   de voyageurs, puis cliquer sur **Demander ce séjour**.
+2. Avec le compte qui propose ce logement (dans un autre navigateur ou une
+   fenêtre privée), ouvrir le menu du compte → **Demandes reçues**.
+3. Accepter ou refuser la demande. Le voyageur retrouve la réponse dans
+   **Mes séjours**, avec le bouton **Actualiser** si sa page est déjà ouverte.
+
+Les dates sont bloquées uniquement après acceptation. Les demandes concurrentes
+sur cette période sont alors refusées automatiquement. Le départ ne compte pas
+comme une nuit occupée : un autre séjour peut commencer ce même jour.
+Le voyageur peut annuler jusqu'au jour d'arrivée inclus, ce qui libère les dates.
+Le tarif est conservé à la création de la demande, même si l'annonce change ensuite.
+L'acceptation génère automatiquement une facture ; aucun paiement n'est déclenché.
+
+### Factures des séjours
+
+Une facture unique est créée dans la même transaction que l'acceptation du séjour.
+Son numéro suit le format `FAC-2026-000001`. Elle conserve les informations de
+l'émetteur, du client, du logement et du séjour telles qu'elles sont à l'émission.
+Les coordonnées non renseignées restent absentes (`null`), sans les inventer.
+
+La commission est de **5 % inclus dans le prix**, prélevés côté propriétaire.
+Exemple : le voyageur paie 101,30 €, dont 5,07 € de commission ; il reste 96,23 €
+pour le propriétaire. Les lignes de facture décrivent le séjour ; la commission
+est une répartition du total, pas un supplément. Tous les calculs utilisent des centimes entiers.
+Pour changer le taux des prochaines factures : `export REFUGE_COMMISSION_POURCENT=5`
+puis relancer le backend. Les factures déjà émises conservent leur taux.
+
+Après connexion, ouvrir `/api/factures` pour obtenir ses factures, puis
+`/api/factures/FAC-2026-000001` (avec le numéro retourné) pour consulter le JSON.
+La réponse d'une réservation contient également `facture.numero`, `facture.statut`
+et `facture.url`. Seuls l'hébergeur et le voyageur concernés y ont accès.
+Une annulation conserve la facture et ses montants avec le statut `annulee`.
+Le JSON est validé avec `src/formats/json/facture.schema.json` ; les exports
+XML et les présentations XSLT de la nouvelle app restent à intégrer.
+
+### Peupler la nouvelle base
+
+```bash
+make populate COUNT=100 USERS=20 SEED=1
+```
+
+Ajoute **100 logements et 20 utilisateurs**, sans supprimer les données présentes.
+Environ un tiers des utilisateurs proposent les logements ; les autres restent
+clients. Chaque propriétaire généré reçoit au moins une annonce. Les adresses
+restent à La Clusaz et les équipements sont tirés dans la liste existante.
+Les données sont fictives, sans photos, réservations ni factures.
+
+Les noms, rues, types et fourchettes de prix viennent de
+`src/db/seeds/population.json`. Le script Python est dans
+`src/api/scripts/populate.py`. Il valide les JSON de saisie et de sortie et
+enregistre le lot dans une transaction : une erreur annule tout le lot.
+
+Les comptes générés ont le mot de passe **`RefugeDemo2026!`**. La commande affiche
+un email propriétaire et un email client utilisables pour la démonstration.
+Les emails suivent le format prénomnom, sans accents ; un suffixe est ajouté
+si l'adresse existe déjà. Aucun compte existant n'est modifié.
+
+Chaque exécution **ajoute** le nombre demandé. Avec la même graine sur deux
+bases identiques, les valeurs tirées sont les mêmes ; les dates de création et
+les empreintes des mots de passe varient. Pour choisir une autre base, ajouter
+`NEW_DB=/chemin/vers/demo.sqlite3`.
 
 ## Prototype DDS conservé
 
@@ -60,7 +130,7 @@ Ouvrir ensuite <http://127.0.0.1:5001>.
 | `make install` | Crée `.venv` et installe les dépendances |
 | `make run` | Lance uniquement la nouvelle API Flask |
 | `make dev` | Lance la nouvelle application React + Flask |
-| `make populate COUNT=100 SEED=1` | Génère les factures et écrit `src/server/data/peuplement.sql` |
+| `make populate-legacy COUNT=100 SEED=1` | Génère les factures du prototype et écrit `src/server/data/peuplement.sql` |
 | `make verifier` | Vérifie les exemples contre les schémas JSON, DTD et XSD |
 | `make drop` | Supprime les tables de la base SQLite |
 | `make clean` | Supprime les caches Python, sans toucher à la BDD |
@@ -75,7 +145,7 @@ src/server/instance/refuge_climatique.sqlite
 ## Peuplement
 
 ```bash
-make populate COUNT=100
+make populate-legacy COUNT=100
 ```
 
 Cette commande remplace les données présentes par le nombre demandé de
