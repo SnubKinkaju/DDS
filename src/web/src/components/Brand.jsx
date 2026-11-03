@@ -1,17 +1,19 @@
 import { MountainSnow } from "lucide-react";
 import { Link } from "react-router";
 
-function Brand() {
+function Brand({ compact = false }) {
   return (
     <Link
-      className="flex items-center gap-2 text-[18px] font-semibold tracking-[-0.02em] text-primary"
+      className="flex shrink-0 items-center gap-1.5 rounded-sm text-primary"
       to="/"
       aria-label="Refuge climatique — accueil"
     >
-      <span className="grid size-9 place-items-center rounded-full bg-primary text-white">
-        <MountainSnow aria-hidden="true" size={20} strokeWidth={2.2} />
+      <MountainSnow aria-hidden="true" size={32} strokeWidth={2.25} />
+      <span
+        className={`text-[19px] font-bold tracking-[-0.03em] ${compact ? "hidden lg:inline" : ""}`}
+      >
+        refuge
       </span>
-      <span className="hidden sm:inline">Refuge climatique</span>
     </Link>
   );
 }
