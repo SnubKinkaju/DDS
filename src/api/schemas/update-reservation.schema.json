@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Décision sur une réservation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["statut"],
+  "properties": {
+    "statut": {"enum": ["acceptee", "refusee", "annulee"]}
+  }
+}
