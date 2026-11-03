@@ -5,7 +5,11 @@ import PageLayout from "../components/PageLayout.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import ReservationCard from "../components/reservations/ReservationCard.jsx";
-import { listReservations, setReservationStatus } from "../services/reservationApi.js";
+import InvoicePreviewDialog from "../components/reservations/InvoicePreviewDialog.jsx";
+import {
+  listReservations,
+  setReservationStatus,
+} from "../services/reservationApi.js";
 
 export default function ReservationsPage() {
   const [params, setParams] = useSearchParams();
@@ -16,6 +20,7 @@ export default function ReservationsPage() {
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
   const [refresh, setRefresh] = useState(0);
+  const [invoice, setInvoice] = useState(null);
 
   useEffect(() => {
     let active = true;
@@ -125,7 +130,10 @@ export default function ReservationsPage() {
           Icon={CalendarDays}
           title={received ? "Aucune demande reçue" : "Pas encore de séjour"}
           action={
-            <Link className="button-secondary" to={received ? "/mes-logements" : "/logements"}>
+            <Link
+              className="button-secondary"
+              to={received ? "/mes-logements" : "/logements"}
+            >
               {received ? "Mes logements" : "Trouver un logement"}
             </Link>
           }
@@ -144,9 +152,16 @@ export default function ReservationsPage() {
               received={received}
               busy={busy}
               onAction={act}
+              onViewInvoice={setInvoice}
             />
           ))}
         </div>
+      )}
+      {invoice && (
+        <InvoicePreviewDialog
+          facture={invoice}
+          onClose={() => setInvoice(null)}
+        />
       )}
     </PageLayout>
   );

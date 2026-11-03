@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { ReceiptText } from "lucide-react";
 import { formatPrice, plural } from "../../utils/format.js";
 import { formatDate, todayInParis } from "../../utils/dates.js";
 
@@ -10,7 +11,13 @@ const statuses = {
   terminee: ["Terminée", "bg-surface-strong text-muted"],
 };
 
-export default function ReservationCard({ reservation: item, received, busy, onAction }) {
+export default function ReservationCard({
+  reservation: item,
+  received,
+  busy,
+  onAction,
+  onViewInvoice,
+}) {
   const [label, color] = statuses[item.statut];
   const person = received ? item.voyageur : item.proprietaire;
   const past = item.dateFin <= todayInParis();
@@ -20,7 +27,10 @@ export default function ReservationCard({ reservation: item, received, busy, onA
         <div>
           <h2 className="text-lg font-semibold">
             {item.logement.statut === "publie" ? (
-              <Link to={`/logements/${item.logement.id}`} className="hover:underline">
+              <Link
+                to={`/logements/${item.logement.id}`}
+                className="hover:underline"
+              >
                 {item.logement.titre}
               </Link>
             ) : (
@@ -28,11 +38,13 @@ export default function ReservationCard({ reservation: item, received, busy, onA
             )}
           </h2>
           <p className="mt-1 text-sm text-muted">
-            {item.logement.ville} · {received ? "Demandé par" : "Proposé par"} {person.prenom}{" "}
-            {person.nom}
+            {item.logement.ville} · {received ? "Demandé par" : "Proposé par"}{" "}
+            {person.prenom} {person.nom}
           </p>
         </div>
-        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${color}`}>
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-semibold ${color}`}
+        >
           {label}
           {past ? " · Séjour passé" : ""}
         </span>
@@ -41,23 +53,38 @@ export default function ReservationCard({ reservation: item, received, busy, onA
         {formatDate(item.dateDebut)} → {formatDate(item.dateFin)}
       </p>
       <p className="mt-1 text-sm text-muted">
-        {plural(item.nombreNuits, "nuit")} · {plural(item.nombreVoyageurs, "voyageur")}
+        {plural(item.nombreNuits, "nuit")} ·{" "}
+        {plural(item.nombreVoyageurs, "voyageur")}
       </p>
       <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-lg font-semibold">{formatPrice(item.montantTotalCentimes)}</p>
+          <p className="text-lg font-semibold">
+            {formatPrice(item.montantTotalCentimes)}
+          </p>
           <p className="text-xs text-muted">
-            {formatPrice(item.prixNuitCentimes)} par nuit, tarif conservé à la demande
+            {formatPrice(item.prixNuitCentimes)} par nuit, tarif conservé à la
+            demande
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
+          {item.facture && (
+            <button
+              type="button"
+              onClick={() => onViewInvoice(item.facture)}
+              className="button-primary button-small"
+            >
+              <ReceiptText size={16} aria-hidden="true" /> Voir la facture
+            </button>
+          )}
           {item.actions.includes("annulee") && (
             <button
               disabled={busy}
               onClick={() => onAction(item, "annulee")}
               className="button-secondary button-small"
             >
-              {item.statut === "en_attente" ? "Annuler la demande" : "Annuler le séjour"}
+              {item.statut === "en_attente"
+                ? "Annuler la demande"
+                : "Annuler le séjour"}
             </button>
           )}
           {item.actions.includes("refusee") && (
@@ -80,11 +107,14 @@ export default function ReservationCard({ reservation: item, received, busy, onA
           )}
         </div>
       </div>
-      {received && item.statut === "en_attente" && !item.actions.includes("acceptee") && (
-        <p className="mt-4 text-sm text-muted">
-          Acceptation impossible : vérifiez les dates, la publication et la capacité du logement.
-        </p>
-      )}
+      {received &&
+        item.statut === "en_attente" &&
+        !item.actions.includes("acceptee") && (
+          <p className="mt-4 text-sm text-muted">
+            Acceptation impossible : vérifiez les dates, la publication et la
+            capacité du logement.
+          </p>
+        )}
     </article>
   );
 }
