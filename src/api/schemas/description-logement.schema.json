@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Description libre à analyser",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["description"],
+  "properties": {
+    "description": { "type": "string", "minLength": 10, "maxLength": 5000 }
+  }
+}

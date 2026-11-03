@@ -16,6 +16,7 @@ PUBLIC_SCHEMAS = {
     'facture.schema.json': FORMATS_DIR,
     'logement.schema.json': FORMATS_DIR,
     'logement-commun.schema.json': FORMATS_DIR,
+    'logement-partiel.schema.json': FORMATS_DIR,
     'create-logement.schema.json': SCHEMAS_DIR,
 }
 
