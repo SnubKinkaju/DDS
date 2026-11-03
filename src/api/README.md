@@ -29,6 +29,7 @@ make backend-dev
 GET /api/health
 GET /api/logements
 POST /api/logements
+POST /api/logements/pre-remplir
 GET /api/logements/{id}
 GET /api/logements/{id}/fiche.html
 GET /api/logements/{id}/fiche.txt
@@ -89,6 +90,27 @@ Les gabarits sont dans `src/api/documents`, la génération dans
 `services/logement_documents.py` et les routes dans `routes/documents.py`.
 
 Voir [les formats et leur vérification](../formats/README.md).
+
+## Préremplissage ILaaS
+
+`POST /api/logements/pre-remplir` attend `{"description": "…"}` (10 à 5 000
+caractères) avec une session valide. La route appelle `services/logement_prefill.py`,
+qui fournit au modèle le schéma partiel, ses définitions communes et le catalogue
+d'équipements, puis valide le JSON et les identifiants d'équipements renvoyés.
+La réponse est `{"proposition": {...}}` ; aucune écriture en base ni changement
+de rôle n'est effectué. La description est envoyée au fournisseur ILaaS.
+
+Le client HTTP est dans `integrations/ilaas.py`. Configuration : `ILAAS_API_KEY`,
+`ILAAS_API_URL` (défaut `https://llm.ilaas.fr/v1`) et `ILAAS_MODEL` (défaut repris
+du prototype : `mistral-small-4-119b`). La clé n'est jamais envoyée au navigateur.
+Une erreur de saisie renvoie 400, une proposition invalide 502, un service absent
+ou indisponible 503, un délai dépassé 504. Aucun corps d'erreur du fournisseur
+n'est retransmis au client. Il n'y a pas de relance automatique du LLM.
+
+React applique seulement les champs présents et laisse les autres valeurs
+intactes. La saisie est désactivée pendant l'analyse pour éviter qu'une réponse
+tardive écrase une modification en cours. La publication reste un POST distinct
+sur `/api/logements`, avec le schéma complet et ses règles métier.
 
 ## Réservations V1
 

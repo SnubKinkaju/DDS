@@ -32,6 +32,31 @@ Sur une fiche logement, **Documents du logement** donne accès au JSON validé,
 `make verifier-documents` contrôle les exemples de la nouvelle application.
 Voir [le parcours documentaire du logement](src/formats/README.md).
 
+### Préremplir un logement avec l'IA
+
+Dans **Publier un logement**, écrire dans **Décrivez votre logement**, puis cliquer
+sur **Préremplir avec l'IA**. Les informations trouvées remplissent le formulaire :
+elles restent modifiables et les champs absents de la proposition sont conservés.
+Les champs initialement vides restent à compléter. Aucun logement n'est enregistré
+avant **Publier et ajouter des photos**.
+
+Définir la clé ILaaS dans le terminal qui lance le backend :
+
+```bash
+export ILAAS_API_KEY="cle-fournie-par-le-professeur"
+make dev
+```
+
+La clé reste côté serveur. Sans clé, la saisie manuelle reste disponible et le
+bouton IA affiche un message explicite. L'API reprend l'adresse ILaaS du prototype
+(`https://llm.ilaas.fr/v1`) et son modèle `mistral-small-4-119b`. Ces valeurs sont
+configurables avec `ILAAS_API_URL` et `ILAAS_MODEL`, puis un redémarrage du backend.
+Le modèle doit être disponible pour la clé utilisée.
+
+La réponse est contrôlée par `logement-partiel.schema.json` : les champs sont
+facultatifs, mais leurs types et limites restent ceux du formulaire. À la
+publication, le schéma complet et les contrôles habituels s'appliquent.
+
 ### Essayer les réservations
 
 1. Avec un compte voyageur, ouvrir un logement, choisir les dates et le nombre
@@ -110,7 +135,8 @@ les empreintes des mots de passe varient. Pour choisir une autre base, ajouter
 
 Le reste de ce document décrit le prototype dans `src/server` et `src/client`.
 La nouvelle app possède désormais sa propre facturation de séjour ; l'export XML
-global et l’import par LLM du prototype restent à porter.
+global reste à porter. Le préremplissage par LLM de la V1 concerne les logements,
+alors que le prototype ci-dessous construit directement des factures.
 
 Application Flask du projet « Ville refuge climatique » (cours DDS). Elle suit
 les parcours demandés en cours :

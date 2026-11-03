@@ -16,6 +16,7 @@ SQLite → document JSON public → JSON Schema → API / fiche HTML / texte
 | `../api/schemas/create-logement.schema.json` | Valide le JSON envoyé pour créer ou modifier un logement |
 | `json/logement.schema.json` | Valide le document complet renvoyé par `GET /api/logements/{id}` |
 | `json/logement-commun.schema.json` | Partage les règles de titre, description, adresse, type, capacité et prix via `$ref` |
+| `json/logement-partiel.schema.json` | Valide les informations extraites d'une description libre, avec des champs facultatifs |
 | `examples/creation-logement.json` | Exemple de saisie valide |
 | `examples/logement.json` | Exemple de document public valide |
 | `examples/logement-invalide.json` | Contre-exemple : prix négatif, qui doit être refusé |
@@ -33,6 +34,30 @@ Les `$id` sous `https://refuge.example/` sont des identifiants de schéma, pas u
 site déployé. Python résout les `$ref` dans un registre de fichiers locaux,
 sans connexion réseau. Pour un autre validateur, fournir aussi le schéma commun.
 Les fichiers sont consultables sous `/api/formats/json/{nom-du-schema}`.
+
+## Texte libre : une proposition avant publication
+
+```text
+Description libre → ILaaS → JSON partiel → JSON Schema + contrôle des équipements
+                                        → formulaire modifiable → publication habituelle
+```
+
+Le schéma partiel reprend les mêmes règles de champs via `$ref`, mais ne possède
+pas de liste `required`. Par exemple, `{"typeLogement":"chalet","capacite":4}`
+est une proposition valide ; ce n'est pas encore un logement publiable. Les valeurs
+inconnues sont omises, sans `null` ni défaut inventé. Une adresse peut être partielle.
+La ville et le code postal restent ceux déjà fixés par le formulaire : La Clusaz,
+74220. Le modèle ne doit pas transformer une autre ville en La Clusaz.
+
+Le prix est en centimes dans le JSON et en euros dans le formulaire. Les équipements
+doivent appartenir au catalogue SQL. La consigne demande au modèle d'extraire les
+faits présents et permet de reformuler le titre et la description sans ajouter de
+caractéristiques. **Le schéma contrôle la forme, pas la véracité du texte** :
+l'utilisateur doit relire la proposition avant de publier.
+
+Un échec ne modifie pas le formulaire. Une proposition valide ne crée aucune
+ligne en base : seul le bouton de publication déclenche l'enregistrement après
+validation par `create-logement.schema.json` et les contrôles métier existants.
 
 ## Présentations du document
 
