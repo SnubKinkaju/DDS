@@ -1,4 +1,36 @@
-# Factures d'offres de logement
+# Refuge climatique
+
+## Application React + Flask
+
+```bash
+make dev
+```
+
+Ouvrir <http://localhost:5173>. Cette commande installe les dépendances,
+applique les migrations et lance React/Vite et l'API Flask.
+`make frontend-dev` et `make backend-dev` permettent de les lancer séparément.
+
+La nouvelle application se trouve dans `src/web` (React), `src/api` (Flask)
+et `src/db` (SQLite et migrations). La base est
+`src/db/data/refuge_climatique.sqlite3` et les photos sont dans
+`src/db/data/photos/`.
+
+Fonctionnalités disponibles : inscription, connexion, accueil avec annonces
+réelles, recherche par texte/type/capacité, catalogue, fiche logement,
+publication, équipements et gestion des photos. **Mes logements** permet de
+modifier, désactiver, republier et supprimer ses annonces.
+
+Pour essayer : se connecter, publier un logement, ajouter ses photos,
+puis ouvrir **Mes logements**. Une annonce désactivée disparaît du catalogue
+mais reste modifiable dans cet espace.
+
+Les pages **Réservations**, **Favoris** et **Messages** indiquent pour l'instant
+« Prochainement ». La carte affiche La Clusaz, sans positions des logements.
+
+## Prototype DDS conservé
+
+Le reste de ce document décrit le prototype dans `src/server` et `src/client`,
+dont les factures et exports ne sont pas encore intégrés à la nouvelle app.
 
 Application Flask du projet « Ville refuge climatique » (cours DDS). Elle suit
 les parcours demandés en cours :
@@ -16,24 +48,18 @@ SQLite → JSON du logement → programme Python → HTML / texte imprimable
 ```bash
 make install
 export ILAAS_API_KEY="clé_api_du_prof"
-make run
+.venv/bin/flask --app src.server.app run --debug --port 5001
 ```
 
-Ouvrir ensuite <http://127.0.0.1:5000>.
-
-Pour développer avec le rechargement automatique :
-
-```bash
-make dev
-```
+Ouvrir ensuite <http://127.0.0.1:5001>.
 
 ## Commandes
 
 | Commande | Utilité |
 |---|---|
 | `make install` | Crée `.venv` et installe les dépendances |
-| `make run` | Lance l'application |
-| `make dev` | Lance l'application en mode debug |
+| `make run` | Lance uniquement la nouvelle API Flask |
+| `make dev` | Lance la nouvelle application React + Flask |
 | `make populate COUNT=100 SEED=1` | Génère les factures et écrit `src/server/data/peuplement.sql` |
 | `make verifier` | Vérifie les exemples contre les schémas JSON, DTD et XSD |
 | `make drop` | Supprime les tables de la base SQLite |
@@ -188,7 +214,7 @@ La partie formulaire fonctionne sans clé. Pour utiliser la page **Texte libre**
 
 ```bash
 export ILAAS_API_KEY="cle-fournie-par-le-professeur"
-make run
+.venv/bin/flask --app src.server.app run --debug --port 5001
 ```
 
 L'adresse par défaut est `https://llm.ilaas.fr/v1`. Une autre adresse peut être utilisée avec :
