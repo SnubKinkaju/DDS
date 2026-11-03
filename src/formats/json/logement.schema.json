@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://refuge.example/api/formats/json/logement.schema.json",
+  "title": "Description publique d'un logement",
+  "description": "Document produit depuis SQLite pour une annonce publiée. Les montants sont en centimes d'euro. Le propriétaire désigne l'utilisateur qui propose le logement.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "statut", "titre", "description", "typeLogement", "capacite", "prixNuitCentimes", "adresse", "proprietaire", "photos", "equipements"],
+  "properties": {
+    "id": { "$ref": "logement-commun.schema.json#/$defs/identifiant" },
+    "statut": { "const": "publie" },
+    "titre": { "$ref": "logement-commun.schema.json#/$defs/titre" },
+    "description": { "$ref": "logement-commun.schema.json#/$defs/description" },
+    "typeLogement": { "$ref": "logement-commun.schema.json#/$defs/typeLogement" },
+    "capacite": { "$ref": "logement-commun.schema.json#/$defs/capacite" },
+    "prixNuitCentimes": { "$ref": "logement-commun.schema.json#/$defs/prixNuitCentimes" },
+    "adresse": { "$ref": "logement-commun.schema.json#/$defs/adresse" },
+    "proprietaire": {
+      "description": "Identité publique uniquement : aucun email, mot de passe ni adresse privée.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "prenom", "nom"],
+      "properties": {
+        "id": { "$ref": "logement-commun.schema.json#/$defs/identifiant" },
+        "prenom": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "nom": { "type": "string", "minLength": 1, "maxLength": 80 }
+      }
+    },
+    "photos": {
+      "type": "array", "maxItems": 8, "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "url", "position"],
+        "properties": {
+          "id": { "$ref": "logement-commun.schema.json#/$defs/identifiant" },
+          "url": {
+            "type": "string",
+            "format": "uri-reference",
+            "pattern": "^/api/logements/photos/fichier/[a-f0-9]{32}\\.jpg$"
+          },
+          "position": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "equipements": {
+      "type": "array", "maxItems": 50, "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "nom"],
+        "properties": {
+          "id": { "$ref": "logement-commun.schema.json#/$defs/identifiant" },
+          "nom": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

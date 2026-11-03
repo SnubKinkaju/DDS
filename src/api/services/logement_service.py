@@ -1,6 +1,7 @@
 from src.api.errors import AuthenticationError, NotFoundError, ValidationError
 from src.api.repositories import logement_repository, utilisateur_repository, owner_repository
 from src.api.validation import validate_json
+from src.api.services.document_validation import validate_logement_document
 
 
 def _serialize_address(row):
@@ -39,7 +40,9 @@ def get_published(connection, logement_id):
     if row is None or row['statut'] != 'publie':
         raise NotFoundError("Le logement demandé n'existe pas.")
 
-    return serialize_detail(connection, row)
+    document = serialize_detail(connection, row)
+    validate_logement_document(document)
+    return document
 
 
 def serialize_detail(connection, row):
