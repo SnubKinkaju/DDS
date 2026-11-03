@@ -26,11 +26,13 @@ def find_published(connection):
     ).fetchall()
 
 
-def find_published_by_id(connection, logement_id):
+def find_by_id(connection, logement_id):
     return connection.execute(
         """
         SELECT
             logement.id,
+            logement.statut,
+            logement.adresse_id,
             logement.proprietaire_id,
             logement.titre,
             logement.description,
@@ -45,7 +47,7 @@ def find_published_by_id(connection, logement_id):
         FROM logement
         JOIN adresse ON adresse.id = logement.adresse_id
         JOIN utilisateur ON utilisateur.id = logement.proprietaire_id
-        WHERE logement.id = ? AND logement.statut = 'publie'
+        WHERE logement.id = ?
         """,
         (logement_id,),
     ).fetchone()
@@ -75,3 +77,51 @@ def find_equipements(connection, logement_id):
         """,
         (logement_id,),
     ).fetchall()
+
+
+def create_address(connection, rue, code_postal, ville):
+    cursor = connection.execute(
+        """
+        INSERT INTO adresse (rue, code_postal, ville)
+        VALUES (?, ?, ?)
+        """,
+        (rue, code_postal, ville),
+    )
+    return cursor.lastrowid
+
+
+def create_logement(
+    connection,
+    proprietaire_id,
+    adresse_id,
+    titre,
+    description,
+    type_logement,
+    capacite,
+    prix_nuit_centimes,
+):
+    cursor = connection.execute(
+        """
+        INSERT INTO logement (
+            proprietaire_id,
+            adresse_id,
+            titre,
+            description,
+            type_logement,
+            capacite,
+            prix_nuit_centimes,
+            statut
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'publie')
+        """,
+        (
+            proprietaire_id,
+            adresse_id,
+            titre,
+            description,
+            type_logement,
+            capacite,
+            prix_nuit_centimes,
+        ),
+    )
+    return cursor.lastrowid

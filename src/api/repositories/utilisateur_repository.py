@@ -45,3 +45,14 @@ def create(connection, prenom, nom, email, password_hash, telephone=None):
     )
     connection.commit()
     return find_by_id(connection, cursor.lastrowid)
+
+
+def promote_to_owner(connection, utilisateur_id):
+    connection.execute(
+        """
+        UPDATE utilisateur
+        SET role = 'proprietaire'
+        WHERE id = ? AND role = 'client'
+        """,
+        (utilisateur_id,),
+    )
