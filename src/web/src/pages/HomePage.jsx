@@ -1,109 +1,93 @@
-import Footer from "../components/Footer.jsx";
-import Header from "../components/Header.jsx";
-import ListingCard from "../components/ListingCard.jsx";
-import SearchBar from "../components/SearchBar.jsx";
-import listings from "../data/listings.js";
+import { ArrowRight, House } from "lucide-react";
 import { Link } from "react-router";
 
-function HomePage() {
+import EmptyState from "../components/EmptyState.jsx";
+import ErrorMessage from "../components/ErrorMessage.jsx";
+import PageLayout from "../components/PageLayout.jsx";
+import ListingGrid, { ListingGridSkeleton } from "../components/listings/ListingGrid.jsx";
+import ListingSearch from "../components/listings/ListingSearch.jsx";
+import TypeFilter from "../components/listings/TypeFilter.jsx";
+import useListings from "../hooks/useListings.js";
+
+export default function HomePage() {
+  const { logements, loading, error } = useListings();
+
   return (
-    <div id="top" className="min-h-screen bg-white">
-      <Header />
+    <PageLayout>
+      <section aria-labelledby="home-title" className="mx-auto max-w-[850px] text-center">
+        <h1 id="home-title" className="text-[28px] leading-tight font-bold text-ink">
+          Un refuge au frais, à La Clusaz
+        </h1>
+        <p className="mt-2 text-base text-muted">
+          Des logements chez l’habitant pour souffler pendant les fortes chaleurs.
+        </p>
+        <div className="mt-8 text-left">
+          <ListingSearch />
+        </div>
+      </section>
 
-      <main>
-        <section className="mx-auto w-full max-w-[1920px] px-5 pt-10 sm:px-8 sm:pt-14 xl:px-12">
-          <div className="grid items-end gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-            <div>
-              <p className="text-sm font-semibold text-primary">
-                La Clusaz · Haute-Savoie
-              </p>
-              <h1 className="mt-3 max-w-3xl text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.03] font-semibold tracking-[-0.04em] text-ink">
-                Un refuge au frais quand la ville surchauffe.
-              </h1>
-            </div>
-            <p className="max-w-xl text-base leading-7 text-muted lg:justify-self-end lg:pb-2">
-              Trouvez un logement temporaire en montagne pour traverser les
-              périodes de forte chaleur plus sereinement.
-            </p>
-          </div>
+      <div className="mt-12 border-b border-hairline-soft">
+        <TypeFilter />
+      </div>
 
-          <div className="relative z-10 mx-auto mt-8 max-w-5xl lg:-mb-8">
-            <SearchBar />
-          </div>
+      <section aria-labelledby="latest-title" className="mt-10">
+        <div className="mb-6 flex items-end justify-between gap-4">
+          <h2 id="latest-title" className="text-[22px] font-semibold text-ink">
+            Les derniers logements
+          </h2>
+          {logements.length > 0 && (
+            <Link to="/logements" className="button-tertiary shrink-0">
+              Tout afficher
+              <ArrowRight aria-hidden="true" size={16} />
+            </Link>
+          )}
+        </div>
 
-          <div className="relative mt-6 h-[420px] overflow-hidden rounded-[24px] bg-surface-strong sm:h-[520px] lg:mt-0">
-            <img
-              className="h-full w-full object-cover"
-              src="/images/refuge-hero.jpg"
-              alt="Maison lumineuse entourée de grands arbres"
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/5 to-transparent" />
-            <div className="absolute right-0 bottom-0 left-0 p-6 text-white sm:p-10">
-              <p className="text-sm font-semibold">Séjourner autrement</p>
-              <p className="mt-2 max-w-lg text-xl leading-7 font-medium sm:text-2xl">
-                Une solution locale et temporaire pour retrouver des nuits
-                plus fraîches.
-              </p>
-            </div>
-          </div>
-        </section>
+        <ErrorMessage error={error} />
+        {loading && <ListingGridSkeleton count={4} />}
+        {!loading && !error && logements.length === 0 && (
+          <EmptyState
+            Icon={House}
+            title="Les premières annonces arrivent"
+            action={
+              <Link to="/publier" className="button-secondary">
+                Proposer mon logement
+              </Link>
+            }
+          >
+            Les logements publiés par les habitants apparaîtront ici.
+          </EmptyState>
+        )}
+        {!loading && logements.length > 0 && (
+          <ListingGrid logements={logements.slice(0, 8)} />
+        )}
+      </section>
 
-        <section
-          id="logements"
-          className="mx-auto w-full max-w-[1920px] scroll-mt-24 px-5 py-16 sm:px-8 xl:px-12"
-        >
-          <div className="flex items-end justify-between gap-6">
-            <div>
-              <p className="text-sm font-medium text-primary">À découvrir</p>
-              <h2 className="mt-2 text-[28px] font-semibold tracking-[-0.03em] text-ink">
-                Logements à La Clusaz
-              </h2>
-              <p className="mt-2 text-sm text-muted">
-                Données de démonstration de la future plateforme.
-              </p>
-            </div>
-            <Link
-              className="hidden text-sm font-medium text-ink underline underline-offset-4 sm:block"
-              to="/logements"
-            >
-              Voir le catalogue
+      <section
+        aria-labelledby="host-title"
+        className="mt-16 grid overflow-hidden rounded-lg bg-surface-soft md:h-[340px] md:grid-cols-2"
+      >
+        <img
+          src="/images/refuge-hero.jpg"
+          alt=""
+          className="h-56 w-full object-cover md:h-full"
+        />
+        <div className="flex flex-col justify-center p-8 md:p-12">
+          <h2 id="host-title" className="text-[22px] font-semibold text-ink">
+            Vous avez un logement à La Clusaz ?
+          </h2>
+          <p className="mt-3 max-w-md text-base leading-6 text-body">
+            Proposez-le aux personnes qui cherchent un endroit plus frais pendant
+            les épisodes de canicule. La publication ne prend que quelques
+            minutes.
+          </p>
+          <div className="mt-6">
+            <Link to="/publier" className="button-primary">
+              Publier un logement
             </Link>
           </div>
-
-          <div className="mt-8 grid gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-            {listings.map((listing) => (
-              <ListingCard key={listing.id} listing={listing} />
-            ))}
-          </div>
-        </section>
-
-        <section
-          id="publier"
-          className="mx-auto w-full max-w-[1920px] scroll-mt-24 px-5 py-16 sm:px-8 xl:px-12"
-        >
-          <div className="flex flex-col items-start justify-between gap-8 rounded-[24px] bg-ink px-7 py-10 text-white sm:px-10 md:flex-row md:items-center">
-            <div className="max-w-2xl">
-              <p className="text-sm font-medium text-white/70">
-                Vous avez une chambre disponible ?
-              </p>
-              <h2 className="mt-2 text-[28px] font-semibold tracking-[-0.03em]">
-                Proposez un logement-refuge.
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-white/70">
-                Le formulaire de publication sera la prochaine fonctionnalité
-                connectée à Flask.
-              </p>
-            </div>
-            <span className="shrink-0 rounded-full bg-white/10 px-5 py-3 text-sm font-medium text-white">
-              Fonctionnalité à venir
-            </span>
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
+        </div>
+      </section>
+    </PageLayout>
   );
 }
-
-export default HomePage;
