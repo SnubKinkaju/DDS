@@ -16,7 +16,7 @@ WEB_NODE_MODULES := $(WEB_DIR)/node_modules/.package-lock.json
 
 .DEFAULT_GOAL := help
 
-.PHONY: help install run dev backend-dev frontend-install frontend-dev db-migrate populate verifier drop clean
+.PHONY: help install run dev backend-dev frontend-install frontend-dev db-migrate populate verifier verifier-documents drop clean
 
 help:
 	@echo "Commandes disponibles :"
@@ -28,6 +28,7 @@ help:
 	@echo "  make db-migrate  Applique les migrations de la nouvelle base SQLite"
 	@echo "  make populate COUNT=100 SEED=1  Génère les factures et écrit $(SQL)"
 	@echo "  make verifier Vérifie les exemples contre les schémas JSON, DTD et XSD"
+	@echo "  make verifier-documents  Vérifie les documents JSON de la nouvelle app"
 	@echo "  make drop     Supprime les tables de la base de données"
 	@echo "  make clean    Supprime uniquement les caches générés"
 	@echo "  export ILAAS_API_KEY=\"clé_api_du_prof\""
@@ -66,6 +67,9 @@ populate: install
 
 verifier: install
 	$(VENV_PYTHON) -m src.server.scripts.verifier_exemples
+
+verifier-documents: install
+	$(VENV_PYTHON) -m src.api.scripts.verifier_documents
 
 drop:
 	$(VENV_PYTHON) -c "import sqlite3; sqlite3.connect('$(DB)').executescript(open('$(DELETE_SQL)').read())"
