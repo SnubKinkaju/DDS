@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ logement.titre }} — Refuge climatique</title>
+    <link rel="stylesheet" href="{{ url_for('documents.document_styles') }}">
+    <link rel="alternate" type="application/json" href="{{ url_for('logements.get_logement', logement_id=logement.id) }}">
+    <link rel="alternate" type="text/plain" href="{{ url_for('documents.logement_text', logement_id=logement.id) }}">
+  </head>
+  <body>
+    <nav class="document-actions" aria-label="Documents du logement">
+      <a href="/logements/{{ logement.id }}">Retour à l’annonce</a>
+      <a href="{{ url_for('logements.get_logement', logement_id=logement.id) }}">JSON</a>
+      <a href="{{ url_for('documents.logement_text', logement_id=logement.id) }}">Version texte</a>
+      <button type="button" onclick="window.print()">Imprimer la fiche</button>
+    </nav>
+    <main>
+      <header>
+        <p class="eyebrow">Refuge climatique · La Clusaz</p>
+        <h1>{{ logement.titre }}</h1>
+        <p class="muted">Fiche logement n° {{ logement.id }} · {{ logement.typeLogement | capitalize }}</p>
+      </header>
+      <section class="summary" aria-label="Informations essentielles">
+        <p><strong>{{ prix_nuit }}</strong> par nuit</p>
+        <p>Jusqu’à <strong>{{ logement.capacite }}</strong> voyageur{% if logement.capacite > 1 %}s{% endif %}</p>
+      </section>
+      {% if logement.photos %}
+      <section class="photos" aria-label="Photos du logement">
+        {% for photo in logement.photos %}
+        <img src="{{ photo.url }}" alt="{{ logement.titre }} — photo {{ loop.index }}">
+        {% endfor %}
+      </section>
+      {% endif %}
+      <section>
+        <h2>Description</h2>
+        <p class="description">{{ logement.description }}</p>
+      </section>
+      <section>
+        <h2>Adresse du logement</h2>
+        <p>{{ logement.adresse.rue }}<br>{{ logement.adresse.codePostal }} {{ logement.adresse.ville }}</p>
+      </section>
+      <section>
+        <h2>Équipements</h2>
+        {% if logement.equipements %}
+        <ul>
+          {% for equipement in logement.equipements %}
+          <li>{{ equipement.nom }}</li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>Aucun équipement renseigné.</p>
+        {% endif %}
+      </section>
+      <section>
+        <h2>Proposé par</h2>
+        <p>{{ logement.proprietaire.prenom }} {{ logement.proprietaire.nom }}</p>
+      </section>
+      <footer>Fiche de présentation · Prix par nuit, sans réservation ni facture.</footer>
+    </main>
+  </body>
+</html>
