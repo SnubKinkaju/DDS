@@ -87,7 +87,11 @@ function Listing({ logement, isOwner }) {
         )}
       </div>
 
-      <PhotoGallery key={logement.id} photos={logement.photos} title={logement.titre} />
+      <PhotoGallery
+        key={logement.id}
+        photos={logement.photos}
+        title={logement.titre}
+      />
 
       <div className="mt-8 grid gap-12 md:mt-12 lg:grid-cols-[1fr_360px] lg:gap-20">
         <div className="min-w-0">
@@ -120,13 +124,18 @@ function Listing({ logement, isOwner }) {
           </section>
 
           <section className="border-b border-hairline-soft py-8">
-            <h2 className="text-[22px] font-semibold text-ink">Ce que propose ce logement</h2>
+            <h2 className="text-[22px] font-semibold text-ink">
+              Ce que propose ce logement
+            </h2>
             {logement.equipements.length ? (
               <ul className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2">
                 {logement.equipements.map((item) => {
                   const Icon = amenityIcon(item.nom);
                   return (
-                    <li key={item.id} className="flex items-center gap-4 text-base text-ink">
+                    <li
+                      key={item.id}
+                      className="flex items-center gap-4 text-base text-ink"
+                    >
                       <Icon aria-hidden="true" size={24} strokeWidth={1.5} />
                       {item.nom}
                     </li>
@@ -134,7 +143,9 @@ function Listing({ logement, isOwner }) {
                 })}
               </ul>
             ) : (
-              <p className="mt-4 text-base text-muted">Aucun équipement renseigné.</p>
+              <p className="mt-4 text-base text-muted">
+                Aucun équipement renseigné.
+              </p>
             )}
           </section>
 
@@ -148,6 +159,47 @@ function Listing({ logement, isOwner }) {
               Voir la carte de La Clusaz
             </Link>
           </section>
+
+          <details className="border-t border-hairline-soft py-6">
+            <summary className="cursor-pointer text-base font-semibold text-ink">
+              Documents du logement
+            </summary>
+            <nav
+              aria-label="Documents du logement"
+              className="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm"
+            >
+              <a
+                className="button-tertiary"
+                href={`/api/logements/${logement.id}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Données JSON
+              </a>
+              <a
+                className="button-tertiary"
+                href={`/api/logements/${logement.id}/fiche.html`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Fiche HTML / impression
+              </a>
+              <a
+                className="button-tertiary"
+                href={`/api/logements/${logement.id}/fiche.txt?telecharger=1`}
+              >
+                Télécharger le texte
+              </a>
+              <a
+                className="button-tertiary"
+                href="/api/formats/json/logement.schema.json"
+                target="_blank"
+                rel="noreferrer"
+              >
+                JSON Schema
+              </a>
+            </nav>
+          </details>
         </div>
 
         <aside className="lg:sticky lg:top-28 lg:h-fit">
@@ -188,7 +240,11 @@ function Listing({ logement, isOwner }) {
 
 function DetailSkeleton() {
   return (
-    <div className="animate-pulse" role="status" aria-label="Chargement du logement">
+    <div
+      className="animate-pulse"
+      role="status"
+      aria-label="Chargement du logement"
+    >
       <div className="h-8 w-2/3 rounded bg-surface-strong" />
       <div className="mt-6 h-72 rounded-lg bg-surface-strong md:h-[420px]" />
       <div className="mt-10 h-6 w-1/3 rounded bg-surface-strong" />
