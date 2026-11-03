@@ -41,6 +41,11 @@ def document_styles():
     return send_from_directory(DOCUMENTS_DIR, 'fiche.css', mimetype='text/css')
 
 
+@documents_blueprint.get('/formats/xml/facture.xsd')
+def facture_xsd():
+    return send_from_directory(FORMATS_DIR.parent / 'xml', 'facture.xsd', mimetype='application/xml')
+
+
 @documents_blueprint.get('/logements/<int:logement_id>/fiche.html')
 def logement_html(logement_id):
     document = get_published(get_db(), logement_id)
