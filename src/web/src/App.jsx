@@ -10,6 +10,7 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 
 import UpcomingPage from "./pages/UpcomingPage.jsx";
 import { upcomingPages } from "./data/navigation.js";
+import ListingDetailPage from "./pages/ListingDetailPage.jsx";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route key={path} path={path}
           element={<UpcomingPage title={title} description={description} Icon={Icon} />} />
       ))}
+      <Route path="/logements/:logementId" element={<ListingDetailPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
