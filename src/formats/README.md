@@ -90,6 +90,7 @@ SQLite → document de facture → validation JSON Schema + règles métier
 |---|---|
 | `json/facture.schema.json` | Document JSON complet, identités figées, séjour et montants |
 | `xml/facture.xsd` | Structure et types du XML, dates, montants positifs ou nuls, statuts |
+| `xml/facture.dtd` | Structure du même XML (éléments, ordre, attributs, statuts), sans typage |
 | `xslt/facture.xsl` | Présentation HTML avec parties, logement, séjour, lignes et commission |
 | `xslt/facture-texte.xsl` | Présentation différente en texte brut |
 | `xslt/facture-commun.xsl` | Templates partagés de formatage des dates et des euros |
