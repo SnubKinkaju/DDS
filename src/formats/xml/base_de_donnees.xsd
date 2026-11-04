@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Export XML de toute la base de données de la V1.
+  Les tables deviennent des conteneurs (utilisateurs, logements, reservations...)
+  et leurs lignes des éléments. Les clés étrangères deviennent des attributs
+  (proprietaireId, logementId...), contrôlés par xs:key et xs:keyref.
+  Les adresses sont placées directement dans l'utilisateur ou le logement.
+  Les mots de passe ne sont jamais exportés.
+  Les montants sont en centimes entiers.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Types réutilisés -->
+  <xs:simpleType name="texte">
+    <xs:restriction base="xs:string"><xs:minLength value="1"/></xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="centimes">
+    <xs:restriction base="xs:nonNegativeInteger"/>
+  </xs:simpleType>
+  <xs:simpleType name="identifiant">
+    <xs:restriction base="xs:positiveInteger"/>
+  </xs:simpleType>
+
+  <xs:complexType name="adresse">
+    <xs:sequence>
+      <xs:element name="rue" type="texte"/>
+      <xs:element name="codePostal" type="texte"/>
+      <xs:element name="ville" type="texte"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="baseDeDonnees">
+    <xs:complexType>
+      <xs:sequence>
+
+        <!-- Catalogue des équipements -->
+        <xs:element name="equipements">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="equipement" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="texte">
+                      <xs:attribute name="id" type="identifiant" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Utilisateurs (sans mot de passe) -->
+        <xs:element name="utilisateurs">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="utilisateur" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="prenom" type="texte"/>
+                    <xs:element name="nom" type="texte"/>
+                    <xs:element name="email" type="texte"/>
+                    <xs:element name="telephone" type="xs:string" minOccurs="0"/>
+                    <xs:element name="adresse" type="adresse" minOccurs="0"/>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="identifiant" use="required"/>
+                  <xs:attribute name="role" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:enumeration value="client"/>
+                        <xs:enumeration value="proprietaire"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="dateCreation" type="xs:dateTime" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Logements, avec leurs photos et leurs équipements -->
+        <xs:element name="logements">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="logement" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="titre" type="texte"/>
+                    <xs:element name="description" type="texte"/>
+                    <xs:element name="typeLogement" type="texte"/>
+                    <xs:element name="capacite" type="xs:positiveInteger"/>
+                    <xs:element name="prixNuitCentimes" type="centimes"/>
+                    <xs:element name="adresse" type="adresse"/>
+                    <xs:element name="photos">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="photo" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="texte">
+                                  <xs:attribute name="position" type="xs:nonNegativeInteger" use="required"/>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="equipementsLogement">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="equipementRef" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="ref" type="identifiant" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="identifiant" use="required"/>
+                  <xs:attribute name="proprietaireId" type="identifiant" use="required"/>
+                  <xs:attribute name="statut" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:enumeration value="brouillon"/>
+                        <xs:enumeration value="publie"/>
+                        <xs:enumeration value="indisponible"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="dateCreation" type="xs:dateTime" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Périodes de disponibilité des logements -->
+        <xs:element name="disponibilites">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="disponibilite" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="dateDebut" type="xs:date"/>
+                    <xs:element name="dateFin" type="xs:date"/>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="identifiant" use="required"/>
+                  <xs:attribute name="logementId" type="identifiant" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Favoris des utilisateurs -->
+        <xs:element name="favoris">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="favori" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="utilisateurId" type="identifiant" use="required"/>
+                  <xs:attribute name="logementId" type="identifiant" use="required"/>
+                  <xs:attribute name="dateCreation" type="xs:dateTime" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Réservations -->
+        <xs:element name="reservations">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="reservation" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="dateDebut" type="xs:date"/>
+                    <xs:element name="dateFin" type="xs:date"/>
+                    <xs:element name="nombreVoyageurs" type="xs:positiveInteger"/>
+                    <xs:element name="prixNuitCentimes" type="centimes"/>
+                    <xs:element name="montantTotalCentimes" type="centimes"/>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="identifiant" use="required"/>
+                  <xs:attribute name="logementId" type="identifiant" use="required"/>
+                  <xs:attribute name="demandeurId" type="identifiant" use="required"/>
+                  <xs:attribute name="statut" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:enumeration value="en_attente"/>
+                        <xs:enumeration value="acceptee"/>
+                        <xs:enumeration value="refusee"/>
+                        <xs:enumeration value="annulee"/>
+                        <xs:enumeration value="terminee"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="dateCreation" type="xs:dateTime" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Factures et leurs lignes -->
+        <xs:element name="factures">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="facture" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="totalCentimes" type="centimes"/>
+                    <xs:element name="tauxCommissionPourcent">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:nonNegativeInteger">
+                          <xs:maxInclusive value="100"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="commissionCentimes" type="centimes"/>
+                    <xs:element name="lignes">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ligne" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="libelle" type="texte"/>
+                                <xs:element name="quantite" type="xs:positiveInteger"/>
+                                <xs:element name="prixUnitaireCentimes" type="centimes"/>
+                                <xs:element name="montantCentimes" type="centimes"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="numero" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:pattern value="FAC-[0-9]{4}-[0-9]{6,}"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="reservationId" type="identifiant" use="required"/>
+                  <xs:attribute name="dateEmission" type="xs:date" use="required"/>
+                  <xs:attribute name="statut" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:enumeration value="brouillon"/>
+                        <xs:enumeration value="emise"/>
+                        <xs:enumeration value="annulee"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="devise" type="xs:string" use="required" fixed="EUR"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+      </xs:sequence>
+      <xs:attribute name="dateExport" type="xs:dateTime" use="required"/>
+    </xs:complexType>
+
+    <!-- Clés : chaque identifiant est unique dans sa famille d'éléments -->
+    <xs:key name="cleEquipement">
+      <xs:selector xpath="equipements/equipement"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="cleUtilisateur">
+      <xs:selector xpath="utilisateurs/utilisateur"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="cleLogement">
+      <xs:selector xpath="logements/logement"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="cleReservation">
+      <xs:selector xpath="reservations/reservation"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:unique name="numeroFactureUnique">
+      <xs:selector xpath="factures/facture"/>
+      <xs:field xpath="@numero"/>
+    </xs:unique>
+    <xs:unique name="uneFactureParReservation">
+      <xs:selector xpath="factures/facture"/>
+      <xs:field xpath="@reservationId"/>
+    </xs:unique>
+
+    <!-- Références : chaque clé étrangère pointe vers un élément existant -->
+    <xs:keyref name="refProprietaire" refer="cleUtilisateur">
+      <xs:selector xpath="logements/logement"/>
+      <xs:field xpath="@proprietaireId"/>
+    </xs:keyref>
+    <xs:keyref name="refEquipementLogement" refer="cleEquipement">
+      <xs:selector xpath="logements/logement/equipementsLogement/equipementRef"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="refLogementDisponibilite" refer="cleLogement">
+      <xs:selector xpath="disponibilites/disponibilite"/>
+      <xs:field xpath="@logementId"/>
+    </xs:keyref>
+    <xs:keyref name="refUtilisateurFavori" refer="cleUtilisateur">
+      <xs:selector xpath="favoris/favori"/>
+      <xs:field xpath="@utilisateurId"/>
+    </xs:keyref>
+    <xs:keyref name="refLogementFavori" refer="cleLogement">
+      <xs:selector xpath="favoris/favori"/>
+      <xs:field xpath="@logementId"/>
+    </xs:keyref>
+    <xs:keyref name="refLogementReservation" refer="cleLogement">
+      <xs:selector xpath="reservations/reservation"/>
+      <xs:field xpath="@logementId"/>
+    </xs:keyref>
+    <xs:keyref name="refDemandeur" refer="cleUtilisateur">
+      <xs:selector xpath="reservations/reservation"/>
+      <xs:field xpath="@demandeurId"/>
+    </xs:keyref>
+    <xs:keyref name="refReservationFacture" refer="cleReservation">
+      <xs:selector xpath="factures/facture"/>
+      <xs:field xpath="@reservationId"/>
+    </xs:keyref>
+  </xs:element>
+
+</xs:schema>

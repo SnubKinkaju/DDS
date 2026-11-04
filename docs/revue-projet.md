@@ -120,7 +120,8 @@ La présentation HTML et texte du logement est produite par Python et Jinja
 | 3 | Compléter le schéma de la base | ⚠️ `favori` et `disponibilite` existent mais ne sont pas exploitées ; pas de données climatiques |
 | 3 | Peupler la base | ✅ |
 | 3 | Page HTML du propriétaire avec RDFa | ✅ ; test avec l'outil Google à faire |
-| 3 | XML de la base + requêtes XPath en ligne | ❌ à réaliser |
+| 3 | XML de la base | ✅ bouton **Export BDD** du menu compte, validé par `base_de_donnees.xsd` |
+| 3 | Requêtes XPath depuis une interface en ligne | ✅ 13 requêtes documentées (README, « XML global et XPath »), à exécuter sur un testeur XPath en ligne avec le fichier exporté ; ⏳ à essayer sur le site du cours |
 | 4 | XSLT : facture en HTML et en format imprimable | ✅ |
 | 4 | Présentation d'un logement (JSON) | ⚠️ faite avec Python + Jinja, pas avec XSLT |
 | 4 | Revue de projet | ⏳ ce document |
@@ -133,15 +134,11 @@ et statut de refuge climatique » (météo, services) reste à faire.
 
 ### Priorité haute
 
-1. **Export XML global et interface XPath** (rendu 3)
-   - Générer un XML de la base (factures, et idéalement logements et utilisateurs)
-     avec son schéma.
-   - Page d'interrogation en ligne : coller ou charger le XML, écrire une requête
-     XPath, voir le résultat. Requêtes de démonstration : par client, période,
-     montant ou logement.
-   - Réserver cette fonction à un futur **rôle administrateur de la mairie** : les
-     factures contiennent des données personnelles, un utilisateur ne doit voir
-     que les siennes.
+1. **Restreindre l'export XML** (rendu 3 : export et XPath sont faits)
+   - Réserver l'export à un futur **rôle administrateur de la mairie** : il contient
+     aujourd'hui les données personnelles et les factures de tous, et il est
+     accessible à tout utilisateur connecté.
+   - Essayer les requêtes sur le testeur XPath en ligne du cours.
 2. **RDFa sur la fiche logement** (type `Accommodation`, adresse, équipements)
    et test des pages avec l'outil Google.
 3. **Dimension climatique** (voir `docs/fiche-realisation-dimension-climatique.md`) :
@@ -182,4 +179,5 @@ et statut de refuge climatique » (météo, services) reste à faire.
 5. Montrer les schémas JSON Schema, le XSD et les feuilles XSLT ;
    lancer `make verifier-documents`.
 6. Ouvrir le profil propriétaire et montrer les annotations RDFa.
-7. *(À ajouter une fois réalisé)* Export XML global et requêtes XPath.
+7. Menu du compte → **Export BDD** : montrer le XML et `base_de_donnees.xsd`.
+8. Importer le fichier exporté dans le testeur XPath en ligne et exécuter les requêtes du README (section « XML global et XPath »).

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { LogOut, Menu, UserRound } from "lucide-react";
+import { Download, LogOut, Menu, UserRound } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 
 import { useAuth } from "../context/AuthContext.jsx";
 import { accountLinks } from "../data/navigation.js";
+import { exportBaseDeDonnees } from "../services/exportApi.js";
 import { initials } from "../utils/format.js";
 
 const itemClass =
@@ -44,6 +45,19 @@ export default function AccountMenu() {
       await deconnexion();
       setOpen(false);
       navigate("/");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function exportDatabase() {
+    setBusy(true);
+    setError("");
+    try {
+      await exportBaseDeDonnees();
+      setOpen(false);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -123,6 +137,12 @@ export default function AccountMenu() {
                   </div>
                 ))}
               </nav>
+              <div className="border-t border-hairline-soft py-1">
+                <button type="button" disabled={busy} onClick={exportDatabase} className={itemClass}>
+                  <Download aria-hidden="true" size={18} className="text-muted" />
+                  {busy ? "Export en cours…" : "Export BDD"}
+                </button>
+              </div>
               <div className="border-t border-hairline-soft pt-1">
                 <button type="button" disabled={busy} onClick={logout} className={itemClass}>
                   <LogOut aria-hidden="true" size={18} className="text-muted" />

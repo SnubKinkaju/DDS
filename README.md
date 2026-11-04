@@ -126,17 +126,87 @@ un email propriétaire et un email client utilisables pour la démonstration.
 Les emails suivent le format prénomnom, sans accents ; un suffixe est ajouté
 si l'adresse existe déjà. Aucun compte existant n'est modifié.
 
+### Comptes de démonstration
+
+Avec la commande par défaut (`make populate`, soit `COUNT=100 USERS=20 SEED=1`
+sur une base vide), les comptes suivants existent. Mot de passe commun :
+**`RefugeDemo2026!`**.
+
+| Rôle | Email | Utilisation |
+|---|---|---|
+| Propriétaire | `emmamorel@gmail.com` | Possède 15 logements ; accepte ou refuse les demandes |
+| Propriétaire | `jadepetit@gmail.com` | Possède 18 logements |
+| Client | `adammorel@gmail.com` | Réserve un séjour et consulte sa facture |
+| Client | `alicedupont@gmail.com` | Deuxième client pour tester les dates concurrentes |
+
+Pour la démonstration, ouvrir deux sessions (une fenêtre privée) : le client
+demande un séjour chez Emma, puis Emma l'accepte, ce qui génère la facture.
+
+Ces emails dépendent de la graine, du nombre d'utilisateurs et de l'ordre des
+exécutions : avec d'autres valeurs, ou sur une base déjà peuplée, utiliser les
+comptes affichés par la commande à la fin de son exécution.
+
 Chaque exécution **ajoute** le nombre demandé. Avec la même graine sur deux
 bases identiques, les valeurs tirées sont les mêmes ; les dates de création et
 les empreintes des mots de passe varient. Pour choisir une autre base, ajouter
 `NEW_DB=/chemin/vers/demo.sqlite3`.
 
+### XML global et XPath
+
+**Export de la base.** Une fois connecté, ouvrir le menu du compte (en haut à
+droite) puis cliquer sur **Export BDD** : le navigateur télécharge
+`base_de_donnees.xml` (dossier de téléchargements). Le fichier contient les
+équipements, utilisateurs, logements (avec photos et équipements), disponibilités,
+favoris, réservations et factures. Les mots de passe ne sont jamais exportés.
+Le menu du compte n'apparaît que sur écran large.
+
+Le serveur lit SQLite (`src/api/services/export_service.py`), construit le XML puis
+le valide avec `src/formats/xml/base_de_donnees.xsd` avant de l'envoyer. Ce schéma
+contrôle aussi les liens entre tables (`xs:key` et `xs:keyref`). Il est consultable
+à `/api/formats/xml/base_de_donnees.xsd`. Route : `GET /api/export/base-de-donnees.xml`.
+
+**Requêtes XPath.** Elles s'exécutent sur un site en ligne, pas dans l'application :
+
+1. Exporter la base avec **Export BDD**.
+2. Ouvrir un testeur XPath en ligne (celui indiqué dans le cours).
+3. Importer ou coller le fichier `base_de_donnees.xml`.
+4. Entrer une requête ci-dessous et lancer l'exécution.
+
+Les requêtes suivent la structure du schéma : `utilisateur`, `logement`,
+`reservation`, `facture`, avec les liens `@proprietaireId`, `@logementId`,
+`@demandeurId` et `@reservationId`. Les montants sont en centimes (`15000` = 150,00 €).
+
+Requêtes à exécuter (vérifiées sur un export de la base de démonstration) :
+
+```xpath
+//utilisateur[nom='Morel']/email/text()
+//utilisateur[@role='client']/email/text()
+//logement[@statut='publie']/titre/text()
+//logement[prixNuitCentimes > 15000]/titre/text()
+//logement[adresse/ville='La Clusaz' and capacite >= 4]/titre/text()
+//logement[@proprietaireId=//utilisateur[email='emmamorel@gmail.com']/@id]/titre/text()
+//logement[equipementsLogement/equipementRef/@ref=7]/titre/text()
+//facture[@numero='FAC-2026-000001']/totalCentimes/text()
+//facture[starts-with(@dateEmission,'2026-11')]/@numero
+//reservation[@statut='acceptee']/@id
+//ligne[montantCentimes > 50000]/libelle/text()
+count(//logement[@statut='publie'])
+sum(//facture/totalCentimes)
+```
+
+Les numéros d'équipement sont ceux de la section `equipements` du fichier :
+`7` = Ventilateur (le catalogue complet figure en tête du XML).
+
+Pour les dates, XPath 1.0 ne compare pas les dates : `@dateEmission >= '2026-11-01'`
+renvoie toujours faux. Utiliser `=` ou `starts-with(...)`, comme ci-dessus.
+Les montants et identifiants sont comparés comme des nombres ; `sum()` et
+`count()` renvoient un nombre.
+
 ## Prototype DDS conservé
 
 Le reste de ce document décrit le prototype dans `src/server` et `src/client`.
-La nouvelle app possède désormais sa propre facturation de séjour ; l'export XML
-global reste à porter. Le préremplissage par LLM de la V1 concerne les logements,
-alors que le prototype ci-dessous construit directement des factures.
+La nouvelle app possède désormais sa propre facturation de séjour et son export XML.
+Le préremplissage par LLM de la V1 concerne les logements, alors que le prototype ci-dessous construit directement des factures.
 
 Application Flask du projet « Ville refuge climatique » (cours DDS). Elle suit
 les parcours demandés en cours :
@@ -240,25 +310,6 @@ document existe donc dans les deux formats.
 Le serveur vérifie le JSON contre le schéma, puis les règles métier : dates
 valides, fin de séjour après le début, lignes de facture rattachées à un
 logement de l'offre, total égal à la somme des lignes et au montant du séjour.
-
-## XML global et XPath
-
-Le bouton **Télécharger le XML global** génère `base_de_donnees.xml` à partir
-de toutes les factures présentes dans SQLite. Le document possède une unique
-racine `<base_de_donnees>` contenant les éléments `<facture>` décrits par
-`facture.xsd`.
-
-Quelques requêtes à exécuter dans un testeur XPath :
-
-```xpath
-//facture[client/nom='Dupont']
-//logement[loyer_mensuel > 500]
-//facture[@numero='FAC-2026-P000001']/emetteur/email/text()
-//logement[environnement_logement/altitude > 1000]/adresse/ville
-//activite[type_activite='baignade']/ancestor::logement/@idLogement
-count(//facture[sejour/statut='confirme'])
-sum(//facture/total)
-```
 
 ## Organisation
 
