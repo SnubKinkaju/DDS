@@ -1,5 +1,21 @@
 # Refuge climatique
 
+## Démonstration du projet final
+
+À la racine du dépôt, lancer `make dev-demo` et ouvrir [Refuge climatique](http://localhost:5173). Cette commande prépare la première fois `instance/demo/` et y conserve ensuite les modifications. Pour générer un deuxième scénario neuf, choisir un dossier encore inexistant avec `make dev-demo DEMO_DIR=instance/demo-2`.
+
+| Compte | Ce qu’il permet de montrer |
+|---|---|
+| `voyageur@example.test` | Choisir un refuge, le garder en favori, demander un séjour et consulter la facture. |
+| `hote@example.test` | Gérer le refuge du village, définir ses périodes ouvertes, répondre aux demandes. |
+| `mairie@example.test` | Administrer les lieux sourcés, suspendre une annonce et exporter les données structurées. |
+
+Mot de passe commun de ces comptes fictifs : **`RefugeDemo2026!`**. Deux fenêtres de navigation distinctes permettent de passer du voyageur à l’hébergeur.
+
+Comparer [le village](http://localhost:5173/logements/100) et [les Confins](http://localhost:5173/logements/99). Le premier est près de la pharmacie du Danay, le second près du lac. Chaque fiche rassemble les déclarations de l’hôte, l’altitude IGN, les services recensés dans un rayon de 2 km et la météo communale. La carte et le document JSON-LD reprennent les mêmes lieux. Au départ, la base de démonstration contient 20 comptes, 100 annonces, 103 réservations, 101 factures et 164 lieux territoriaux.
+
+Pour reproduire les contrôles de documents, lancer `make verifier-documents`. Pour préparer la soutenance, suivre la [revue des quatre rendus avec les captures et les XPath](docs/revue-projet.md). Les sources, dates et limites géographiques figurent dans la [notice des données territoriales](src/db/seeds/territoire/README.md).
+
 ## Application React + Flask
 
 ```bash
@@ -24,8 +40,7 @@ Pour essayer : se connecter, publier un logement, ajouter ses photos,
 puis ouvrir **Mes logements**. Une annonce désactivée disparaît du catalogue
 mais reste modifiable dans cet espace.
 
-Les pages **Favoris** et **Messages** indiquent pour l'instant
-« Prochainement ». La carte affiche La Clusaz, sans positions des logements.
+Les favoris sont privés. La carte affiche les annonces localisées et les lieux actifs. Au premier lancement, le catalogue territorial est initialisé depuis l’extrait livré. Pour l’actualiser depuis Overpass, utiliser `make import-poi`.
 
 Sur une fiche logement, **Documents du logement** donne accès au JSON validé,
 à son JSON Schema, à une fiche HTML imprimable et à une version texte.
@@ -126,7 +141,7 @@ un email propriétaire et un email client utilisables pour la démonstration.
 Les emails suivent le format prénomnom, sans accents ; un suffixe est ajouté
 si l'adresse existe déjà. Aucun compte existant n'est modifié.
 
-### Comptes de démonstration
+### Comptes générés par `make populate`
 
 Avec la commande par défaut (`make populate`, soit `COUNT=100 USERS=20 SEED=1`
 sur une base vide), les comptes suivants existent. Mot de passe commun :
@@ -153,12 +168,9 @@ les empreintes des mots de passe varient. Pour choisir une autre base, ajouter
 
 ### XML global et XPath
 
-**Export de la base.** Une fois connecté, ouvrir le menu du compte (en haut à
-droite) puis cliquer sur **Export BDD** : le navigateur télécharge
-`base_de_donnees.xml` (dossier de téléchargements). Le fichier contient les
-équipements, utilisateurs, logements (avec photos et équipements), disponibilités,
-favoris, réservations et factures. Les mots de passe ne sont jamais exportés.
-Le menu du compte n'apparaît que sur écran large.
+Le compte mairie ouvre **Mon compte → Administration municipale → Documents de la plateforme**. « Télécharger la base en XML » fournit les équipements, utilisateurs, annonces, coordonnées vérifiées, lieux territoriaux, disponibilités, favoris, réservations et factures. « Télécharger les factures en XML » restitue les documents complets du séjour avec les parties figées à l’émission. Pour essayer les outils en ligne, utiliser la base de démonstration fictive.
+
+Sur la base habituelle, l’habilitation d’un compte existant se gère localement avec `.venv/bin/python -m src.api.scripts.habilitation accorder adresse@example.fr`. Remplacer `accorder` par `retirer` pour révoquer cet accès. L’option `--database` sélectionne une autre base. Flask relit le droit à chaque appel administratif.
 
 Le serveur lit SQLite (`src/api/services/export_service.py`), construit le XML puis
 le valide avec `src/formats/xml/base_de_donnees.xsd` avant de l'envoyer. Ce schéma
@@ -167,7 +179,7 @@ contrôle aussi les liens entre tables (`xs:key` et `xs:keyref`). Il est consult
 
 **Requêtes XPath.** Elles s'exécutent sur un site en ligne, pas dans l'application :
 
-1. Exporter la base avec **Export BDD**.
+1. Télécharger la base en XML depuis l’administration municipale.
 2. Ouvrir un testeur XPath en ligne (celui indiqué dans le cours).
 3. Importer ou coller le fichier `base_de_donnees.xml`.
 4. Entrer une requête ci-dessous et lancer l'exécution.

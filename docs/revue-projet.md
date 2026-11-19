@@ -1,183 +1,46 @@
-# Revue de projet — Refuge climatique
+# Revue de projet — Refuge climatique de La Clusaz
 
-Support de la revue de projet, à comparer avec l'énoncé
-(`docs/Projet M1 Doc Num Refuge climatique.pdf`). Il décrit **la dernière
-version de l'application** : React (`src/web`), API Flask (`src/api`),
-SQLite (`src/db`) et formats de documents (`src/formats`).
+Une personne cherche un hébergement pendant une forte chaleur. Elle peut comparer les protections déclarées, les températures extérieures et les services accessibles autour d’une adresse avant de demander son séjour. L’hébergeur décide de la réservation. La mairie documente les lieux utiles, contrôle la diffusion des annonces et dispose des exports de la plateforme. [Sujet et quatre rendus](<Projet M1 Doc Num Refuge climatique.pdf>)
 
-Le projet est en cours : ce document dresse l'état des lieux et la liste de
-ce qu'il reste à faire pour la version finale.
+## Démonstration en huit minutes
 
-## 1. Présentation
+Lancer `make dev-demo`, ouvrir [l’application locale](http://localhost:5173) et préparer deux fenêtres de navigation distinctes. Les comptes `voyageur@example.test`, `hote@example.test` et `mairie@example.test` utilisent le mot de passe de démonstration `RefugeDemo2026!`. Les numéros ci-dessous correspondent à la génération initiale.
 
-Plateforme de mise en relation entre des propriétaires de logements et des
-« réfugiés climatiques » cherchant un lieu moins exposé à la chaleur. Elle est
-concentrée sur un territoire, **La Clusaz** (environ 1 040 m d'altitude), et
-prélève une commission de 5 %, incluse dans le prix.
-
-```text
-React (Vite)  ──►  API Flask  ──►  SQLite (migrations numérotées)
-                      │
-                      ├─ JSON Schema : logements, factures
-                      ├─ XML + XSD + XSLT : factures
-                      └─ ILaaS (LLM) : préremplissage des annonces
-```
-
-Lancement : `make dev`, puis ouvrir <http://localhost:5173>.
-
-## 2. Ce que fait l'application
-
-### Comptes
-
-- Inscription, connexion et déconnexion, avec rôles client et propriétaire.
-- Menu de compte, parcours protégés par connexion.
-
-### Annonces
-
-- Accueil avec annonces réelles, recherche par texte, type et capacité,
-  catalogue, fiche logement.
-- **Publier un logement** : formulaire, choix des équipements, ajout de photos.
-- **Mes logements** : modifier, désactiver, republier, supprimer. Une annonce
-  désactivée disparaît du catalogue mais reste modifiable.
-- **Préremplir avec l'IA** : le propriétaire décrit son logement en texte libre,
-  le LLM (ILaaS) propose un JSON partiel, contrôlé par `logement-partiel.schema.json`.
-  Le formulaire est prérempli et modifiable ; rien n'est enregistré avant la
-  publication, qui applique les contrôles habituels.
-- Profil public du propriétaire, ouvert depuis la fiche.
-
-### Réservations
-
-- Demande de séjour (dates, voyageurs), tarif figé à la création.
-- **Demandes reçues** : le propriétaire accepte ou refuse.
-- **Mes séjours** : le voyageur suit ses demandes et peut annuler jusqu'au jour
-  d'arrivée.
-- Les dates sont bloquées après acceptation ; les demandes concurrentes sur la
-  période sont refusées automatiquement. Le jour de départ reste libre.
-
-### Factures
-
-- Une facture est créée dans la même transaction que l'acceptation
-  (numéro `FAC-2026-000001`). Elle conserve l'émetteur, le client, le logement et
-  le séjour tels qu'à l'émission.
-- Commission de 5 % incluse dans le prix (taux configurable pour les prochaines
-  factures), calculs en centimes entiers, annulation sans perte de la facture
-  (statut `annulee`).
-- Accès réservé à l'hébergeur et au voyageur concernés.
-- Fenêtre **Voir la facture** avec trois onglets : **Imprimable**, **JSON**, **Texte**.
-  Téléchargement de chaque format, **Exporter XML**, impression (A4) et
-  enregistrement PDF par le navigateur.
-
-### Peuplement
-
-`make populate COUNT=100 USERS=20 SEED=1` ajoute des logements et utilisateurs
-fictifs (La Clusaz, équipements du catalogue), en une transaction, de façon
-reproductible avec la même graine.
-
-## 3. Documents et formats du cours
-
-| Technique | Mise en œuvre dans la dernière version |
-|---|---|
-| **JSON Schema** | Création de logement, document public du logement, saisie partielle (LLM), facture ; règles communes partagées par `$ref` (`src/formats/json`, `src/api/schemas`) |
-| **JSON** | Document public d'un logement servi par l'API avec un en-tête `Link` `describedby` vers son schéma |
-| **XML + XSD** | Facture XML validée par `src/formats/xml/facture.xsd` avant chaque rendu |
-| **DTD** | `src/formats/xml/facture.dtd` : même structure que le XSD (entités paramètres, attributs énumérés), sans les types ni les motifs que seule une DTD ne sait pas exprimer |
-| **XSLT** | Facture XML → HTML imprimable (`facture.xsl`) et → texte (`facture-texte.xsl`), feuille commune `facture-commun.xsl`, exécutées côté serveur avec lxml |
-| **RDFa** | Page publique d'un utilisateur : vocabulaire schema.org `Person` |
-| **LLM** | ILaaS (`mistral-small-4-119b` par défaut), clé uniquement côté serveur |
-| **Base de données** | SQLite, migrations 001 à 004 : adresse, utilisateur, logement, photo, équipement, disponibilité, favori, réservation, facture, ligne de facture, compteur de factures |
-| **Liens entre données** | Catalogue → fiche → profil propriétaire → réservations → factures |
-
-Documents produits :
-
-| Objet | Routes |
-|---|---|
-| Logement | `/api/logements/{id}` (JSON), `/fiche.html` (HTML A4 imprimable), `/fiche.txt` (texte) |
-| Facture | `/api/factures/{numero}/document.{json,xml,html,txt}` |
-| Schémas | `/api/formats/json/{schema}`, `/api/formats/xml/facture.xsd` |
-| Profil | `/api/utilisateurs/{id}/profil.html` (RDFa) |
-
-La présentation HTML et texte du logement est produite par Python et Jinja
-(`src/api/documents`) ; celle de la facture par XSLT.
-
-### Vérifications réalisées
-
-- `make verifier-documents` : exemples de logement valides acceptés, exemple
-  invalide (prix négatif) refusé.
-- Parcours testé sur l'API avec une base temporaire : connexion, réservation,
-  acceptation, facture en JSON, XML, HTML et texte.
-- Pas encore de tests automatisés ni de test avec une clé ILaaS réelle.
-
-## 4. Correspondance avec l'énoncé
-
-| Rendu | Exigence | État |
+| Minute | Action | Données ou document à expliquer |
 |---|---|---|
-| 1 | JSON + JSON Schema des logements | ✅ |
-| 1 | XML + DTD + XSD de la facture | ✅ XML, XSD et DTD (la DTD valide la forme, le XSD valide aussi les types) |
-| 2 | Modèle de base de données | ✅ |
-| 2 | Texte libre → JSON → base (LLM) | ✅ implémenté ; ⏳ à tester avec la clé ILaaS |
-| 2 | Liaisons entre données pour la navigation | ✅ |
-| 2 | Facture XML depuis la base, avec sélection du séjour | ✅ depuis **Mes réservations → Voir la facture** |
-| 3 | Compléter le schéma de la base | ⚠️ `favori` et `disponibilite` existent mais ne sont pas exploitées ; pas de données climatiques |
-| 3 | Peupler la base | ✅ |
-| 3 | Page HTML du propriétaire avec RDFa | ✅ ; test avec l'outil Google à faire |
-| 3 | XML de la base | ✅ bouton **Export BDD** du menu compte, validé par `base_de_donnees.xsd` |
-| 3 | Requêtes XPath depuis une interface en ligne | ✅ 13 requêtes documentées (README, « XML global et XPath »), à exécuter sur un testeur XPath en ligne avec le fichier exporté ; ⏳ à essayer sur le site du cours |
-| 4 | XSLT : facture en HTML et en format imprimable | ✅ |
-| 4 | Présentation d'un logement (JSON) | ⚠️ faite avec Python + Jinja, pas avec XSLT |
-| 4 | Revue de projet | ⏳ ce document |
+| 0–2 | Depuis l’accueil, ouvrir la carte puis comparer [le refuge du village](http://localhost:5173/logements/100) et [le séjour aux Confins](http://localhost:5173/logements/99). | Au village, la pharmacie du Danay est à 123 m à vol d’oiseau. Aux Confins, le point représentant le lac est à 490 m. Le calcul utilise une adresse IGN vérifiée, des lieux sourcés et un rayon de 2 km. Les filtres d’ombre et de volets utilisent les déclarations des hôtes. |
+| 2–3 | Depuis la fiche, ouvrir la source d’un lieu, le JSON-LD et la carte. Cliquer sur « Proposé par ». | Le même lieu possède le même identifiant sur plusieurs fiches. La distance appartient à sa relation avec le logement. Le profil de l’hôte porte les propriétés RDFa de `Person`. |
+| 3–4 | Dans « Publier un logement », décrire un chalet avec des volets pour quatre personnes. Relire la proposition avant publication. | Le JSON partiel de l’IA passe un premier schéma. Le JSON complet passe le schéma de saisie. L’adresse et les caractéristiques absentes restent à renseigner. Avec un fournisseur indisponible, le formulaire reste utilisable. |
+| 4–6 | Avec le voyageur, demander deux nuits libres au refuge du village. Depuis les demandes reçues de l’hôte, accepter. Revenir dans « Mes séjours » et ouvrir la facture. | Une acceptation fige les parties, le prix et les dates. Montrer le même numéro en JSON, XML, texte et HTML imprimable. Les 5 % de commission sont compris dans le montant du voyageur. |
+| 6–7 | Avec la mairie, ouvrir « Administration municipale », consulter les volumes par catégorie et télécharger la base XML ou la collection de factures. | L’export de la base conserve les relations entre entités. La collection restitue chaque facture avec les parties renseignées à l’émission. Les autres comptes accèdent à leurs propres séjours. |
+| 7–8 | Exécuter les deux XPath ci-dessous puis `make verifier-documents`. | Le testeur en ligne retrouve des éléments. Le vérificateur local compare les comptages avec SQLite et montre pourquoi une date mal formée passe la DTD mais échoue au XSD. |
 
-Pour l'énoncé général, la mise en relation, la commission et les rôles
-propriétaire/réfugié sont couverts. La partie « informations de localisation
-et statut de refuge climatique » (météo, services) reste à faire.
+## Correspondance avec les quatre rendus
 
-## 5. Ce qu'il reste à faire pour la version finale
+| Rendu | Réalisation | Preuve à ouvrir |
+|---|---|---|
+| 1 · Formats | Annonce en JSON, schéma partagé et schémas de saisie/public. Facture de séjour en XML avec attributs, éléments ordonnés et montants en centimes. | [JSON Schema](../src/formats/json), [DTD](../src/formats/xml/facture.dtd), [XSD](../src/formats/xml/facture.xsd), [exemples](../src/formats/examples) |
+| 2 · De la saisie au document | Texte libre → ILaaS → proposition partielle → formulaire → JSON validé → SQLite. Navigation logement → hôte, service → carte, réservation → facture de ce séjour. | [Service de préremplissage](../src/api/services/logement_prefill.py), [émission de la facture](../src/api/services/facture_service.py), [schéma de la BDD](schemas/schema-bdd-v1.dbml) |
+| 3 · Base, sémantique et interrogation | Base peuplée, profil RDFa, géographie en GeoJSON, alentours en JSON-LD, deux collections XML validées et XPath en ligne. | [Extraction RDFa du profil](preuves/profil-schema.png), [graphe extrait de la fiche](preuves/fiche-schema.png), [export de la base](../src/formats/xml/base_de_donnees.xsd), [collection de factures](../src/formats/xml/factures.xsd) |
+| 4 · Présentations et revue | Deux sorties XSLT pour la facture. Pour le logement, Flask valide le JSON, projette ses données et l’environnement dans un arbre XML puis transforme cet arbre en fiche HTML et en texte. Les présentations HTML disposent d’une mise en page d’impression. | [Feuilles XSLT](../src/formats/xslt), [service des documents logement](../src/api/services/logement_documents.py), [vérificateur reproductible](../src/api/scripts/verifier_documents.py) |
 
-### Priorité haute
+## Deux XPath exécutés en ligne
 
-1. **Restreindre l'export XML** (rendu 3 : export et XPath sont faits)
-   - Réserver l'export à un futur **rôle administrateur de la mairie** : il contient
-     aujourd'hui les données personnelles et les factures de tous, et il est
-     accessible à tout utilisateur connecté.
-   - Essayer les requêtes sur le testeur XPath en ligne du cours.
-2. **RDFa sur la fiche logement** (type `Accommodation`, adresse, équipements)
-   et test des pages avec l'outil Google.
-3. **Dimension climatique** (voir `docs/fiche-realisation-dimension-climatique.md`) :
-   - adresse géocodée, limitée à La Clusaz ;
-   - altitude du terrain, ombrage extérieur renseigné par l'hébergeur ;
-   - équipements contre la chaleur mis en valeur ;
-   - services proches (pharmacies, points d'eau, transports) avec distances ;
-   - météo datée avec cache ;
-   - carte des logements (aujourd'hui, la page Carte n'affiche que La Clusaz) ;
-   - GeoJSON de la carte.
+Les saisies utilisent les exports de la base fictive initiale. Dans le [testeur XPath](https://www.site24x7.com/fr/tools/xpath-evaluateur.html), coller le XML dans le premier champ et l’expression dans le second.
 
-   C'est ce qui distingue le projet d'une plateforme de location classique.
-4. **Tester le préremplissage LLM** avec une clé ILaaS réelle.
+| XML | Expression | Résultat observé |
+|---|---|---|
+| `factures.xml` | `/factures/facture[1]/emetteur/nom` | Un élément `nom` de valeur « Simon ». [Capture](preuves/xpath-facture.png) |
+| `base_de_donnees.xml` | `/baseDeDonnees/lieux/lieu[@categorie="pharmacie"]/nom` | Pharmacie du Danay, Pharmacie du Grand Bornand et Pharmacie des Aravis. [Capture](preuves/xpath-territoire.png) |
 
-### Priorité moyenne
+Pour refaire rapidement la première manipulation, utiliser [l’extrait de deux factures fictives](preuves/extrait-factures.xml). Pour tester un prédicat métier avec lxml, `/factures/facture[client/nom='Dupont']/@numero` retourne les numéros émis aux clients de ce nom.
 
-- **XSLT pour la présentation du logement** (rendu 4) : convertir le JSON en XML
-  puis appliquer une feuille XSLT, ou justifier le choix Python + Jinja.
-- Exploiter les tables `favori` et `disponibilite` : page Favoris et gestion des
-  disponibilités (page « Prochainement » aujourd'hui).
-- **Messages** entre voyageur et hébergeur (page « Prochainement »).
-- Tests automatisés : validation, réservations concurrentes, factures, droits d'accès.
+## Données et limites de la démonstration
 
-### Pour aller plus loin
+Le scénario initial produit 20 utilisateurs fictifs, 100 logements, 103 demandes et 101 factures, dont une annulée. Trois annonces ont une adresse de référence géolocalisée. L’extrait du 19 novembre 2026 donne 164 objets territoriaux actifs dans la commune et ses abords. L’absence de pharmacie recensée à moins de 2 km d’une fiche décrit la couverture de cet extrait. [Origine et réutilisation des données](../src/db/seeds/territoire/README.md)
 
-- Rôle administrateur de la mairie : modération et vérification des offres.
-- Prix solidaires ou offres gratuites pour les personnes vulnérables.
-- Alertes de canicule, comparaison avec la température de la ville d'origine.
-- Itinéraires et horaires de transport réels.
-- Paiement réel (aucun paiement n'est déclenché aujourd'hui).
+La météo concerne le point communal et l’extérieur. L’ombre et les équipements sont déclarés par l’hôte. Les distances utilisent une ligne droite et parfois le centre d’une surface. Une baignade autorisée ou une salle municipale ouverte pendant une canicule demande une source locale précise. Un lieu municipal peut être ajouté avec cette source puis retiré lorsqu’il ferme.
 
-## 6. Plan de démonstration
+Deux sessions de navigateur ont permis de publier une annonce avec une adresse IGN, réserver deux nuits à 51,05 €, accepter et conserver après annulation la facture de 102,10 € avec 5,11 € de commission. Sur mobile, le compte mairie a téléchargé la collection XML.
 
-1. `make populate` puis `make dev`.
-2. Publier un logement avec **Préremplir avec l'IA** (clé ILaaS), ajouter des photos.
-3. Réserver avec un compte voyageur ; accepter avec le compte hébergeur.
-4. Ouvrir la facture : onglets imprimable, JSON, texte ; exporter le XML.
-5. Montrer les schémas JSON Schema, le XSD et les feuilles XSLT ;
-   lancer `make verifier-documents`.
-6. Ouvrir le profil propriétaire et montrer les annotations RDFa.
-7. Menu du compte → **Export BDD** : montrer le XML et `base_de_donnees.xsd`.
-8. Importer le fichier exporté dans le testeur XPath en ligne et exécuter les requêtes du README (section « XML global et XPath »).
+La vérification de livraison couvre les formats, les refus d’accès, la réservation concurrente, la modération, les pannes de fournisseurs et les parcours React sur ordinateur et mobile. Le parcours ILaaS a été exercé avec réponses simulées et clé absente. La réponse réelle du modèle reste à essayer avec une clé de cours configurée sur le serveur.
