@@ -16,6 +16,7 @@ import {
   TreePine,
   WashingMachine,
   Wifi,
+  Wind,
 } from "lucide-react";
 
 export const listingTypes = [
@@ -39,6 +40,7 @@ export function typeIcon(value) {
 const amenityIcons = {
   "accès sans marches": Accessibility,
   climatisation: AirVent,
+  "aération traversante": Wind,
   cuisine: CookingPot,
   jardin: Flower2,
   "lave-linge": WashingMachine,

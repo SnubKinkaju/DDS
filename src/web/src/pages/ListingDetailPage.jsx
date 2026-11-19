@@ -1,4 +1,4 @@
-import { MapPin, Pencil, SearchX } from "lucide-react";
+import { Pencil, SearchX } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 
@@ -143,6 +143,7 @@ function Listing({ logement, isOwner, connected }) {
             </p>
           </section>
 
+          <Environnement logement={logement} />
           <section className="border-b border-hairline-soft py-8">
             <h2 className="text-[22px] font-semibold text-ink">
               Ce que propose ce logement
@@ -167,18 +168,6 @@ function Listing({ logement, isOwner, connected }) {
                 Aucun équipement renseigné.
               </p>
             )}
-          </section>
-
-          <Environnement logement={logement} />
-          <section className="py-8">
-            <h2 className="text-[22px] font-semibold text-ink">Emplacement</h2>
-            <p className="mt-4 flex items-center gap-3 text-base text-body">
-              <MapPin aria-hidden="true" size={20} className="shrink-0" />
-              {adresse.rue}, {adresse.codePostal} {adresse.ville}
-            </p>
-            <Link to={`/carte?logement=${logement.id}`} className="button-tertiary mt-4">
-              Voir la carte de La Clusaz
-            </Link>
           </section>
 
           <details className="border-t border-hairline-soft py-6">
