@@ -1,0 +1,64 @@
+<!-- Entité répéter: Adresse et Personne -->
+<!ENTITY % adresse "rue, codePostal, ville">
+<!ENTITY % personne "prenom, nom, email, telephone?, adresse?">
+
+<!-- Racine-->
+<!ELEMENT facture (emetteur, client, logement, sejour, lignes, commission,
+                   totalCentimes, netEmetteurCentimes)>
+<!ATTLIST facture
+    numero       CDATA            #REQUIRED
+    dateEmission CDATA            #REQUIRED
+    statut       (emise | annulee) #REQUIRED
+    devise       (EUR)            #REQUIRED>
+
+<!-- Émetteur (hébergeur) et client (voyageur) ont le même contenu -->
+<!ELEMENT emetteur (%personne;)>
+<!ATTLIST emetteur id CDATA #REQUIRED>
+<!ELEMENT client (%personne;)>
+<!ATTLIST client id CDATA #REQUIRED>
+
+<!ELEMENT prenom (#PCDATA)>
+<!ELEMENT nom (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT telephone (#PCDATA)>
+
+<!-- Adresse absente pour une personne qui ne l'a pas renseignée -->
+<!ELEMENT adresse (%adresse;)>
+<!ELEMENT rue (#PCDATA)>
+<!ELEMENT codePostal (#PCDATA)>
+<!ELEMENT ville (#PCDATA)>
+
+<!-- Logement réserve-->
+<!ELEMENT logement (titre, typeLogement, adresse)>
+<!ATTLIST logement id CDATA #REQUIRED>
+<!ELEMENT titre (#PCDATA)>
+<!ELEMENT typeLogement (#PCDATA)>
+
+<!-- Séjour, rattaché à une réservation -->
+<!ELEMENT sejour (dateDebut, dateFin, nombreNuits, nombreVoyageurs,
+                  prixNuitCentimes)>
+<!ATTLIST sejour reservationId CDATA #REQUIRED>
+<!ELEMENT dateDebut (#PCDATA)>
+<!ELEMENT dateFin (#PCDATA)>
+<!ELEMENT nombreNuits (#PCDATA)>
+<!ELEMENT nombreVoyageurs (#PCDATA)>
+<!ELEMENT prixNuitCentimes (#PCDATA)>
+
+<!-- Lignes de facture : au moins une -->
+<!ELEMENT lignes (ligne+)>
+<!ELEMENT ligne (libelle, quantite, prixUnitaireCentimes, montantCentimes)>
+<!ELEMENT libelle (#PCDATA)>
+<!ELEMENT quantite (#PCDATA)>
+<!ELEMENT prixUnitaireCentimes (#PCDATA)>
+<!ELEMENT montantCentimes (#PCDATA)>
+
+<!-- Commission : incluse dans le total et prélevée sur l'hébergeur -->
+<!ELEMENT commission (tauxPourcent, montantCentimes)>
+<!ATTLIST commission
+    incluseDansTotal (true)     #REQUIRED
+    aLaChargeDe      (emetteur) #REQUIRED>
+<!ELEMENT tauxPourcent (#PCDATA)>
+
+<!-- Totaux, en centimes entiers -->
+<!ELEMENT totalCentimes (#PCDATA)>
+<!ELEMENT netEmetteurCentimes (#PCDATA)>

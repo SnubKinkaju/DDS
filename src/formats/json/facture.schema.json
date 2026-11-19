@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://refuge.example/api/formats/json/facture.schema.json",
+  "title": "Facture de séjour — commission incluse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "numero",
+    "dateEmission",
+    "statut",
+    "devise",
+    "emetteur",
+    "client",
+    "logement",
+    "sejour",
+    "lignes",
+    "commission",
+    "totalCentimes",
+    "netEmetteurCentimes"
+  ],
+  "properties": {
+    "numero": {
+      "type": "string",
+      "pattern": "^FAC-[0-9]{4}-[0-9]{6,}$"
+    },
+    "dateEmission": {
+      "type": "string",
+      "format": "date"
+    },
+    "statut": {
+      "enum": [
+        "emise",
+        "annulee"
+      ]
+    },
+    "devise": {
+      "const": "EUR"
+    },
+    "emetteur": {
+      "$ref": "#/$defs/personne"
+    },
+    "client": {
+      "$ref": "#/$defs/personne"
+    },
+    "logement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "titre",
+        "typeLogement",
+        "adresse"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "titre": {
+          "type": "string",
+          "minLength": 1
+        },
+        "typeLogement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "adresse": {
+          "$ref": "#/$defs/adresse"
+        }
+      }
+    },
+    "sejour": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reservationId",
+        "dateDebut",
+        "dateFin",
+        "nombreNuits",
+        "nombreVoyageurs",
+        "prixNuitCentimes"
+      ],
+      "properties": {
+        "reservationId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "dateDebut": {
+          "type": "string",
+          "format": "date"
+        },
+        "dateFin": {
+          "type": "string",
+          "format": "date"
+        },
+        "nombreNuits": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "nombreVoyageurs": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "prixNuitCentimes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "lignes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "libelle",
+          "quantite",
+          "prixUnitaireCentimes",
+          "montantCentimes"
+        ],
+        "properties": {
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "quantite": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "prixUnitaireCentimes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "montantCentimes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "commission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tauxPourcent",
+        "montantCentimes",
+        "incluseDansTotal",
+        "aLaChargeDe"
+      ],
+      "properties": {
+        "tauxPourcent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "montantCentimes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "incluseDansTotal": {
+          "const": true
+        },
+        "aLaChargeDe": {
+          "const": "emetteur"
+        }
+      }
+    },
+    "totalCentimes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "netEmetteurCentimes": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "$defs": {
+    "adresse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rue",
+        "codePostal",
+        "ville"
+      ],
+      "properties": {
+        "rue": {
+          "type": "string",
+          "minLength": 1
+        },
+        "codePostal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ville": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "personne": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "prenom",
+        "nom",
+        "email",
+        "telephone",
+        "adresse"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "prenom": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nom": {
+          "type": "string",
+          "minLength": 1
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "telephone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "adresse": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/adresse"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

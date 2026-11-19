@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!-- Les montants sont en centimes entiers. Les calculs sont contrôlés en Python. -->
+  <xs:simpleType name="texte"><xs:restriction base="xs:string"><xs:minLength value="1"/></xs:restriction></xs:simpleType>
+  <xs:complexType name="adresse">
+    <xs:sequence>
+      <xs:element name="rue" type="texte"/>
+      <xs:element name="codePostal" type="texte"/>
+      <xs:element name="ville" type="texte"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="personne">
+    <xs:sequence>
+      <xs:element name="prenom" type="texte"/>
+      <xs:element name="nom" type="texte"/>
+      <xs:element name="email" type="texte"/>
+      <xs:element name="telephone" type="xs:string" minOccurs="0"/>
+      <xs:element name="adresse" type="adresse" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+  </xs:complexType>
+  <xs:element name="facture">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="emetteur" type="personne"/>
+        <xs:element name="client" type="personne"/>
+        <xs:element name="logement">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="titre" type="texte"/>
+              <xs:element name="typeLogement" type="texte"/>
+              <xs:element name="adresse" type="adresse"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="sejour">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="dateDebut" type="xs:date"/>
+              <xs:element name="dateFin" type="xs:date"/>
+              <xs:element name="nombreNuits" type="xs:positiveInteger"/>
+              <xs:element name="nombreVoyageurs" type="xs:positiveInteger"/>
+              <xs:element name="prixNuitCentimes" type="xs:nonNegativeInteger"/>
+            </xs:sequence>
+            <xs:attribute name="reservationId" type="xs:positiveInteger" use="required"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="lignes">
+          <xs:complexType><xs:sequence>
+            <xs:element name="ligne" maxOccurs="unbounded">
+              <xs:complexType><xs:sequence>
+                <xs:element name="libelle" type="texte"/>
+                <xs:element name="quantite" type="xs:positiveInteger"/>
+                <xs:element name="prixUnitaireCentimes" type="xs:nonNegativeInteger"/>
+                <xs:element name="montantCentimes" type="xs:nonNegativeInteger"/>
+              </xs:sequence></xs:complexType>
+            </xs:element>
+          </xs:sequence></xs:complexType>
+        </xs:element>
+        <xs:element name="commission">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="tauxPourcent"><xs:simpleType><xs:restriction base="xs:nonNegativeInteger"><xs:maxInclusive value="100"/></xs:restriction></xs:simpleType></xs:element>
+              <xs:element name="montantCentimes" type="xs:nonNegativeInteger"/>
+            </xs:sequence>
+            <xs:attribute name="incluseDansTotal" type="xs:boolean" use="required" fixed="true"/>
+            <xs:attribute name="aLaChargeDe" type="xs:string" use="required" fixed="emetteur"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="totalCentimes" type="xs:nonNegativeInteger"/>
+        <xs:element name="netEmetteurCentimes" type="xs:nonNegativeInteger"/>
+      </xs:sequence>
+      <xs:attribute name="numero" use="required"><xs:simpleType><xs:restriction base="xs:string"><xs:pattern value="FAC-[0-9]{4}-[0-9]{6,}"/></xs:restriction></xs:simpleType></xs:attribute>
+      <xs:attribute name="dateEmission" type="xs:date" use="required"/>
+      <xs:attribute name="statut" use="required"><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="emise"/><xs:enumeration value="annulee"/></xs:restriction></xs:simpleType></xs:attribute>
+      <xs:attribute name="devise" type="xs:string" use="required" fixed="EUR"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

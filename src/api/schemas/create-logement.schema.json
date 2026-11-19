@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://refuge.example/api/formats/json/create-logement.schema.json",
+  "title": "Saisie d'un logement",
+  "description": "Document envoyé par le formulaire de création ou de modification. Les identifiants du logement et de son propriétaire sont déterminés par le serveur.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "titre",
+    "description",
+    "typeLogement",
+    "capacite",
+    "prixNuitCentimes",
+    "adresse"
+  ],
+  "properties": {
+    "titre": {
+      "$ref": "logement-commun.schema.json#/$defs/titre"
+    },
+    "description": {
+      "$ref": "logement-commun.schema.json#/$defs/description"
+    },
+    "typeLogement": {
+      "$ref": "logement-commun.schema.json#/$defs/typeLogement"
+    },
+    "capacite": {
+      "$ref": "logement-commun.schema.json#/$defs/capacite"
+    },
+    "prixNuitCentimes": {
+      "$ref": "logement-commun.schema.json#/$defs/prixNuitCentimes"
+    },
+    "adresse": {
+      "$ref": "logement-commun.schema.json#/$defs/adresse"
+    },
+    "equipements": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 50,
+      "items": {
+        "$ref": "logement-commun.schema.json#/$defs/identifiant"
+      }
+    }
+  }
+}

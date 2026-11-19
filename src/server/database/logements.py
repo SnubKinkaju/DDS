@@ -57,9 +57,11 @@ def _activites(db, id_logement):
 
 
 def _logement(db, ligne):
+    meuble = ligne["meuble"]
+    est_meuble = meuble is True or meuble == 1 or meuble in ("1", "oui")
     logement = {
         "@idLogement": ligne["id_logement"],
-        "@meuble": "oui" if ligne["meuble"] else "non",
+        "@meuble": "oui" if est_meuble else "non",
         "type_bien": ligne["type_bien"],
         "description": ligne["description"],
         "adresse": {

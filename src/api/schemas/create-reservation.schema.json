@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Demande de réservation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["logementId", "dateDebut", "dateFin", "nombreVoyageurs"],
+  "properties": {
+    "logementId": {"type": "integer", "minimum": 1},
+    "dateDebut": {"type": "string", "format": "date"},
+    "dateFin": {"type": "string", "format": "date"},
+    "nombreVoyageurs": {"type": "integer", "minimum": 1}
+  }
+}

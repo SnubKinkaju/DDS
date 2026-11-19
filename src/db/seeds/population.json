@@ -1,0 +1,33 @@
+{
+  "prenoms": ["Léa", "Hugo", "Chloé", "Lucas", "Emma", "Nathan", "Inès", "Adam", "Jade", "Louis", "Alice", "Gabriel", "Lina", "Arthur", "Zoé", "Noah", "Louise", "Jules", "Manon", "Rayan"],
+  "noms": ["Dupont", "Martin", "Bernard", "Petit", "Robert", "Richard", "Durand", "Moreau", "Simon", "Laurent", "Lefebvre", "Michel", "Garcia", "David", "Bertrand", "Roux", "Vincent", "Fournier", "Morel", "Girard"],
+  "ville": {"nom": "La Clusaz", "codePostal": "74220"},
+  "voies": ["route des Aravis", "chemin du Bossonnet", "route du Col des Aravis", "route de l'Étale", "place de l'Église"],
+  "types": [
+    {
+      "type": "chambre", "capacite": [1, 2], "prixNuitCentimes": [2500, 6000],
+      "titres": ["Chambre chez l’habitant", "Chambre au calme", "Chambre avec vue sur les arbres"],
+      "descriptions": ["Une chambre pour un séjour temporaire à La Clusaz. Le propriétaire habite sur place.", "Une chambre individuelle dans un logement partagé, pour découvrir les environs à pied."]
+    },
+    {
+      "type": "studio", "capacite": [1, 2], "prixNuitCentimes": [3500, 8500],
+      "titres": ["Studio au village", "Petit studio indépendant", "Studio pour deux"],
+      "descriptions": ["Un studio indépendant pour une ou deux personnes, proposé pour quelques nuits.", "Un espace compact pour un séjour temporaire, avec une pièce de vie et un coin nuit."]
+    },
+    {
+      "type": "appartement", "capacite": [2, 6], "prixNuitCentimes": [5000, 14000],
+      "titres": ["Appartement au village", "Appartement familial", "Appartement sous les toits"],
+      "descriptions": ["Un appartement proposé par un habitant pour accueillir des voyageurs pendant l’été.", "Un logement indépendant avec une pièce de vie commune, adapté aux séjours de quelques jours."]
+    },
+    {
+      "type": "maison", "capacite": [4, 8], "prixNuitCentimes": [8000, 20000],
+      "titres": ["Maison de village", "Maison pour un séjour en famille", "Maison au pied des montagnes"],
+      "descriptions": ["Une maison proposée pour un séjour en groupe ou en famille à La Clusaz.", "Une maison avec plusieurs espaces de vie pour passer quelques jours dans le village."]
+    },
+    {
+      "type": "chalet", "capacite": [2, 10], "prixNuitCentimes": [7000, 24000],
+      "titres": ["Chalet des Aravis", "Chalet au calme", "Chalet familial"],
+      "descriptions": ["Un chalet pour un séjour temporaire en montagne, proposé par son propriétaire.", "Un chalet avec une pièce commune pour se retrouver après une journée dans les environs."]
+    }
+  ]
+}

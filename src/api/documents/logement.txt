@@ -1,0 +1,29 @@
+REFUGE CLIMATIQUE — LA CLUSAZ
+============================================================
+FICHE LOGEMENT N° {{ logement.id }}
+{{ logement.titre }}
+
+Type : {{ logement.typeLogement | capitalize }}
+Capacité : {{ logement.capacite }} voyageur{% if logement.capacite > 1 %}s{% endif %}
+Prix par nuit : {{ prix_nuit }}
+
+DESCRIPTION
+------------------------------------------------------------
+{{ logement.description | wordwrap(70) }}
+
+ADRESSE DU LOGEMENT
+------------------------------------------------------------
+{{ logement.adresse.rue }}
+{{ logement.adresse.codePostal }} {{ logement.adresse.ville }}
+
+ÉQUIPEMENTS
+------------------------------------------------------------
+{% for equipement in logement.equipements %}- {{ equipement.nom }}
+{% else %}Aucun équipement renseigné.
+{% endfor %}
+PROPOSÉ PAR
+------------------------------------------------------------
+{{ logement.proprietaire.prenom }} {{ logement.proprietaire.nom }}
+
+============================================================
+Fiche de présentation. Prix par nuit, sans réservation ni facture.

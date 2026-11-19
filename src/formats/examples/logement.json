@@ -1,0 +1,36 @@
+{
+  "id": 12,
+  "statut": "publie",
+  "titre": "Chalet des Aravis",
+  "description": "Un chalet calme avec un jardin et des volets.",
+  "typeLogement": "chalet",
+  "capacite": 4,
+  "prixNuitCentimes": 6550,
+  "adresse": {
+    "rue": "20 route des Aravis",
+    "codePostal": "74220",
+    "ville": "La Clusaz"
+  },
+  "equipements": [
+    {
+      "id": 5,
+      "nom": "Jardin"
+    },
+    {
+      "id": 9,
+      "nom": "Volets"
+    }
+  ],
+  "proprietaire": {
+    "id": 3,
+    "prenom": "Camille",
+    "nom": "Martin"
+  },
+  "photos": [
+    {
+      "id": 1,
+      "url": "/api/logements/photos/fichier/00000000000000000000000000000000.jpg",
+      "position": 0
+    }
+  ]
+}

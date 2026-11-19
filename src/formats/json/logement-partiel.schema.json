@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://refuge.example/api/formats/json/logement-partiel.schema.json",
+  "title": "Préremplissage partiel d'un logement",
+  "description": "Seuls les champs extraits du texte sont présents. Aucun champ obligatoire ni valeur par défaut. Ce document ne permet pas de publier directement un logement.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "titre": { "$ref": "logement-commun.schema.json#/$defs/titre" },
+    "description": { "$ref": "logement-commun.schema.json#/$defs/description" },
+    "typeLogement": { "$ref": "logement-commun.schema.json#/$defs/typeLogement" },
+    "capacite": { "$ref": "logement-commun.schema.json#/$defs/capacite" },
+    "prixNuitCentimes": { "$ref": "logement-commun.schema.json#/$defs/prixNuitCentimes" },
+    "adresse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rue": { "$ref": "logement-commun.schema.json#/$defs/adresse/properties/rue" },
+        "codePostal": { "$ref": "logement-commun.schema.json#/$defs/adresse/properties/codePostal" },
+        "ville": { "$ref": "logement-commun.schema.json#/$defs/adresse/properties/ville" }
+      }
+    },
+    "equipements": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 50,
+      "items": { "$ref": "logement-commun.schema.json#/$defs/identifiant" }
+    }
+  }
+}
