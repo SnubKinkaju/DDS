@@ -14,6 +14,17 @@ from src.db.connection import connect
 from src.db.migrate import migrate
 
 
+# Titres et ombrage fictifs, rattachés aux adresses de référence par identifiant BAN.
+EXEMPLES = {
+    '74080_0255_00164': ('Refuge du village', 'important'),
+    '74080_0275_04777': ('Séjour aux Confins', 'partiel'),
+    '74080_0380_00009': ('Studio des Aravis', 'non_renseigne'),
+    '74080_0255_07153': ('Séjour au col des Aravis', 'aucun'),
+    '74080_0275_00172': ('Refuge du Bossonnet', 'partiel'),
+    '74080_0260_01775': ('Halte des Laquais', 'important'),
+}
+
+
 def construire(dossier):
     database = dossier / 'refuge.sqlite3'
     populate(100, 20, 1, database)
@@ -39,12 +50,12 @@ def construire(dossier):
             )
             for i, point in enumerate(points):
                 l = logements[i]
-                titre = ['Refuge du village', 'Séjour aux Confins', 'Studio des Aravis'][i]
+                titre, ombrage = EXEMPLES[point['id']]
                 db.execute(
                     'UPDATE logement SET titre=?,ombrage=?,description=? WHERE id=?',
                     (
                         titre,
-                        ['important', 'partiel', 'non_renseigne'][i],
+                        ombrage,
                         'Annonce fictive de démonstration, localisée à une adresse de référence de La Clusaz.',
                         l['id'],
                     ),

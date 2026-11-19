@@ -22,5 +22,29 @@
     "latitude": 45.904851,
     "altitude": 1045,
     "verifieLe": "2026-11-19T16:24:55+00:00"
+  },
+  {
+    "id": "74080_0255_07153",
+    "rue": "7153 Route du Col des Aravis",
+    "longitude": 6.460454,
+    "latitude": 45.875247,
+    "altitude": 1496,
+    "verifieLe": "2026-11-19T19:58:23+00:00"
+  },
+  {
+    "id": "74080_0275_00172",
+    "rue": "172 Route des Confins",
+    "longitude": 6.432654,
+    "latitude": 45.905341,
+    "altitude": 1086,
+    "verifieLe": "2026-11-19T19:58:23+00:00"
+  },
+  {
+    "id": "74080_0260_01775",
+    "rue": "1775 Route du Col de la Croix Fry",
+    "longitude": 6.424889,
+    "latitude": 45.880811,
+    "altitude": 1313,
+    "verifieLe": "2026-11-19T19:58:23+00:00"
   }
 ]
