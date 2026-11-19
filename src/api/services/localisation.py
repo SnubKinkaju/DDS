@@ -31,7 +31,10 @@ def enregistrer(db, logement_id, position):
         VALUES (?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(logement_id) DO UPDATE SET adresse_ign=excluded.adresse_ign,
             longitude=excluded.longitude, latitude=excluded.latitude, verifie_le=excluded.verifie_le,
-            altitude=excluded.altitude, altitude_le=excluded.altitude_le
+            altitude=CASE WHEN excluded.altitude IS NULL AND longitude=excluded.longitude
+                     AND latitude=excluded.latitude THEN altitude ELSE excluded.altitude END,
+            altitude_le=CASE WHEN excluded.altitude IS NULL AND longitude=excluded.longitude
+                     AND latitude=excluded.latitude THEN altitude_le ELSE excluded.altitude_le END
     """,
         (
             logement_id,
