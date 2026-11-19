@@ -13,8 +13,8 @@ def _serialize_address(row):
     }
 
 
-def list_published(connection):
-    rows = logement_repository.find_published(connection)
+def list_published(connection, favori_de=None):
+    rows = logement_repository.find_published(connection, favori_de)
 
     logements = [
         {

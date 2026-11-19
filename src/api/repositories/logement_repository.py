@@ -1,4 +1,4 @@
-def find_published(connection):
+def find_published(connection, favori_de=None):
     return connection.execute(
         """
         SELECT
@@ -23,9 +23,9 @@ def find_published(connection):
             ) AS photo_principale
         FROM logement_public AS logement
         JOIN adresse ON adresse.id = logement.adresse_id
-        WHERE logement.statut = 'publie'
+        WHERE (? IS NULL OR EXISTS (SELECT 1 FROM favori WHERE logement_id=logement.id AND utilisateur_id=?))
         ORDER BY logement.date_creation DESC, logement.id DESC
-        """
+        """, (favori_de, favori_de)
     ).fetchall()
 
 
