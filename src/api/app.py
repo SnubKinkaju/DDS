@@ -1,6 +1,8 @@
 import os
 from datetime import timedelta
+from secrets import token_hex
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 from flask import Flask
 
@@ -16,14 +18,26 @@ from src.db.connection import get_database_path
 from src.db.flask import init_app as init_database
 
 
+def local_session_key():
+    directory = Path(__file__).resolve().parents[2] / "instance"
+    directory.mkdir(parents=True, exist_ok=True)
+    key = directory / "session.key"
+    if not key.exists():
+        with NamedTemporaryFile(dir=directory) as tmp:
+            tmp.write(token_hex(32).encode("ascii"))
+            tmp.flush()
+            try:
+                os.link(tmp.name, key)
+            except FileExistsError:
+                pass  # Un autre processus a déjà publié sa clé.
+    return key.read_text(encoding="ascii").strip()
+
+
 def create_app(test_config=None):
     app = Flask(__name__, template_folder="documents")
     app.config.from_mapping(
         DATABASE=get_database_path(),
-        SECRET_KEY=os.getenv(
-            "REFUGE_SECRET_KEY",
-            "development-secret-key-change-before-production",
-        ),
+        SECRET_KEY=os.getenv("REFUGE_SECRET_KEY"),
         PERMANENT_SESSION_LIFETIME=timedelta(days=7),
         SESSION_COOKIE_HTTPONLY=True,
         SESSION_COOKIE_SAMESITE="Lax",
@@ -39,6 +53,9 @@ def create_app(test_config=None):
 
     if test_config:
         app.config.update(test_config)
+
+    if not app.config["SECRET_KEY"]:
+        app.config["SECRET_KEY"] = local_session_key()
 
     init_database(app)
     register_error_handlers(app)
