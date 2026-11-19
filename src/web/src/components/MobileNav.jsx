@@ -37,7 +37,7 @@ export default function MobileNav() {
           to: "/connexion",
           label: "Connexion",
           Icon: UserRound,
-          active: false,
+          active: pathname === "/connexion" || pathname === "/inscription",
         },
   ];
 
