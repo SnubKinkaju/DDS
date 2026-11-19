@@ -23,7 +23,7 @@ async function request(path, options = {}) {
   });
 
   const contentType = response.headers.get("content-type") ?? "";
-  const content = contentType.includes("application/json")
+  const content = contentType.includes("application/json") || contentType.includes("+json")
     ? await response.json()
     : null;
 
