@@ -4,6 +4,8 @@ from pathlib import Path
 
 from lxml import etree
 
+from src.api.services.xml_text import xml_text
+
 from src.api.errors import ApiError
 from src.api.services.facture_validation import validate_document
 
@@ -15,7 +17,7 @@ STYLES_PATH = Path(__file__).resolve().parents[1] / 'documents/facture.css'
 def _fields(parent, data, names):
     for name in names:
         if data[name] is not None:
-            etree.SubElement(parent, name).text = str(data[name])
+            etree.SubElement(parent, name).text = xml_text(data[name])
 
 
 def _address(parent, address):

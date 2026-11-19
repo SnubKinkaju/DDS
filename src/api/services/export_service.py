@@ -1,5 +1,4 @@
 """Export XML de toute la base : SQLite → XML → validation par base_de_donnees.xsd."""
-import re
 from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
@@ -7,12 +6,11 @@ from pathlib import Path
 from lxml import etree
 
 from src.api.errors import ApiError
+from src.api.services.xml_text import xml_text
 from src.api.repositories import export_repository as repository
 
 
 XSD_PATH = Path(__file__).resolve().parents[2] / 'formats' / 'xml' / 'base_de_donnees.xsd'
-# Caractères interdits en XML 1.0 (certains textes saisis pourraient en contenir).
-ILLEGAL_XML = re.compile('[\x00-\x08\x0b\x0c\x0e-\x1f￾￿]')
 
 
 @lru_cache(maxsize=1)
@@ -20,20 +18,16 @@ def _schema():
     return etree.XMLSchema(etree.parse(str(XSD_PATH)))
 
 
-def _text(value):
-    return ILLEGAL_XML.sub('', str(value))
-
-
 def _datetime(value):
     """SQLite stocke « 2026-11-04 08:22:05 » ; xs:dateTime attend le « T »."""
-    return _text(value).replace(' ', 'T')
+    return xml_text(value).replace(' ', 'T')
 
 
 def _fields(parent, row, mapping):
     """Ajoute un sous-élément par couple (colonne, nom) ; une valeur NULL est omise."""
     for column, name in mapping:
         if row[column] is not None:
-            etree.SubElement(parent, name).text = _text(row[column])
+            etree.SubElement(parent, name).text = xml_text(row[column])
 
 
 def _address(parent, row):
@@ -57,7 +51,7 @@ def build_xml(connection):
 
     node = etree.SubElement(root, 'equipements')
     for row in repository.find_equipements(connection):
-        etree.SubElement(node, 'equipement', id=str(row['id'])).text = _text(row['nom'])
+        etree.SubElement(node, 'equipement', id=str(row['id'])).text = xml_text(row['nom'])
 
     node = etree.SubElement(root, 'utilisateurs')
     for row in repository.find_utilisateurs(connection):
@@ -80,14 +74,14 @@ def build_xml(connection):
                             ('prix_nuit_centimes', 'prixNuitCentimes')))
         _address(item, row)
         if row['motif_suspension']:
-            etree.SubElement(item, 'suspension').text = _text(row['motif_suspension'])
+            etree.SubElement(item, 'suspension').text = xml_text(row['motif_suspension'])
         if row['adresse_ign']:
             loc = etree.SubElement(item, 'localisation', adresseIgn=row['adresse_ign'], verifieLe=row['verifie_le'])
             _fields(loc, row, (('latitude','latitude'),('longitude','longitude'),('altitude','altitudeMetres'),
                                ('altitude_le','altitudeLe')))
         photos_node = etree.SubElement(item, 'photos')
         for photo in photos.get(row['id'], []):
-            etree.SubElement(photos_node, 'photo', position=str(photo['position'])).text = _text(photo['url'])
+            etree.SubElement(photos_node, 'photo', position=str(photo['position'])).text = xml_text(photo['url'])
         amenities_node = etree.SubElement(item, 'equipementsLogement')
         for amenity in amenities.get(row['id'], []):
             etree.SubElement(amenities_node, 'equipementRef', ref=str(amenity['equipement_id']))
@@ -121,7 +115,7 @@ def build_xml(connection):
     for row in repository.find_factures(connection):
         item = etree.SubElement(
             node, 'facture', numero=row['numero'], reservationId=str(row['reservation_id']),
-            dateEmission=_text(row['date_emission']), statut=row['statut'], devise=row['devise'],
+            dateEmission=xml_text(row['date_emission']), statut=row['statut'], devise=row['devise'],
         )
         _fields(item, row, (('total_centimes', 'totalCentimes'),
                             ('taux_commission', 'tauxCommissionPourcent'),

@@ -5,6 +5,8 @@ from pathlib import Path
 
 from lxml import etree
 
+from src.api.services.xml_text import xml_text
+
 from src.api.validation import validate_json
 from src.api.services.territoire import CATEGORIES
 
@@ -59,7 +61,7 @@ def projeter(parent, nom, valeur):
         for item in valeur:
             projeter(node, 'item', item)
     else:
-        node.text = str(valeur)
+        node.text = xml_text(valeur)
 
 
 @lru_cache(maxsize=2)
@@ -80,7 +82,7 @@ def render_logement(document, env, format_name, origin):
     racine.set('prix', f'{centimes // 100},{centimes % 100:02d} €')
     params = {}
     if format_name == 'html':
-        contenu = json.dumps(graphe(document, env, origin), ensure_ascii=False).replace('<', r'\u003c')
+        contenu = json.dumps(graphe(document, env, origin), ensure_ascii=True).replace('<', r'\u003c')
         params = {'graphe': etree.XSLT.strparam(contenu),
                   'css': etree.XSLT.strparam((SRC/'api/documents/fiche.css').read_text())}
     return bytes(transformation(format_name)(racine, **params))
