@@ -1,6 +1,6 @@
 Project refuge_climatique_v1 {
   database_type: "SQLite"
-  Note: "Schéma minimal de la première version de l'application"
+  Note: "Refuge climatique de La Clusaz, migrations 001 à 006"
 }
 
 Enum statut_logement {
@@ -43,6 +43,7 @@ Table utilisateur {
   email text [not null, unique]
   mot_de_passe_hash text [not null]
   telephone text
+  est_admin integer [not null, default: 0, note: "Habilitation mairie indépendante du rôle"]
   role role_utilisateur [not null, default: 'client', note: "Un propriétaire peut également réserver un logement"]
   date_creation datetime [not null, default: `CURRENT_TIMESTAMP`]
 }
@@ -56,6 +57,9 @@ Table logement {
   type_logement text [not null]
   capacite integer [not null, note: "Strictement supérieure à zéro"]
   prix_nuit_centimes integer [not null, note: "Montant positif ou nul"]
+  ombrage text [not null, default: 'non_renseigne', note: "aucun, partiel, important ou non_renseigne"]
+  motif_suspension text
+  suspendu_le datetime
   statut statut_logement [not null, default: 'brouillon']
   date_creation datetime [not null, default: `CURRENT_TIMESTAMP`]
 
@@ -168,5 +172,54 @@ Ref: favori.utilisateur_id > utilisateur.id [delete: cascade]
 Ref: favori.logement_id > logement.id [delete: cascade]
 Ref: reservation.logement_id > logement.id
 Ref: reservation.demandeur_id > utilisateur.id
-Ref: facture.reservation_id - reservation.id
+Ref: reservation.id - facture.reservation_id
 Ref: ligne_facture.facture_id > facture.id [delete: cascade]
+
+Table localisation_logement {
+  logement_id integer [pk]
+  adresse_ign text [not null]
+  longitude real [not null]
+  latitude real [not null]
+  verifie_le datetime [not null]
+  altitude real
+  altitude_le datetime
+}
+
+Table point_interet {
+  id integer [pk]
+  source text [not null, note: "osm ou mairie"]
+  identifiant text [not null]
+  categorie text [not null]
+  nom text
+  latitude real [not null]
+  longitude real [not null]
+  position text [not null]
+  acces text [not null]
+  url text [not null]
+  collecte_le datetime [not null]
+  verifie_le datetime
+  actif integer [not null, default: 1]
+  auteur_id integer
+
+  indexes {
+    (source, identifiant) [unique]
+    (actif, categorie)
+  }
+}
+
+Table import_territoire {
+  source text [pk]
+  tentative_le datetime [not null]
+  succes_le datetime
+  resultat text [not null]
+  volume integer
+}
+
+Table cache_meteo {
+  commune text [pk]
+  recupere_le datetime [not null]
+  contenu text [not null]
+}
+
+Ref: logement.id - localisation_logement.logement_id [delete: cascade]
+Ref: point_interet.auteur_id > utilisateur.id
