@@ -2,6 +2,7 @@
   "titre": "Chalet des Aravis",
   "description": "Un chalet calme avec un jardin et des volets.",
   "typeLogement": "chalet",
+  "ombrage": "partiel",
   "capacite": 4,
   "prixNuitCentimes": 6550,
   "adresse": {
