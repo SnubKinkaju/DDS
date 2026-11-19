@@ -1,11 +1,12 @@
 # Fiche de réalisation — Localisation et dimension climatique
 
-Date : 4 novembre 2026. Statut : **plan de réalisation, fonctionnalité à développer**.
+La version livrée et ses preuves sont décrites dans la [revue des quatre rendus](revue-projet.md). Cette fiche conserve les choix étudiés lors de la préparation.
+
+Plan initial du 4 novembre 2026.
 
 Cette fiche détaille le point 7 du projet : altitude, ombrage, équipements contre
 la chaleur, météo et services proches. Elle précise une V1 réalisable avec
-l'application actuelle, puis les extensions possibles. Les noms de routes,
-fichiers et colonnes proposés ci-dessous ne désignent pas encore du code existant.
+l'application actuelle, puis les extensions possibles. Les noms proposés ci-dessous sont ceux du plan initial.
 
 ## 1. But de cette partie
 

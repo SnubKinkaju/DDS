@@ -1,3 +1,7 @@
+# Notes préparatoires de la V1
+
+Les trois points ci-dessous sont maintenant intégrés. La [revue de livraison](docs/revue-projet.md) donne leurs parcours et les vérifications reproductibles.
+
 5. Export global + XPath	Exporter toutes les factures dans un XML et démontrer des recherches.
 6. Texte libre + LLM	Transformer une description de logement en JSON validé pour préremplir le formulaire.
 7. Dimension climatique	Ajouter les informations utiles : altitude, ombrage, équipements contre la chaleur, météo et services proches.
