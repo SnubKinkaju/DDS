@@ -1,0 +1,2505 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-19T16:13:34Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+    {
+      "type": "node",
+      "id": 333128252,
+      "lat": 45.9047555,
+      "lon": 6.4249515,
+      "tags": {
+        "amenity": "pharmacy",
+        "name": "Pharmacie du Danay"
+      }
+    },
+    {
+      "type": "node",
+      "id": 343624958,
+      "lat": 45.8605988,
+      "lon": 6.4167656,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Manigod - Merdassier Abribus",
+        "public_transport": "stop_position"
+      }
+    },
+    {
+      "type": "node",
+      "id": 521515411,
+      "lat": 45.8818515,
+      "lon": 6.3801887,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 522458957,
+      "lat": 45.8763101,
+      "lon": 6.4524652,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 939208897,
+      "lat": 45.9226176,
+      "lon": 6.4111508,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Arrêt ligne Y62/63 - Saint Jean de Sixt Chef-Lieu",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 939208898,
+      "lat": 45.9229842,
+      "lon": 6.4103919,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Arrêt Navette Interstation - Centre Boulangerie",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 939208899,
+      "lat": 45.9225089,
+      "lon": 6.4099669,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Arrêt ligne Y62/63 - Saint Jean de Sixt Chef-Lieu",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 939955322,
+      "lat": 45.9227712,
+      "lon": 6.41004,
+      "tags": {
+        "amenity": "pharmacy",
+        "name": "Pharmacie des Aravis"
+      }
+    },
+    {
+      "type": "node",
+      "id": 939966315,
+      "lat": 45.92301,
+      "lon": 6.4104857,
+      "tags": {
+        "name": "Boulangerie Capucine",
+        "shop": "bakery"
+      }
+    },
+    {
+      "type": "node",
+      "id": 942304552,
+      "lat": 45.9180798,
+      "lon": 6.422349,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 944552977,
+      "lat": 45.9215449,
+      "lon": 6.400363,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Forgeassoud",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 944552978,
+      "lat": 45.9213268,
+      "lon": 6.4005855,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Forgeassoud",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 947017839,
+      "lat": 45.9221356,
+      "lon": 6.408109,
+      "tags": {
+        "name": "Maison Perreau",
+        "shop": "bakery"
+      }
+    },
+    {
+      "type": "node",
+      "id": 1593834176,
+      "lat": 45.9446033,
+      "lon": 6.4350258,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Rosay",
+        "public_transport": "stop_position"
+      }
+    },
+    {
+      "type": "node",
+      "id": 1879168734,
+      "lat": 45.8729698,
+      "lon": 6.49071,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 1886562732,
+      "lat": 45.8624057,
+      "lon": 6.5600005,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2130986825,
+      "lat": 45.9422476,
+      "lon": 6.4268915,
+      "tags": {
+        "name": "Pâtisserie Boulangerie Maison Bétemps",
+        "shop": "bakery"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2393811668,
+      "lat": 45.9230697,
+      "lon": 6.4107977,
+      "tags": {
+        "name": "Carrefour Express",
+        "shop": "convenience"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2561527923,
+      "lat": 45.8892998,
+      "lon": 6.4273076,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Lauzes",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2629248952,
+      "lat": 45.9057821,
+      "lon": 6.4250674,
+      "tags": {
+        "name": "Manez",
+        "shop": "bakery"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2631753704,
+      "lat": 45.9062309,
+      "lon": 6.4282831,
+      "tags": {
+        "name": "l'Atelier du Pain",
+        "shop": "bakery"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2631753732,
+      "lat": 45.9073936,
+      "lon": 6.4307293,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Domanial",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2631756491,
+      "lat": 45.9070185,
+      "lon": 6.4293131,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Domaines",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2639973252,
+      "lat": 45.9044672,
+      "lon": 6.4222954,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Patinoire / Champ Giguet",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2725322395,
+      "lat": 45.9406293,
+      "lon": 6.4296977,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Patinoire",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2727961454,
+      "lat": 45.9398587,
+      "lon": 6.4284895,
+      "tags": {
+        "access": "private",
+        "leisure": "swimming_pool",
+        "sport": "swimming"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2727961581,
+      "lat": 45.9445685,
+      "lon": 6.4350376,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Rosay",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2727961582,
+      "lat": 45.9446299,
+      "lon": 6.4350493,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Rosay",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2727961583,
+      "lat": 45.9446858,
+      "lon": 6.4350638,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Rosay",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 3256909536,
+      "lat": 45.9234458,
+      "lon": 6.4132327,
+      "tags": {
+        "amenity": "fuel",
+        "name": "TotalEnergies Contact",
+        "shop": "convenience"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4536664541,
+      "lat": 45.9156712,
+      "lon": 6.4399976,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4536664543,
+      "lat": 45.9183481,
+      "lon": 6.4411868,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4611419301,
+      "lat": 45.8788769,
+      "lon": 6.5248509,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4875821300,
+      "lat": 45.9077852,
+      "lon": 6.428589,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Piscine",
+        "public_transport": "stop_position"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4875827389,
+      "lat": 45.9069289,
+      "lon": 6.4323601,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Gai Soleil",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4875838009,
+      "lat": 45.90568,
+      "lon": 6.4320749,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Bossonnet",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4875838609,
+      "lat": 45.905787,
+      "lon": 6.4321638,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Four à Bois",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4875896831,
+      "lat": 45.9060496,
+      "lon": 6.4266778,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Houches",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4875896832,
+      "lat": 45.9058799,
+      "lon": 6.4262775,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Houches",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4881495640,
+      "lat": 45.9054177,
+      "lon": 6.4301566,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Lourdes",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4881495641,
+      "lat": 45.9054535,
+      "lon": 6.4304292,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Lourdes",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5058844121,
+      "lat": 45.8439976,
+      "lon": 6.4610646,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5327294866,
+      "lat": 45.862864,
+      "lon": 6.416894,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Manigod - Caisses Centrales de Merdassier",
+        "public_transport": "stop_position"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5795328793,
+      "lat": 45.9245649,
+      "lon": 6.4216101,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5795328794,
+      "lat": 45.9249464,
+      "lon": 6.3873665,
+      "tags": {
+        "access": "yes",
+        "amenity": "drinking_water",
+        "drinking_water": "yes"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5795647760,
+      "lat": 45.9425158,
+      "lon": 6.4316407,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5795647762,
+      "lat": 45.9423886,
+      "lon": 6.4283678,
+      "tags": {
+        "name": "Sherpa",
+        "shop": "convenience"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5795647764,
+      "lat": 45.9416723,
+      "lon": 6.4260216,
+      "tags": {
+        "name": "Spar",
+        "shop": "supermarket"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5795827746,
+      "lat": 45.9047346,
+      "lon": 6.4236944,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5795827748,
+      "lat": 45.9045595,
+      "lon": 6.4246095,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5832170348,
+      "lat": 45.9416347,
+      "lon": 6.4287204,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Grand Bornand Gare routière",
+        "public_transport": "stop_position"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6206722346,
+      "lat": 45.8618175,
+      "lon": 6.4949772,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Giettaz Village Bas",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6206722348,
+      "lat": 45.8619324,
+      "lon": 6.4950482,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Giettaz Village Bas",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6206722349,
+      "lat": 45.8687811,
+      "lon": 6.4833528,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Biollay",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6206722351,
+      "lat": 45.8648716,
+      "lon": 6.4945324,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Chardet",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6206722354,
+      "lat": 45.8650007,
+      "lon": 6.4947489,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Chardet",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6206722355,
+      "lat": 45.8684883,
+      "lon": 6.4871433,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Metan",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6206722358,
+      "lat": 45.8689279,
+      "lon": 6.4859149,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Metan",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6206722360,
+      "lat": 45.8665921,
+      "lon": 6.4930816,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Alpages",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6206722362,
+      "lat": 45.8665611,
+      "lon": 6.4882486,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Mortines",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6206722363,
+      "lat": 45.866254,
+      "lon": 6.495181,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Puginières",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6206722365,
+      "lat": 45.8663866,
+      "lon": 6.4950898,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Puginières",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6715402962,
+      "lat": 45.9431403,
+      "lon": 6.5007388,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Auberge nordique",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6717954184,
+      "lat": 45.9345829,
+      "lon": 6.4809952,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Vendanche",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6718304918,
+      "lat": 45.9355443,
+      "lon": 6.4849211,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Plans",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6718304919,
+      "lat": 45.9354764,
+      "lon": 6.4853713,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Plans",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123881486,
+      "lat": 45.9133732,
+      "lon": 6.373926,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "La Villaz",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123881586,
+      "lat": 45.9059826,
+      "lon": 6.3619217,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Luidefour",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123881587,
+      "lat": 45.9086357,
+      "lon": 6.3662489,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Perrils",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123883685,
+      "lat": 45.9084668,
+      "lon": 6.3654479,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Perrils",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123883686,
+      "lat": 45.9187396,
+      "lon": 6.3839353,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Le Borgeal",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123897986,
+      "lat": 45.9407684,
+      "lon": 6.423493,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Le Charvet"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123897990,
+      "lat": 45.9460371,
+      "lon": 6.4305533,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Communaille",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123897991,
+      "lat": 45.9490224,
+      "lon": 6.4349627,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le haut des parmerais",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123897992,
+      "lat": 45.9497026,
+      "lon": 6.4350809,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le haut des parmerais",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123897994,
+      "lat": 45.9550257,
+      "lon": 6.4390295,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Le bas des frasses"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123898985,
+      "lat": 45.9466528,
+      "lon": 6.4340351,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les parmerais",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123898986,
+      "lat": 45.9564987,
+      "lon": 6.4388236,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les frasses",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123898987,
+      "lat": 45.956577,
+      "lon": 6.4391651,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les frasses",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123898988,
+      "lat": 45.9586809,
+      "lon": 6.4377382,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le haut des frasses",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7123901185,
+      "lat": 45.9461042,
+      "lon": 6.4304828,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Communaille",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7124526888,
+      "lat": 45.9549777,
+      "lon": 6.439084,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le bas des frasses",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7124546287,
+      "lat": 45.9407343,
+      "lon": 6.4221757,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "L'erable"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7124560085,
+      "lat": 45.9405157,
+      "lon": 6.4224889,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Les acacias"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7124569485,
+      "lat": 45.9189073,
+      "lon": 6.3840547,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Le Borgeal",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7124576185,
+      "lat": 45.9135527,
+      "lon": 6.373939,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Villaz",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7555860648,
+      "lat": 45.8666245,
+      "lon": 6.4902914,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Nant Parreux"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7642819652,
+      "lat": 45.9046142,
+      "lon": 6.4236908,
+      "tags": {
+        "shop": "bakery"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7679873589,
+      "lat": 45.9050731,
+      "lon": 6.4233682,
+      "tags": {
+        "name": "Carrefour Montagne",
+        "shop": "convenience"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7798734596,
+      "lat": 45.8626836,
+      "lon": 6.4949776,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7835840474,
+      "lat": 45.9359039,
+      "lon": 6.506826,
+      "tags": {
+        "amenity": "drinking_water",
+        "drinking_water": "yes"
+      }
+    },
+    {
+      "type": "node",
+      "id": 8980655717,
+      "lat": 45.9416225,
+      "lon": 6.4266756,
+      "tags": {
+        "amenity": "pharmacy",
+        "name": "Pharmacie du Grand Bornand"
+      }
+    },
+    {
+      "type": "node",
+      "id": 9382480480,
+      "lat": 45.9426457,
+      "lon": 6.4276609,
+      "tags": {
+        "name": "Boulangerie pâtisserie Vulliet",
+        "shop": "bakery"
+      }
+    },
+    {
+      "type": "node",
+      "id": 9870945836,
+      "lat": 45.8836589,
+      "lon": 6.4338696,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Télémix de l'Étale",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 9910183306,
+      "lat": 45.8611567,
+      "lon": 6.5442166,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 9975173521,
+      "lat": 45.861448,
+      "lon": 6.3686362,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Manigod Chef Lieu",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 9980022870,
+      "lat": 45.8652477,
+      "lon": 6.49047,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 9980022873,
+      "lat": 45.8669528,
+      "lon": 6.4983158,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 9994360652,
+      "lat": 45.873022,
+      "lon": 6.4630493,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Col des Aravis",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10308223436,
+      "lat": 45.8874819,
+      "lon": 6.4278835,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Batieu",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10308225747,
+      "lat": 45.9049307,
+      "lon": 6.4255816,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Cinéma / Télésiège Merle",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10309189494,
+      "lat": 45.8765762,
+      "lon": 6.4185272,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Coverie",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10695641913,
+      "lat": 45.9416717,
+      "lon": 6.4287822,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Grand Bornand Gare routière",
+        "public_transport": "stop_position"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10695641914,
+      "lat": 45.9417048,
+      "lon": 6.4288499,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Grand Bornand Gare routière",
+        "public_transport": "stop_position"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10695641915,
+      "lat": 45.9417211,
+      "lon": 6.4289136,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Grand Bornand Gare routière",
+        "public_transport": "stop_position"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10728405234,
+      "lat": 45.9420184,
+      "lon": 6.4248401,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Parasses",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10728405235,
+      "lat": 45.9422506,
+      "lon": 6.4264163,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Poste",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10728405236,
+      "lat": 45.9432735,
+      "lon": 6.4253842,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Beauregard",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10728405237,
+      "lat": 45.9450549,
+      "lon": 6.4287517,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "L'Everest",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10728405242,
+      "lat": 45.9539199,
+      "lon": 6.4387002,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Bois Bercher",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10892747010,
+      "lat": 45.9067231,
+      "lon": 6.4191485,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Clusaz Gare routière",
+        "public_transport": "stop_position"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10901676716,
+      "lat": 45.9060921,
+      "lon": 6.3622896,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Luidefour",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11108759206,
+      "lat": 45.9196002,
+      "lon": 6.4781247,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Confins Chapelle",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11110225745,
+      "lat": 45.9089466,
+      "lon": 6.3649534,
+      "tags": {
+        "name": "Le marché bio des Aravis",
+        "shop": "supermarket"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11115139638,
+      "lat": 45.9045299,
+      "lon": 6.4230174,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11115139639,
+      "lat": 45.9049318,
+      "lon": 6.4281306,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11118536968,
+      "lat": 45.9053712,
+      "lon": 6.4318802,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11146587948,
+      "lat": 45.9422074,
+      "lon": 6.429021,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11623562347,
+      "lat": 45.9226095,
+      "lon": 6.4110778,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Arrêt Navette Interstation - Centre Office de Tourisme",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11708943925,
+      "lat": 45.860854,
+      "lon": 6.3699181,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Manigod Chef Lieu",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11711316362,
+      "lat": 45.8615911,
+      "lon": 6.3687102,
+      "tags": {
+        "name": "La Manigodine",
+        "shop": "bakery"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11892011988,
+      "lat": 45.9184048,
+      "lon": 6.361597,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12053633986,
+      "lat": 45.8782194,
+      "lon": 6.4510255,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Via Ferrata",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12053633987,
+      "lat": 45.8780077,
+      "lon": 6.4508545,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Via Ferrata",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12229321073,
+      "lat": 45.9577909,
+      "lon": 6.3880738,
+      "tags": {
+        "name": "Boulangerie artisanale bio",
+        "shop": "bakery"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12433875355,
+      "lat": 45.9087402,
+      "lon": 6.4504092,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Morraz / Caravaning",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12433908702,
+      "lat": 45.9088172,
+      "lon": 6.4502581,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Morraz / Caravaning",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12483868340,
+      "lat": 45.8357661,
+      "lon": 6.559129,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Esserets",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12584603127,
+      "lat": 45.9415434,
+      "lon": 6.4284135,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Grand Bornand Gare routière",
+        "public_transport": "stop_position"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12584746251,
+      "lat": 45.898286,
+      "lon": 6.428254,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12584789481,
+      "lat": 45.892913,
+      "lon": 6.4298774,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12998735801,
+      "lat": 45.9223684,
+      "lon": 6.4102967,
+      "tags": {
+        "access": "yes",
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13084759035,
+      "lat": 45.9201016,
+      "lon": 6.4785289,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13093868850,
+      "lat": 45.8621435,
+      "lon": 6.495085,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13108467353,
+      "lat": 45.8598553,
+      "lon": 6.3719878,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Manigod École",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13108467354,
+      "lat": 45.8599256,
+      "lon": 6.3720102,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Manigod École",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13108467355,
+      "lat": 45.8599404,
+      "lon": 6.37561,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Manigod Villard Dessus",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13108467356,
+      "lat": 45.8600834,
+      "lon": 6.3749311,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Manigod Villard Dessus",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13108467357,
+      "lat": 45.8625816,
+      "lon": 6.3721117,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Manigod Les Neizieux",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13108467358,
+      "lat": 45.8620106,
+      "lon": 6.3742245,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Manigod Les Neizieux",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13110862718,
+      "lat": 45.8589723,
+      "lon": 6.4069942,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13296068907,
+      "lat": 45.9062688,
+      "lon": 6.4292267,
+      "tags": {
+        "name": "La cheminée savoyarde",
+        "shop": "convenience"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13640742439,
+      "lat": 45.9022747,
+      "lon": 6.4227988,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Chaumière",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13686460360,
+      "lat": 45.8767955,
+      "lon": 6.4045637,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Croix Fry - Le Hameau de l'Ours",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13686725651,
+      "lat": 45.8775477,
+      "lon": 6.4058107,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Croix Fry - Caisse Centrale",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13686741514,
+      "lat": 45.8774688,
+      "lon": 6.4062849,
+      "tags": {
+        "name": "La Casa",
+        "shop": "convenience"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388945,
+      "lat": 45.9394279,
+      "lon": 6.4452061,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Clos du Pin",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388946,
+      "lat": 45.9434166,
+      "lon": 6.4350975,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Pont de Suize",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388947,
+      "lat": 45.9435435,
+      "lon": 6.4394461,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Belvédère",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388948,
+      "lat": 45.943195,
+      "lon": 6.4420382,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Route des Envers",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388949,
+      "lat": 45.9427656,
+      "lon": 6.4453663,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Perce-neige",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388950,
+      "lat": 45.9419404,
+      "lon": 6.446217,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Troikas",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388951,
+      "lat": 45.940881,
+      "lon": 6.4492621,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Nant Robert",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388952,
+      "lat": 45.9392803,
+      "lon": 6.4525238,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Crêt",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388953,
+      "lat": 45.9381865,
+      "lon": 6.4586792,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Journeaux",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388957,
+      "lat": 45.9360095,
+      "lon": 6.4642323,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Potais",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388958,
+      "lat": 45.9358339,
+      "lon": 6.4645227,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Potais",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388959,
+      "lat": 45.9356996,
+      "lon": 6.4648276,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Potais",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388960,
+      "lat": 45.9375781,
+      "lon": 6.4603262,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Chapelle du Bouchet",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388961,
+      "lat": 45.9352483,
+      "lon": 6.4682967,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Poches",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388962,
+      "lat": 45.9351583,
+      "lon": 6.4685424,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Les Poches",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388964,
+      "lat": 45.9348093,
+      "lon": 6.4702757,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "École des Poches",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388965,
+      "lat": 45.9348082,
+      "lon": 6.4706304,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "École des Poches",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388966,
+      "lat": 45.9343693,
+      "lon": 6.4740711,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Le Grand Nant",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388967,
+      "lat": 45.9346521,
+      "lon": 6.4811918,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Vendanche",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13696388969,
+      "lat": 45.9381846,
+      "lon": 6.4926571,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Côte Brandet",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13762862969,
+      "lat": 45.9568738,
+      "lon": 6.3881357,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Maison des Services",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13762862978,
+      "lat": 45.9528897,
+      "lon": 6.3903285,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Rivière",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13947290258,
+      "lat": 45.9420411,
+      "lon": 6.4290597,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13952694172,
+      "lat": 45.8776205,
+      "lon": 6.4062407,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Croix Fry - Caisse Centrale",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13952694173,
+      "lat": 45.8769022,
+      "lon": 6.4043791,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "La Croix Fry - Le Hameau de l'Ours",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13952738128,
+      "lat": 45.8766227,
+      "lon": 6.4018774,
+      "tags": {
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Croix Fry - Les Sapins",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 14058964546,
+      "lat": 45.8793258,
+      "lon": 6.3725897,
+      "tags": {
+        "amenity": "drinking_water"
+      }
+    },
+    {
+      "type": "way",
+      "id": 41576273,
+      "center": {
+        "lat": 45.9159606,
+        "lon": 6.4758367
+      },
+      "nodes": [
+        510181666,
+        2272703542,
+        510181668,
+        510181728,
+        2272703529,
+        2272703510,
+        2272703506,
+        510181698,
+        2272703494,
+        510181688,
+        2272703493,
+        510181645,
+        2272703492,
+        510181647,
+        2272703504,
+        510181649,
+        2272703513,
+        2272703515,
+        2272703517,
+        2272703527,
+        2272703538,
+        510181666
+      ],
+      "tags": {
+        "name": "Lac des Confins",
+        "natural": "water",
+        "water": "lake"
+      }
+    },
+    {
+      "type": "way",
+      "id": 97832631,
+      "center": {
+        "lat": 45.8598681,
+        "lon": 6.4150139
+      },
+      "nodes": [
+        1132402488,
+        1132400683,
+        1132401069,
+        1132400301,
+        1132402488
+      ],
+      "tags": {
+        "access": "customers",
+        "leisure": "swimming_pool"
+      }
+    },
+    {
+      "type": "way",
+      "id": 163821322,
+      "center": {
+        "lat": 45.909094,
+        "lon": 6.4522045
+      },
+      "nodes": [
+        1754904412,
+        1754913037,
+        1754920968,
+        1754942464,
+        1754898028,
+        1754904127,
+        1754912781,
+        1754907237,
+        1754904412
+      ],
+      "tags": {
+        "access": "customers",
+        "leisure": "swimming_pool",
+        "sport": "swimming"
+      }
+    },
+    {
+      "type": "way",
+      "id": 163822000,
+      "center": {
+        "lat": 45.9061775,
+        "lon": 6.4241705
+      },
+      "nodes": [
+        1754920421,
+        1754929566,
+        1754937913,
+        1754917455,
+        1754928987,
+        1754936891,
+        1754892803,
+        1754941877,
+        1754897489,
+        1754903571,
+        1754911527,
+        1754932088,
+        1754941547,
+        1754920421
+      ],
+      "tags": {
+        "name": "U Express",
+        "shop": "convenience"
+      }
+    },
+    {
+      "type": "way",
+      "id": 164892478,
+      "center": {
+        "lat": 45.8631595,
+        "lon": 6.4958725
+      },
+      "nodes": [
+        1764990337,
+        1764998326,
+        1765006681,
+        1764996788,
+        1764987947,
+        1764992000,
+        1764999542,
+        1765007772,
+        1764990337
+      ],
+      "tags": {
+        "name": "Le fournil des Aravis",
+        "shop": "convenience"
+      }
+    },
+    {
+      "type": "way",
+      "id": 164893368,
+      "center": {
+        "lat": 45.8631825,
+        "lon": 6.4958055
+      },
+      "nodes": [
+        1764987947,
+        1764996788,
+        1765004868,
+        1764989469,
+        1764997806,
+        1765006024,
+        1764993887,
+        1765003607,
+        1764987947
+      ],
+      "tags": {
+        "name": "Le fournil des Aravis",
+        "shop": "bakery"
+      }
+    },
+    {
+      "type": "way",
+      "id": 475872824,
+      "center": {
+        "lat": 45.9424316,
+        "lon": 6.4299819
+      },
+      "nodes": [
+        4695580297,
+        4695580298,
+        11063912530,
+        4695580299,
+        4695580300,
+        4695580301,
+        11063912529,
+        4695580302,
+        4695580303,
+        11063912528,
+        4695580304,
+        4695580305,
+        4695580306,
+        4695580307,
+        11063912531,
+        14272903249,
+        14272903252,
+        4695580297
+      ],
+      "tags": {
+        "leisure": "sports_centre",
+        "name": "Piscine du Grand Bornand",
+        "sport": "swimming"
+      }
+    },
+    {
+      "type": "way",
+      "id": 496428434,
+      "center": {
+        "lat": 45.9074219,
+        "lon": 6.4287146
+      },
+      "nodes": [
+        4881379961,
+        4881379962,
+        4881379963,
+        4881379964,
+        4881379965,
+        4881379966,
+        4881379967,
+        4881379968,
+        4881379969,
+        4881379970,
+        4881379961
+      ],
+      "tags": {
+        "access": "yes",
+        "leisure": "swimming_pool",
+        "name": "Bassin 25m"
+      }
+    },
+    {
+      "type": "way",
+      "id": 616930798,
+      "center": {
+        "lat": 45.9417607,
+        "lon": 6.4288269
+      },
+      "nodes": [
+        5832168184,
+        11940305555,
+        5832168183,
+        5832168182,
+        5832170352,
+        5832170351,
+        10893361560,
+        10893361559,
+        10893361558
+      ],
+      "tags": {
+        "bus": "yes",
+        "highway": "platform",
+        "name": "Le Grand Bornand Gare routière",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "way",
+      "id": 713054544,
+      "center": {
+        "lat": 45.8824733,
+        "lon": 6.4395775
+      },
+      "nodes": [
+        6703105176,
+        6703105177,
+        6703105178,
+        6703105179,
+        6703105180,
+        6703105181,
+        6703105176
+      ],
+      "tags": {
+        "access": "private",
+        "leisure": "swimming_pool"
+      }
+    },
+    {
+      "type": "way",
+      "id": 827585517,
+      "center": {
+        "lat": 45.9086901,
+        "lon": 6.3646705
+      },
+      "nodes": [
+        1877801279,
+        1877784567,
+        1877803641,
+        1877797804,
+        1877812371,
+        1877818305,
+        1877810176,
+        1877806090,
+        11110225749,
+        11110225747,
+        11110225753,
+        11110225750,
+        1877774629,
+        11110225752,
+        1877776619,
+        1877798881,
+        1877791722,
+        1877807319,
+        1877801279
+      ],
+      "tags": {
+        "name": "Intermarché",
+        "shop": "supermarket"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1124689977,
+      "center": {
+        "lat": 45.8928765,
+        "lon": 6.4230295
+      },
+      "nodes": [
+        10284926379,
+        10284926380,
+        10284926381,
+        10284926382,
+        10284926379
+      ],
+      "tags": {
+        "access": "private",
+        "leisure": "swimming_pool"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1127487907,
+      "center": {
+        "lat": 45.903086,
+        "lon": 6.4167067
+      },
+      "nodes": [
+        10308621989,
+        10308621990,
+        10308621991,
+        10308621992,
+        10308621989
+      ],
+      "tags": {
+        "access": "private",
+        "leisure": "swimming_pool"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1165648824,
+      "center": {
+        "lat": 45.8859329,
+        "lon": 6.4331277
+      },
+      "nodes": [
+        10842054334,
+        10842054333,
+        10842054332,
+        10842054331,
+        10842054330,
+        10842054329,
+        10842054328,
+        10842054327,
+        10842054334
+      ],
+      "tags": {
+        "access": "customers",
+        "leisure": "swimming_pool"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1172348114,
+      "center": {
+        "lat": 45.9066945,
+        "lon": 6.4191163
+      },
+      "nodes": [
+        10892747012,
+        10892747011
+      ],
+      "tags": {
+        "bus": "yes",
+        "highway": "platform",
+        "name": "La Clusaz Gare routière",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1185563612,
+      "center": {
+        "lat": 45.9398861,
+        "lon": 6.4285012
+      },
+      "nodes": [
+        11012735883,
+        11012735884,
+        11012735885,
+        11012735886,
+        11012735887,
+        11012735888,
+        11012735889,
+        11012735890,
+        11012735891,
+        11012735892,
+        11012735893,
+        11012735894,
+        11012735895,
+        11012735896,
+        11012735897,
+        11012735898,
+        11012735899,
+        11012735900,
+        11012735901,
+        11012735902,
+        11012735883
+      ],
+      "tags": {
+        "access": "private",
+        "leisure": "swimming_pool"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1191674365,
+      "center": {
+        "lat": 45.9425697,
+        "lon": 6.4305417
+      },
+      "nodes": [
+        11063912481,
+        11063912505,
+        11063912504,
+        11063912503,
+        11063912502,
+        11063912501,
+        11063912500,
+        11063912499,
+        11063912498,
+        11063912497,
+        11063912496,
+        11063912495,
+        11063912494,
+        11063912482,
+        11063912493,
+        11063912492,
+        11063912491,
+        11063912490,
+        11063912489,
+        11063912488,
+        11063912487,
+        11063912486,
+        11063912485,
+        11063912484,
+        11063912483,
+        11063912481
+      ],
+      "tags": {
+        "access": "customers",
+        "leisure": "swimming_pool"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1191674366,
+      "center": {
+        "lat": 45.9425685,
+        "lon": 6.4300123
+      },
+      "nodes": [
+        11063912523,
+        11063912522,
+        11063912521,
+        11063912520,
+        11063912518,
+        11063912517,
+        11063912516,
+        11063912515,
+        11063912514,
+        11063912513,
+        11063912512,
+        11063912511,
+        11063912510,
+        11063912509,
+        11063912508,
+        11063912507,
+        11063912506,
+        11063912519,
+        11063912523
+      ],
+      "tags": {
+        "access": "customers",
+        "leisure": "swimming_pool"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1191674367,
+      "center": {
+        "lat": 45.9423207,
+        "lon": 6.4296227
+      },
+      "nodes": [
+        11063912527,
+        11063912526,
+        11063912525,
+        11063912524,
+        11063912527
+      ],
+      "tags": {
+        "access": "customers",
+        "leisure": "swimming_pool"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1359543177,
+      "center": {
+        "lat": 45.9415187,
+        "lon": 6.4283857
+      },
+      "nodes": [
+        12584603129,
+        12584603128
+      ],
+      "tags": {
+        "bus": "yes",
+        "highway": "platform",
+        "name": "Le Grand Bornand Gare routière",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1359543178,
+      "center": {
+        "lat": 45.941599,
+        "lon": 6.428502
+      },
+      "nodes": [
+        12584603131,
+        12584603130
+      ],
+      "tags": {
+        "bus": "yes",
+        "highway": "platform",
+        "name": "Le Grand Bornand Gare routière",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1526189735,
+      "center": {
+        "lat": 45.9075096,
+        "lon": 6.4286401
+      },
+      "nodes": [
+        13910329999,
+        13910329997,
+        13910329998,
+        13910352209,
+        13910352208,
+        13910352207,
+        13910352206,
+        13910352205,
+        13910352204,
+        13910352203,
+        13910352202,
+        13910352201,
+        13910330000,
+        13910329999
+      ],
+      "tags": {
+        "access": "customers",
+        "leisure": "sports_centre",
+        "name": "Espace Aquatique des Aravis",
+        "sport": "swimming"
+      }
+    }
+  ]
+}
