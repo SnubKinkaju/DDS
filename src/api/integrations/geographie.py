@@ -2,6 +2,7 @@
 
 import json
 from datetime import datetime, timezone
+from http.client import HTTPException
 from math import isfinite
 from urllib.error import URLError
 from urllib.parse import urlencode
@@ -36,12 +37,12 @@ def lire_json(url, params, *, timeout=5, maximum=1_000_000):
         if not isinstance(document, dict):
             raise ValueError('Document inattendu.')
         return document
-    except (TimeoutError, URLError, OSError, ValueError) as error:
+    except (HTTPException, URLError, OSError, ValueError) as error:
         raise ServiceIndisponible('Le fournisseur de données est indisponible.') from error
 
 
 def nombre(value):
-    return type(value) in (int, float) and isfinite(value)
+    return type(value) is int or (type(value) is float and isfinite(value))
 
 
 def adresses(texte):
@@ -58,17 +59,22 @@ def adresses(texte):
     if not isinstance(response.get('features'), list):
         raise ServiceIndisponible("Réponse d’adresses illisible.")
     for feature in response['features']:
-        props = feature.get('properties', {})
+        if not isinstance(feature, dict):
+            continue
+        props = feature.get('properties')
+        if not isinstance(props, dict):
+            continue
         if (
             props.get('type') != 'housenumber'
             or props.get('citycode') != '74080'
             or props.get('postcode') != '74220'
-            or not props.get('id')
-            or not props.get('name')
+            or not isinstance(props.get('id'), str) or not props['id']
+            or not isinstance(props.get('name'), str) or not props['name']
         ):
             continue
-        coords = feature.get('geometry', {}).get('coordinates', [])
-        if len(coords) != 2 or not all(map(nombre, coords)):
+        geometry = feature.get('geometry')
+        coords = geometry.get('coordinates') if isinstance(geometry, dict) else None
+        if not isinstance(coords, list) or len(coords) != 2 or not all(map(nombre, coords)):
             continue
         lon, lat = coords
         if not (6.34 < lon < 6.60 and 45.81 < lat < 45.99):
@@ -87,5 +93,5 @@ def altitude(lon, lat):
         },
     )
     rows = data.get('elevations') or []
-    z = rows[0].get('z') if rows and isinstance(rows[0], dict) else None
+    z = rows[0].get('z') if isinstance(rows, list) and rows and isinstance(rows[0], dict) else None
     return round(z) if nombre(z) and 0 < z < 5000 else None

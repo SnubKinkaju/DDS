@@ -14,7 +14,8 @@ export default function AdresseField({ rue, onChange }) {
       })
         .then(({ adresses }) => setResult({ query, adresses }))
         .catch(() => {
-          if (!controller.signal.aborted) setResult({ query, adresses: [] });
+          if (!controller.signal.aborted)
+            setResult({ query, adresses: [], indisponible: true });
         });
     }, 300);
     return () => {
@@ -62,7 +63,10 @@ export default function AdresseField({ rue, onChange }) {
           </ul>
         ) : (
           <p className="mt-2 text-sm text-muted">
-            Adresse non localisée. Vous pouvez poursuivre la saisie.
+            {result.indisponible
+              ? "Recherche d’adresses indisponible."
+              : "Aucune adresse précise trouvée."}{" "}
+            Vous pouvez poursuivre la saisie.
           </p>
         ))}
     </div>
