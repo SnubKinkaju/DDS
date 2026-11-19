@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<factures>
+  <facture numero="FAC-2026-000001" dateEmission="2026-11-19" statut="emise" devise="EUR">
+    <emetteur id="7">
+      <prenom>Zoé</prenom>
+      <nom>Simon</nom>
+      <email>hote@example.test</email>
+    </emetteur>
+    <client id="8">
+      <prenom>Adam</prenom>
+      <nom>Dupont</nom>
+      <email>voyageur@example.test</email>
+    </client>
+    <logement id="100">
+      <titre>Refuge du village</titre>
+      <typeLogement>chambre</typeLogement>
+      <adresse>
+        <rue>164 Route du Col des Aravis</rue>
+        <codePostal>74220</codePostal>
+        <ville>La Clusaz</ville>
+      </adresse>
+    </logement>
+    <sejour reservationId="1">
+      <dateDebut>2026-12-04</dateDebut>
+      <dateFin>2026-12-06</dateFin>
+      <nombreNuits>2</nombreNuits>
+      <nombreVoyageurs>1</nombreVoyageurs>
+      <prixNuitCentimes>3007</prixNuitCentimes>
+    </sejour>
+    <lignes>
+      <ligne>
+        <libelle>Hébergement — 2 nuit(s)</libelle>
+        <quantite>2</quantite>
+        <prixUnitaireCentimes>3007</prixUnitaireCentimes>
+        <montantCentimes>6014</montantCentimes>
+      </ligne>
+    </lignes>
+    <commission incluseDansTotal="true" aLaChargeDe="emetteur">
+      <tauxPourcent>5</tauxPourcent>
+      <montantCentimes>301</montantCentimes>
+    </commission>
+    <totalCentimes>6014</totalCentimes>
+    <netEmetteurCentimes>5713</netEmetteurCentimes>
+  </facture>
+  <facture numero="FAC-2026-000002" dateEmission="2026-11-19" statut="emise" devise="EUR">
+    <emetteur id="6">
+      <prenom>Arthur</prenom>
+      <nom>Girard</nom>
+      <email>personne6@example.test</email>
+    </emetteur>
+    <client id="9">
+      <prenom>Alice</prenom>
+      <nom>Dupont</nom>
+      <email>personne9@example.test</email>
+    </client>
+    <logement id="99">
+      <titre>Séjour aux Confins</titre>
+      <typeLogement>chalet</typeLogement>
+      <adresse>
+        <rue>4777 Route des Confins</rue>
+        <codePostal>74220</codePostal>
+        <ville>La Clusaz</ville>
+      </adresse>
+    </logement>
+    <sejour reservationId="2">
+      <dateDebut>2026-12-06</dateDebut>
+      <dateFin>2026-12-08</dateFin>
+      <nombreNuits>2</nombreNuits>
+      <nombreVoyageurs>1</nombreVoyageurs>
+      <prixNuitCentimes>15694</prixNuitCentimes>
+    </sejour>
+    <lignes>
+      <ligne>
+        <libelle>Hébergement — 2 nuit(s)</libelle>
+        <quantite>2</quantite>
+        <prixUnitaireCentimes>15694</prixUnitaireCentimes>
+        <montantCentimes>31388</montantCentimes>
+      </ligne>
+    </lignes>
+    <commission incluseDansTotal="true" aLaChargeDe="emetteur">
+      <tauxPourcent>5</tauxPourcent>
+      <montantCentimes>1569</montantCentimes>
+    </commission>
+    <totalCentimes>31388</totalCentimes>
+    <netEmetteurCentimes>29819</netEmetteurCentimes>
+  </facture>
+</factures>
