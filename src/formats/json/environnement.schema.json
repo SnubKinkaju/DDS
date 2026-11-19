@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://refuge.example/api/formats/json/environnement.schema.json",
+  "title": "Environnement géographique d’un logement publié",
+  "$defs": {
+    "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+    "lon": { "type": "number", "minimum": -180, "maximum": 180 },
+    "date": { "type": "string", "format": "date-time" },
+    "dateFacultative": {
+      "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/date" }]
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protections",
+    "localisation",
+    "importLe",
+    "rayonMetres",
+    "lieux"
+  ],
+  "properties": {
+    "protections": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ombrage", "equipements"],
+      "properties": {
+        "ombrage": { "$ref": "logement-commun.schema.json#/$defs/ombrage" },
+        "equipements": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "rayonMetres": { "type": "integer", "minimum": 1 },
+    "importLe": { "$ref": "#/$defs/dateFacultative" },
+    "localisation": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "latitude",
+        "longitude",
+        "adresseIgn",
+        "verifieLe",
+        "altitudeMetres",
+        "altitudeLe"
+      ],
+      "properties": {
+        "latitude": { "$ref": "#/$defs/lat" },
+        "longitude": { "$ref": "#/$defs/lon" },
+        "adresseIgn": { "type": "string", "minLength": 1 },
+        "verifieLe": { "$ref": "#/$defs/date" },
+        "altitudeMetres": { "type": ["number", "null"] },
+        "altitudeLe": { "$ref": "#/$defs/dateFacultative" }
+      }
+    },
+    "lieux": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "nom",
+          "categorie",
+          "latitude",
+          "longitude",
+          "position",
+          "acces",
+          "source",
+          "sourceUrl",
+          "collecteLe",
+          "verifieLe",
+          "distanceMetres"
+        ],
+        "properties": {
+          "id": { "type": "integer", "minimum": 1 },
+          "nom": { "type": "string" },
+          "categorie": {
+            "enum": [
+              "eau",
+              "pharmacie",
+              "transport",
+              "lac",
+              "piscine",
+              "alimentation",
+              "lieu_frais"
+            ]
+          },
+          "latitude": { "$ref": "#/$defs/lat" },
+          "longitude": { "$ref": "#/$defs/lon" },
+          "position": { "enum": ["point", "centre", "entree"] },
+          "acces": { "enum": ["public", "inconnu"] },
+          "source": { "enum": ["osm", "mairie"] },
+          "sourceUrl": { "type": "string", "format": "uri" },
+          "collecteLe": { "$ref": "#/$defs/date" },
+          "verifieLe": { "$ref": "#/$defs/dateFacultative" },
+          "distanceMetres": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  }
+}
