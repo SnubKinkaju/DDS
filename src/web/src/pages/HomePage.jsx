@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import EmptyState from "../components/EmptyState.jsx";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import PageLayout from "../components/PageLayout.jsx";
+import Meteo from "../components/territoire/Meteo.jsx";
 import ListingCard from "../components/ListingCard.jsx";
 import { ListingGridSkeleton } from "../components/listings/ListingGrid.jsx";
 import ListingSearch from "../components/listings/ListingSearch.jsx";
@@ -60,6 +61,10 @@ export default function HomePage() {
         </div>
       </section>
 
+      <div className="mx-auto mt-7 max-w-[850px]">
+        <Meteo compact />
+        <Link className="button-tertiary" to="/carte">Eau, santé et lieux frais sur la carte</Link>
+      </div>
       <div className="mt-12 border-b border-hairline-soft">
         <TypeFilter />
       </div>

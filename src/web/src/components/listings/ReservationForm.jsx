@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
+import Meteo from "../territoire/Meteo.jsx";
 import ErrorMessage from "../ErrorMessage.jsx";
 import FormField from "../auth/FormField.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
@@ -78,6 +79,7 @@ export default function ReservationForm({ logement, isOwner }) {
         <span className="text-[22px] font-semibold">{formatPrice(logement.prixNuitCentimes)}</span>{" "}
         par nuit
       </p>
+      <Meteo debut={form.dateDebut} fin={form.dateFin} />
       {isOwner ? (
         <>
           <p className="mt-4 text-sm text-muted">Vous êtes propriétaire de ce logement.</p>
