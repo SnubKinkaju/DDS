@@ -55,6 +55,21 @@ GET /api/factures
 GET /api/factures/{numero}
 GET /api/factures/{numero}/document.{json|xml|html|txt}
 GET /api/formats/xml/facture.xsd
+GET /api/logements/{id}/lieux.jsonld
+GET /api/logements/{id}/environnement
+GET /api/territoire/adresses?q=...
+GET /api/territoire/carte.geojson
+GET /api/territoire/meteo
+GET /api/favoris
+PUT ou DELETE /api/favoris/{logementId}
+GET ou PUT /api/logements/{id}/disponibilites
+GET /api/admin/territoire
+POST /api/admin/lieux
+PUT ou DELETE /api/admin/lieux/{id}
+GET /api/admin/logements
+PUT /api/admin/logements/{id}/suspension
+GET /api/export/base-de-donnees.xml
+GET /api/export/factures.xml
 ```
 
 La session est conservée dans un cookie HTTP-only signé par Flask. En
@@ -86,7 +101,7 @@ Le document JSON public est validé avant sa diffusion par
 réutilisent les définitions de `logement-commun.schema.json`.
 
 La fiche HTML et le texte imprimable utilisent ce même document validé.
-Les gabarits sont dans `src/api/documents`, la génération dans
+Les transformations XSLT sont dans `src/formats/xslt`, la génération dans
 `services/logement_documents.py` et les routes dans `routes/documents.py`.
 
 Voir [les formats et leur vérification](../formats/README.md).
@@ -187,3 +202,10 @@ Vérifications sur base temporaire : documents et arrondis, identités figées a
 modification des profils, taux figé, accès privés, acceptations concurrentes,
 répétition d'une acceptation, annulation, rollback en cas d'échec d'émission,
 numérotation annuelle et séjour gratuit.
+
+
+## Données du territoire et droits
+
+Les coordonnées d’une annonce proviennent d’une suggestion IGN revérifiée côté serveur. Le document d’environnement retient jusqu’à trois lieux par catégorie dans un rayon de 2 km, puis les trie par distance. La fiche HTML contient le graphe JSON-LD même sans JavaScript. `REFUGE_PUBLIC_ORIGIN` fixe l’origine absolue des identifiants pour un déploiement. La météo communale est partagée, avec cache d’une heure et dernier succès utilisable pendant six heures. `?archive=1` sélectionne explicitement l’exemple daté.
+
+Les exports et les écritures municipales exigent une session habilitée en base. Le voyageur et l’hôte conservent l’accès à leurs propres factures par numéro. La fenêtre de réservation est ouverte tant que le propriétaire n’a défini aucune plage, sous réserve des séjours déjà acceptés. Les bornes de départ sont exclusives. [Parcours et résultats](../../docs/revue-projet.md)

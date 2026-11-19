@@ -75,8 +75,7 @@ Un logement masqué ou supprimé renvoie 404. Un document de sortie incorrect
 renvoie 500 et les détails sont consignés côté serveur. Une saisie incorrecte
 reste une erreur 400 : ce sont deux contrôles distincts.
 
-La transformation JSON → HTML/texte est réalisée par Python et les gabarits
-Jinja de `src/api/documents`. Les factures, elles, utilisent **XML et XSLT**.
+Flask associe le logement et son environnement validés, les projette dans un arbre XML avec lxml puis applique `logement.xsl` ou `logement-texte.xsl`. Le HTML embarque le JSON-LD des alentours. Le graphe seul est disponible sous `/api/logements/{id}/lieux.jsonld`. Son vocabulaire est Schema.org. Les positions de la carte sont sérialisées en GeoJSON.
 La fiche publique d'utilisateur utilise RDFa avec le vocabulaire schema.org.
 
 ## Facture : XML validé et transformations XSLT
@@ -127,9 +126,7 @@ devient **Annulée**. Une demande en attente ou refusée n'a pas de facture.
 make verifier-documents
 ```
 
-La commande ne modifie pas la base. Elle contrôle les deux exemples valides et
-le refus du contre-exemple. Les identifiants et la photo des exemples sont
-illustratifs : ils ne sont pas insérés dans la base.
+La commande prépare la base fictive si nécessaire, puis la vérifie en lecture seule. Elle contrôle les exemples JSON, les deux exports XML, la DTD, les XSD, les résultats XPath et les rendus des deux entités. Pour chaque annonce géolocalisée de cette base, elle rapproche les lieux de la fiche, du texte, du graphe JSON-LD et de la carte.
 
 Pour une démonstration : publier un logement, ouvrir ses documents, modifier
 son prix puis recharger la fiche HTML et le JSON. Les deux reprennent le prix
