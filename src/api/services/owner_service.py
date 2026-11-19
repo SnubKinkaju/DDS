@@ -69,9 +69,10 @@ def change_status(connection, listing_id, owner_id, payload):
 
 
 def delete(connection, listing_id, owner_id):
-    row = require_owner(connection, listing_id, owner_id)
-    photos = logement_repository.find_photos(connection, listing_id)
     with connection:
+        connection.execute('BEGIN IMMEDIATE')
+        row = require_owner(connection, listing_id, owner_id)
+        photos = logement_repository.find_photos(connection, listing_id)
         if owner_repository.has_reservations(connection, listing_id):
             raise ConflictError("Ce logement a des réservations. Désactivez-le pour conserver son historique.")
         owner_repository.delete(connection, row)
