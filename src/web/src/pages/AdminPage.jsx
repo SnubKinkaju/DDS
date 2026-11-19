@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Database, FileCode2, Download } from "lucide-react";
 import { Navigate } from "react-router";
 import AdminTerritoire from "../components/territoire/AdminTerritoire.jsx";
 import PageLayout from "../components/PageLayout.jsx";
@@ -113,19 +114,21 @@ export default function AdminPage() {
         </form>
       </section>
       <h2 className="mb-4 text-xl font-semibold">Documents de la plateforme</h2>
-      <button
-        className="button-secondary"
-        onClick={() => exportBaseDeDonnees().catch(setError)}
-      >
-        Télécharger la base en XML
-      </button>
-      <a
-        className="button-secondary ml-2"
-        href="/api/export/factures.xml"
-        download
-      >
-        Télécharger les factures en XML
-      </a>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <button
+          className="admin-export"
+          onClick={() => exportBaseDeDonnees().catch(setError)}
+        >
+          <Database />
+          Télécharger la base en XML
+          <Download size={16} className="ml-auto" />
+        </button>
+        <a className="admin-export" href="/api/export/factures.xml" download>
+          <FileCode2 />
+          Télécharger les factures en XML
+          <Download size={16} className="ml-auto" />
+        </a>
+      </div>
     </PageLayout>
   );
 }

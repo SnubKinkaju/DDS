@@ -2,6 +2,8 @@ import { useState } from "react";
 import useResource from "../../hooks/useResource.js";
 import { request } from "../../services/api.js";
 import { categories } from "../../data/territoire.js";
+import { formatDate } from "../../utils/dates.js";
+import IconeLieu from "./IconeLieu.jsx";
 import ErrorMessage from "../ErrorMessage.jsx";
 
 const vide = {
@@ -19,6 +21,7 @@ export default function AdminTerritoire() {
   const [form, setForm] = useState(vide);
   const [editing, setEditing] = useState(null);
   const [failure, setFailure] = useState(null);
+  const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
   function ouvrir(lieu) {
     setEditing(lieu?.id ?? null);
@@ -35,6 +38,7 @@ export default function AdminTerritoire() {
       !window.confirm("Retirer ce lieu de la carte et des fiches ?")
     )
       return;
+    setNotice("");
     setBusy(true);
     setFailure(null);
     try {
@@ -48,6 +52,7 @@ export default function AdminTerritoire() {
               longitude: Number(form.longitude),
             }),
       });
+      setNotice(supprimer ? "Lieu retiré de la carte." : "Lieu enregistré.");
       ouvrir(null);
       setRevision((v) => v + 1);
     } catch (err) {
@@ -61,6 +66,7 @@ export default function AdminTerritoire() {
       value: form[key],
       className: "form-control",
       required: true,
+      disabled: busy,
       onChange: (e) => setForm({ ...form, [key]: e.target.value }),
     };
   }
@@ -68,51 +74,87 @@ export default function AdminTerritoire() {
     <section className="mt-8">
       <h2 className="text-xl font-semibold">Services du territoire</h2>
       <ErrorMessage error={error || failure} />
+      {notice && (
+        <p role="status" className="mt-3 text-sm text-success">
+          {notice}
+        </p>
+      )}
+      {!data && !error && (
+        <p role="status" className="mt-3 text-sm text-muted">
+          Chargement du territoire…
+        </p>
+      )}
       {data && (
         <>
           <p className="my-3 text-sm text-muted">
             {data.import?.succes_le
-              ? "Source OSM du " + data.import.succes_le.slice(0, 10)
-              : "Import OSM en attente"}
-            {data.import &&
-              " · dernière tentative " +
-                data.import.tentative_le.slice(0, 10) +
-                " · " +
-                data.import.resultat}
+              ? "Données OpenStreetMap du " +
+                formatDate(data.import.succes_le.slice(0, 10))
+              : "Première collecte OpenStreetMap en attente"}
+            {data.import?.resultat === "erreur" &&
+              " · Échec de la mise à jour du " +
+                formatDate(data.import.tentative_le.slice(0, 10))}
           </p>
-          <table className="w-full max-w-xl text-left text-sm">
-            <thead>
-              <tr>
-                {[
-                  "Catégorie",
-                  "Recensés",
-                  "Public confirmé",
-                  "Accès inconnu",
-                ].map((x) => (
-                  <th key={x}>{x}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data.categories.map((c) => (
-                <tr key={c.code} className="border-t border-hairline-soft">
-                  <td className="py-1">{c.nom}</td>
-                  <td>{c.total}</td>
-                  <td>
-                    {c.confirmes}
-                    {c.derniereVerification && (
-                      <small className="block text-muted">
-                        Vérifié le {c.derniereVerification.slice(0, 10)}
-                      </small>
-                    )}
-                  </td>
-                  <td>{c.inconnus}</td>
+          <div className="overflow-x-auto rounded-md border border-hairline">
+            <table className="table-territoire w-full text-left text-sm">
+              <thead className="bg-surface-soft text-xs text-muted">
+                <tr>
+                  {[
+                    "Catégorie",
+                    "Recensés",
+                    "Public confirmé",
+                    "À vérifier",
+                    "Restreint",
+                  ].map((x) => (
+                    <th scope="col" className="px-3 py-3 font-semibold" key={x}>
+                      {x}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {data.categories.map((c) => (
+                  <tr key={c.code} className="border-t border-hairline-soft">
+                    <td className="px-3 py-2">
+                      <span className="flex items-center gap-3 font-medium">
+                        <IconeLieu categorie={c.code} />
+                        {c.nom}
+                      </span>
+                    </td>
+                    <td
+                      data-label="Recensés"
+                      className="px-3 py-2 tabular-nums"
+                    >
+                      {c.total}
+                    </td>
+                    <td data-label="Public" className="px-3 py-2 tabular-nums">
+                      {c.confirmes}
+                      {c.derniereVerification && (
+                        <small className="block text-muted">
+                          Vérifié le{" "}
+                          {formatDate(c.derniereVerification.slice(0, 10))}
+                        </small>
+                      )}
+                    </td>
+                    <td
+                      data-label="À vérifier"
+                      className="px-3 py-2 tabular-nums"
+                    >
+                      {c.inconnus}
+                    </td>
+                    <td
+                      data-label="Restreint"
+                      className="px-3 py-2 tabular-nums"
+                    >
+                      {c.total - c.inconnus - c.confirmes}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           {data.accesAConfirmer.length > 0 && (
-            <details className="mt-4">
+            <details className="mt-3 rounded-md border border-hairline-soft px-4 py-3">
               <summary className="cursor-pointer font-semibold">
                 Lieux dont l’accès reste à vérifier (
                 {data.accesAConfirmer.length})
@@ -132,7 +174,7 @@ export default function AdminTerritoire() {
               </ul>
             </details>
           )}
-          <details className="mt-4">
+          <details className="mt-3 rounded-md border border-hairline-soft px-4 py-3">
             <summary className="cursor-pointer font-semibold">
               Gérer les lieux municipaux
             </summary>
@@ -140,6 +182,7 @@ export default function AdminTerritoire() {
               Lieu à modifier
               <select
                 className="form-control"
+                disabled={busy}
                 value={editing ?? ""}
                 onChange={(e) =>
                   ouvrir(

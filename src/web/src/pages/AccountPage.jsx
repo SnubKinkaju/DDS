@@ -14,7 +14,7 @@ function AccountPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
-  const roleLabel = utilisateur.role === "proprietaire" ? "Propriétaire" : "Voyageur";
+  const roleLabel = utilisateur.estAdmin ? "Administration municipale" : utilisateur.role === "proprietaire" ? "Propriétaire" : "Voyageur";
   const informations = [
     ["Prénom", utilisateur.prenom],
     ["Nom", utilisateur.nom],
