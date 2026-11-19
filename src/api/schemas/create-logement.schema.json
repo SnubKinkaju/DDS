@@ -14,6 +14,8 @@
     "adresse"
   ],
   "properties": {
+    "adresseIgn": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "ombrage": { "$ref": "logement-commun.schema.json#/$defs/ombrage" },
     "titre": {
       "$ref": "logement-commun.schema.json#/$defs/titre"
     },

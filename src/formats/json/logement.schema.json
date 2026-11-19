@@ -7,6 +7,7 @@
   "additionalProperties": false,
   "required": ["id", "statut", "titre", "description", "typeLogement", "capacite", "prixNuitCentimes", "adresse", "proprietaire", "photos", "equipements"],
   "properties": {
+    "ombrage": { "$ref": "logement-commun.schema.json#/$defs/ombrage" },
     "id": { "$ref": "logement-commun.schema.json#/$defs/identifiant" },
     "statut": { "const": "publie" },
     "titre": { "$ref": "logement-commun.schema.json#/$defs/titre" },

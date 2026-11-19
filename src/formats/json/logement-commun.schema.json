@@ -4,6 +4,7 @@
   "title": "Définitions communes aux documents de logement",
   "description": "Règles partagées par la saisie et la description publique d'un logement.",
   "$defs": {
+    "ombrage": { "enum": ["non_renseigne", "aucun", "partiel", "important"] },
     "identifiant": { "type": "integer", "minimum": 1 },
     "titre": { "type": "string", "minLength": 3, "maxLength": 120 },
     "description": { "type": "string", "minLength": 10, "maxLength": 2000 },

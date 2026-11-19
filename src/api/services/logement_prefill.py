@@ -26,6 +26,8 @@ Règles :
 - Ne déduis ni ville ni code postal. N'altère jamais une autre ville en La Clusaz.
 - Les équipements utilisent exclusivement les identifiants du catalogue ci-dessous.
   Ne retiens que ceux explicitement disponibles ; 'pas de wifi' n'ajoute pas le wifi.
+- Ne propose ombrage que si le texte décrit explicitement l’ombre extérieure en été.
+- Les coordonnées, l’altitude, les lieux proches et la météo sont renseignés séparément.
 - Ne renvoie ni identifiant de logement/utilisateur ni statut. Tu ne publies rien.
 - Si le texte ne décrit aucun logement, renvoie {{}}.
 

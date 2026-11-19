@@ -6,6 +6,7 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "ombrage": { "$ref": "logement-commun.schema.json#/$defs/ombrage" },
     "titre": { "$ref": "logement-commun.schema.json#/$defs/titre" },
     "description": { "$ref": "logement-commun.schema.json#/$defs/description" },
     "typeLogement": { "$ref": "logement-commun.schema.json#/$defs/typeLogement" },
