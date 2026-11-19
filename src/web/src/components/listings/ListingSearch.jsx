@@ -14,10 +14,11 @@ export default function ListingSearch({ initial = {} }) {
 
   function search(event) {
     event.preventDefault();
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(initial);
+    params.delete("recherche");
+    params.delete("voyageurs");
     const keyword = new FormData(event.currentTarget).get("recherche").trim();
     if (keyword) params.set("recherche", keyword);
-    if (initial.type) params.set("type", initial.type);
     if (guests > 1) params.set("voyageurs", guests);
     const query = params.toString();
     navigate(query ? `/logements?${query}` : "/logements");
