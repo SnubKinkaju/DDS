@@ -1,0 +1,26 @@
+[
+  {
+    "id": "74080_0255_00164",
+    "rue": "164 Route du Col des Aravis",
+    "longitude": 6.426257,
+    "latitude": 45.905385,
+    "altitude": 1046,
+    "verifieLe": "2026-11-19T16:24:54+00:00"
+  },
+  {
+    "id": "74080_0275_04777",
+    "rue": "4777 Route des Confins",
+    "longitude": 6.478425,
+    "latitude": 45.919985,
+    "altitude": 1413,
+    "verifieLe": "2026-11-19T16:24:55+00:00"
+  },
+  {
+    "id": "74080_0380_00009",
+    "rue": "9 Chemin de la Croix",
+    "longitude": 6.425762,
+    "latitude": 45.904851,
+    "altitude": 1045,
+    "verifieLe": "2026-11-19T16:24:55+00:00"
+  }
+]

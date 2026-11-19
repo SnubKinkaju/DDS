@@ -1,0 +1,15 @@
+# Données de La Clusaz utilisées en démonstration
+
+| Fichier | Origine et date | Utilisation |
+|---|---|---|
+| `lieux-osm.json` | © les contributeurs OpenStreetMap, base du 19 novembre 2026 à 16 h 13 UTC. Extrait redistribué sous ODbL 1.0. | 195 objets sources, 164 actifs après sélection et rapprochement. L’extrait porte sur La Clusaz et ses abords. [Licence et attribution](https://www.openstreetmap.org/copyright) |
+| `adresses-ign.json` | Géocodage Géoplateforme d’après la BAN et altitude du terrain IGN issue de la ressource `ign_rge_alti_wld`. Les trois réponses datent du 19 novembre 2026. | Trois adresses de référence servent à positionner des annonces fictives. Les propriétaires, prix, photos et disponibilités sont des données d’exercice. [Géocodage IGN](https://cartes.gouv.fr/aide/fr/guides-utilisateur/utiliser-les-services-de-la-geoplateforme/geocodage/), [altimétrie IGN](https://cartes.gouv.fr/aide/fr/guides-utilisateur/utiliser-les-services-de-la-geoplateforme/calcul-altimetrique/) |
+| `meteo-archive.json` | Open-Meteo, valeur du modèle du 19 novembre 2026 à 17 h en heure locale, licence CC BY 4.0. | Exemple daté pour la démonstration hors ligne. La météo courante utilise l’API Forecast sur le point communal 45,905° N et 6,424° E. [Documentation](https://open-meteo.com/en/docs), [conditions et attribution](https://open-meteo.com/en/terms) |
+
+L’emprise Overpass est donnée dans l’ordre sud, ouest, nord, est, soit `45.835, 6.36, 45.959, 6.565`. Les marges autour du contour communal dépassent 2,6 km aux quatre points cardinaux. [Contour de La Clusaz](https://geo.api.gouv.fr/communes/74080?format=geojson&geometry=contour)
+
+Les filtres, la requête de mise à jour et la normalisation sont dans [import_lieux.py](../../../api/services/import_lieux.py). Les catégories couvrent eau potable, pharmacies, arrêts, commerces alimentaires, lacs et piscines. Chaque objet conserve un lien vers son identifiant OSM. La qualification de l’espace aquatique est étayée par la [fiche de l’office de tourisme](https://www.laclusaz.com/details/espace-aquatique-la-clusaz/).
+
+L’import conserve individuellement un bassin et l’établissement qui l’abrite. Un arrêt cartographié renseigne sur une position. L’accès saisonnier, les horaires et les conditions de baignade demandent une vérification auprès de l’exploitant. La distance affichée est géographique et peut être calculée jusqu’au centre d’une surface. La mairie peut ajouter un lieu de fraîcheur avec sa propre source et une date de vérification.
+
+Pour actualiser le catalogue en ligne, utiliser `make import-poi`. Pour rejouer cet extrait, utiliser `make import-poi EXTRAIT=src/db/seeds/territoire/lieux-osm.json` avec `NEW_DB=...` pour sélectionner la base. Le démarrage initialise un catalogue absent avec l’extrait local. Un import complet actualise les lieux OSM, préserve les ajouts municipaux et garde le dernier catalogue valide si la source est indisponible.
