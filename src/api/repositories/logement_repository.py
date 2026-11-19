@@ -3,6 +3,7 @@ def find_published(connection):
         """
         SELECT
             logement.id,
+            logement.ombrage,
             logement.titre,
             logement.description,
             logement.type_logement,
@@ -11,6 +12,8 @@ def find_published(connection):
             adresse.rue,
             adresse.code_postal,
             adresse.ville,
+            EXISTS(SELECT 1 FROM logement_equipement le JOIN equipement e ON e.id=le.equipement_id
+                   WHERE le.logement_id=logement.id AND e.nom='Volets') AS volets,
             (
                 SELECT photo_logement.url
                 FROM photo_logement
@@ -32,9 +35,10 @@ def find_by_id(connection, logement_id):
         SELECT
             logement.id,
             logement.statut,
+            logement.motif_suspension,
             logement.adresse_id,
             logement.proprietaire_id,
-            logement.motif_suspension,
+            logement.ombrage,
             logement.titre,
             logement.description,
             logement.type_logement,

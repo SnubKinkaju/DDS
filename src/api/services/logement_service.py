@@ -1,6 +1,7 @@
 from src.api.errors import AuthenticationError, NotFoundError, ValidationError
 from src.api.repositories import logement_repository, utilisateur_repository, owner_repository
 from src.api.validation import validate_json
+from src.api.services import localisation
 from src.api.services.document_validation import validate_logement_document
 
 
@@ -24,6 +25,8 @@ def list_published(connection):
             "capacite": row["capacite"],
             "prixNuitCentimes": row["prix_nuit_centimes"],
             "adresse": _serialize_address(row),
+            "ombrage": row["ombrage"],
+            "volets": bool(row["volets"]),
             "photoPrincipale": row["photo_principale"],
         }
         for row in rows
@@ -54,6 +57,7 @@ def serialize_detail(connection, row):
     return {
         "id": row["id"],
         "statut": row["statut"],
+        "ombrage": row["ombrage"],
         "titre": row["titre"],
         "description": row["description"],
         "typeLogement": row["type_logement"],
@@ -115,6 +119,7 @@ def create_published(connection, proprietaire_id, payload):
     description = _required_text(payload["description"], "description", 10)
     rue = _required_text(adresse["rue"], "adresse.rue", 3)
 
+    position = localisation.verifier(payload)
     try:
         adresse_id = logement_repository.create_address(
             connection,
@@ -132,6 +137,10 @@ def create_published(connection, proprietaire_id, payload):
             payload["capacite"],
             payload["prixNuitCentimes"],
         )
+        connection.execute("UPDATE logement SET ombrage=? WHERE id=?",
+                           (payload.get("ombrage", "non_renseigne"), logement_id))
+        if position:
+            localisation.enregistrer(connection, logement_id, position)
         utilisateur_repository.promote_to_owner(connection, proprietaire_id)
         owner_repository.replace_equipment(connection, logement_id, payload.get('equipements', []))
         connection.commit()
