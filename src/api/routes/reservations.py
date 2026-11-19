@@ -1,7 +1,7 @@
 from flask import Blueprint, current_app, jsonify, request, session
 
 from src.api.errors import AuthenticationError
-from src.api.services import auth_service, reservation_service
+from src.api.services import auth_service, reservation_service, disponibilites, owner_service
 from src.db.flask import get_db
 
 
@@ -43,4 +43,15 @@ def update_reservation(reservation_id):
 
 @reservations_blueprint.get('/logements/<int:listing_id>/dates-reservees')
 def booked_dates(listing_id):
-    return jsonify(periodes=reservation_service.booked_dates(get_db(), listing_id))
+    return jsonify(periodes=reservation_service.booked_dates(get_db(), listing_id),
+                   ouvertures=disponibilites.lire(get_db(), listing_id))
+
+
+@reservations_blueprint.route('/logements/<int:listing_id>/disponibilites', methods=['GET', 'PUT'])
+def ouvertures(listing_id):
+    db = get_db()
+    owner_service.require_owner(db, listing_id, current_user_id())
+    if request.method == 'GET':
+        return jsonify(periodes=disponibilites.lire(db, listing_id))
+    return jsonify(disponibilites.remplacer(db, listing_id, request.get_json(silent=True),
+                                            reservation_service.today().isoformat()))

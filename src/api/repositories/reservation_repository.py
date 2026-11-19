@@ -1,8 +1,11 @@
 """Requêtes de réservation. Les transactions sont gérées par le service."""
 
 SELECT_DETAIL = """
-    SELECT r.*, l.proprietaire_id, l.titre, l.statut AS logement_statut,
+    SELECT r.*, l.proprietaire_id, l.titre, CASE WHEN l.motif_suspension IS NULL THEN l.statut ELSE 'indisponible' END AS logement_statut,
            l.capacite, a.ville,
+           (NOT EXISTS (SELECT 1 FROM disponibilite d WHERE d.logement_id = r.logement_id)
+            OR EXISTS (SELECT 1 FROM disponibilite d WHERE d.logement_id = r.logement_id
+                       AND d.date_debut <= r.date_debut AND d.date_fin >= r.date_fin)) AS periode_ouverte,
            voyageur.prenom AS voyageur_prenom, voyageur.nom AS voyageur_nom,
            hote.prenom AS hote_prenom, hote.nom AS hote_nom,
            f.numero AS facture_numero, f.statut AS facture_statut

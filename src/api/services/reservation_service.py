@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo
 from src.api.errors import ConflictError, ForbiddenError, NotFoundError, ValidationError
 from src.api.repositories import logement_repository, reservation_repository as repository
 from src.api.repositories import facture_repository
-from src.api.services import facture_service
+from src.api.services import facture_service, disponibilites
 from src.api.validation import validate_json
 
 
@@ -21,7 +21,7 @@ def serialize(row, user_id):
     if user_id == row['proprietaire_id'] and row['statut'] == 'en_attente':
         actions.append('refusee')
         if (start >= today() and row['logement_statut'] == 'publie'
-                and row['nombre_voyageurs'] <= row['capacite']):
+                and row['periode_ouverte'] and row['nombre_voyageurs'] <= row['capacite']):
             actions.append('acceptee')
     return {
         'id': row['id'], 'statut': row['statut'], 'actions': actions,
@@ -45,7 +45,7 @@ def list_for_user(connection, user_id, received=False):
 
 def published_listing(connection, listing_id):
     row = logement_repository.find_by_id(connection, listing_id)
-    if row is None or row['statut'] != 'publie':
+    if row is None or row['statut'] != 'publie' or row['motif_suspension']:
         raise NotFoundError("Ce logement n'est plus disponible à la réservation.")
     return row
 
@@ -70,6 +70,7 @@ def create(connection, user_id, payload):
             raise ForbiddenError('Vous ne pouvez pas réserver votre propre logement.')
         if payload['nombreVoyageurs'] > listing['capacite']:
             raise ValidationError('Le nombre de voyageurs dépasse la capacité du logement.')
+        disponibilites.verifier(connection, listing['id'], start.isoformat(), end.isoformat())
         if repository.has_overlap(connection, listing['id'], start.isoformat(), end.isoformat()):
             raise ConflictError('Ce logement est déjà réservé sur cette période.')
         if repository.has_pending_duplicate(connection, listing['id'], user_id, start.isoformat(), end.isoformat()):
@@ -107,6 +108,7 @@ def change_status(connection, reservation_id, user_id, payload, commission_rate=
             listing = published_listing(connection, row['logement_id'])
             if row['nombre_voyageurs'] > listing['capacite']:
                 raise ConflictError('La capacité du logement ne permet plus ce séjour.')
+            disponibilites.verifier(connection, row['logement_id'], row['date_debut'], row['date_fin'])
             if repository.has_overlap(connection, row['logement_id'], row['date_debut'], row['date_fin']):
                 raise ConflictError('Une autre réservation occupe déjà ces dates.')
             repository.refuse_overlapping_requests(connection, row)
