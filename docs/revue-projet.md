@@ -37,10 +37,22 @@ Pour refaire rapidement la première manipulation, utiliser [l’extrait de deux
 
 ## Données et limites de la démonstration
 
-Le scénario initial produit 20 utilisateurs fictifs, 100 logements, 103 demandes et 101 factures, dont une annulée. Trois annonces ont une adresse de référence géolocalisée. L’extrait du 19 novembre 2026 donne 164 objets territoriaux actifs dans la commune et ses abords. L’absence de pharmacie recensée à moins de 2 km d’une fiche décrit la couverture de cet extrait. [Origine et réutilisation des données](../src/db/seeds/territoire/README.md)
+Le scénario initial produit 20 utilisateurs fictifs, 100 logements, 103 demandes et 101 factures, dont une annulée. Sur une démo créée depuis la revue, six annonces ont une adresse de référence géolocalisée, du centre du village au col des Aravis. L’extrait du 19 novembre 2026 donne 164 objets territoriaux actifs dans la commune et ses abords. L’absence de pharmacie recensée à moins de 2 km d’une fiche décrit la couverture de cet extrait. [Origine et réutilisation des données](../src/db/seeds/territoire/README.md)
 
 La météo concerne le point communal et l’extérieur. L’ombre et les équipements sont déclarés par l’hôte. Les distances utilisent une ligne droite et parfois le centre d’une surface. Une baignade autorisée ou une salle municipale ouverte pendant une canicule demande une source locale précise. Un lieu municipal peut être ajouté avec cette source puis retiré lorsqu’il ferme.
 
 Deux sessions de navigateur ont permis de publier une annonce avec une adresse IGN, réserver deux nuits à 51,05 €, accepter et conserver après annulation la facture de 102,10 € avec 5,11 € de commission. Sur mobile, le compte mairie a téléchargé la collection XML.
 
 La vérification de livraison couvre les formats, les refus d’accès, la réservation concurrente, la modération, les pannes de fournisseurs et les parcours React sur ordinateur et mobile. Le parcours ILaaS a été exercé avec réponses simulées et clé absente. La réponse réelle du modèle reste à essayer avec une clé de cours configurée sur le serveur.
+
+## Vérifications après la revue de l’interface
+
+| Parcours rejoué sur une base dédiée | Résultat observé |
+|---|---|
+| Carte sur ordinateur et téléphone | Un clic sur un groupe zoome. La recherche « Danay » isole la pharmacie. Le lien direct rouvre le même repère. Avec les tuiles indisponibles, la liste, les repères et la fiche restent utilisables. |
+| Voyageur | Une recherche conserve « Volets » et « Extérieur ombragé ». Un visiteur choisit ses dates et ses voyageurs, crée son compte, revient à son annonce et envoie la demande. |
+| Hôte et mairie | Deux acceptations concurrentes sur des dates qui se chevauchent donnent une seule facture. Une suspension retire l’annonce, la photo et le repère publics. Un lieu ajouté par la mairie apparaît sur la carte. |
+| Pannes et données historiques | Une source IGN incomplète laisse le formulaire utilisable. Une altitude connue est conservée si les coordonnées sont identiques. Les textes anciens contenant un caractère incompatible avec XML restent exportables. |
+| Documents | Sur une démo neuve, le vérificateur contrôle 101 factures et compare les lieux de six fiches en HTML, texte, GeoJSON et JSON-LD. Le profil RDFa et les requêtes XPath sont aussi contrôlés. |
+
+Pour retrouver les six logements de référence en conservant une ancienne démo, lancer `make dev-demo DEMO_DIR=instance/demo-carte` avec un dossier neuf. Sur la carte, sélectionner « Logements », puis « Recadrer sur les résultats ».
