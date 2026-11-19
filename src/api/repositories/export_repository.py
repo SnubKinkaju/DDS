@@ -7,7 +7,7 @@ def find_equipements(connection):
 
 def find_utilisateurs(connection):
     return connection.execute(
-        """SELECT u.id, u.prenom, u.nom, u.email, u.telephone, u.role, u.date_creation,
+        """SELECT u.id, u.prenom, u.nom, u.email, u.telephone, u.role, u.est_admin, u.date_creation,
                   a.rue, a.code_postal, a.ville
            FROM utilisateur u LEFT JOIN adresse a ON a.id = u.adresse_id
            ORDER BY u.id"""
@@ -17,9 +17,9 @@ def find_utilisateurs(connection):
 def find_logements(connection):
     return connection.execute(
         """SELECT l.id, l.proprietaire_id, l.titre, l.description, l.type_logement,
-                  l.capacite, l.prix_nuit_centimes, l.statut, l.date_creation,
-                  a.rue, a.code_postal, a.ville
-           FROM logement l JOIN adresse a ON a.id = l.adresse_id
+                  l.capacite, l.prix_nuit_centimes, l.statut, l.date_creation, l.ombrage, l.motif_suspension,
+                  a.rue, a.code_postal, a.ville, p.adresse_ign,p.longitude,p.latitude,p.verifie_le,p.altitude,p.altitude_le
+           FROM logement l JOIN adresse a ON a.id = l.adresse_id LEFT JOIN localisation_logement p ON p.logement_id=l.id
            ORDER BY l.id"""
     ).fetchall()
 

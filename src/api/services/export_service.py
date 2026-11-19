@@ -61,7 +61,7 @@ def build_xml(connection):
 
     node = etree.SubElement(root, 'utilisateurs')
     for row in repository.find_utilisateurs(connection):
-        item = etree.SubElement(node, 'utilisateur', id=str(row['id']), role=row['role'],
+        item = etree.SubElement(node, 'utilisateur', id=str(row['id']), role=row['role'], mairie=str(bool(row['est_admin'])).lower(),
                                 dateCreation=_datetime(row['date_creation']))
         _fields(item, row, (('prenom', 'prenom'), ('nom', 'nom'),
                             ('email', 'email'), ('telephone', 'telephone')))
@@ -73,12 +73,18 @@ def build_xml(connection):
     for row in repository.find_logements(connection):
         item = etree.SubElement(
             node, 'logement', id=str(row['id']), proprietaireId=str(row['proprietaire_id']),
-            statut=row['statut'], dateCreation=_datetime(row['date_creation']),
+            ombrage=row['ombrage'], statut=row['statut'], dateCreation=_datetime(row['date_creation']),
         )
         _fields(item, row, (('titre', 'titre'), ('description', 'description'),
                             ('type_logement', 'typeLogement'), ('capacite', 'capacite'),
                             ('prix_nuit_centimes', 'prixNuitCentimes')))
         _address(item, row)
+        if row['motif_suspension']:
+            etree.SubElement(item, 'suspension').text = _text(row['motif_suspension'])
+        if row['adresse_ign']:
+            loc = etree.SubElement(item, 'localisation', adresseIgn=row['adresse_ign'], verifieLe=row['verifie_le'])
+            _fields(loc, row, (('latitude','latitude'),('longitude','longitude'),('altitude','altitudeMetres'),
+                               ('altitude_le','altitudeLe')))
         photos_node = etree.SubElement(item, 'photos')
         for photo in photos.get(row['id'], []):
             etree.SubElement(photos_node, 'photo', position=str(photo['position'])).text = _text(photo['url'])
@@ -126,6 +132,13 @@ def build_xml(connection):
                     (('libelle', 'libelle'), ('quantite', 'quantite'),
                      ('prix_unitaire_centimes', 'prixUnitaireCentimes'),
                      ('montant_centimes', 'montantCentimes')))
+
+    lieux = etree.SubElement(root, 'lieux')
+    for row in connection.execute('SELECT * FROM point_interet ORDER BY id'):
+        item = etree.SubElement(lieux, 'lieu', id=str(row['id']), categorie=row['categorie'],
+                                actif=str(bool(row['actif'])).lower(), source=row['source'], identifiant=row['identifiant'])
+        _fields(item, row, (('nom','nom'),('latitude','latitude'),('longitude','longitude'),('acces','acces'),
+                            ('position','position'),('url','sourceUrl'),('collecte_le','collecteLe'),('verifie_le','verifieLe')))
 
     try:
         _schema().assertValid(root)

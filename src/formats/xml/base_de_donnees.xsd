@@ -64,6 +64,7 @@
                     <xs:element name="adresse" type="adresse" minOccurs="0"/>
                   </xs:sequence>
                   <xs:attribute name="id" type="identifiant" use="required"/>
+                  <xs:attribute name="mairie" type="xs:boolean"/>
                   <xs:attribute name="role" use="required">
                     <xs:simpleType>
                       <xs:restriction base="xs:string">
@@ -92,6 +93,17 @@
                     <xs:element name="capacite" type="xs:positiveInteger"/>
                     <xs:element name="prixNuitCentimes" type="centimes"/>
                     <xs:element name="adresse" type="adresse"/>
+                    <xs:element name="suspension" type="texte" minOccurs="0"/>
+                    <xs:element name="localisation" minOccurs="0">
+                      <xs:complexType><xs:sequence>
+                        <xs:element name="latitude" type="xs:decimal"/><xs:element name="longitude" type="xs:decimal"/>
+                        <xs:element name="altitudeMetres" type="xs:decimal" minOccurs="0"/>
+                        <xs:element name="altitudeLe" type="xs:dateTime" minOccurs="0"/>
+                      </xs:sequence>
+                      <xs:attribute name="adresseIgn" type="texte" use="required"/>
+                      <xs:attribute name="verifieLe" type="xs:dateTime" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
                     <xs:element name="photos">
                       <xs:complexType>
                         <xs:sequence>
@@ -120,6 +132,7 @@
                     </xs:element>
                   </xs:sequence>
                   <xs:attribute name="id" type="identifiant" use="required"/>
+                  <xs:attribute name="ombrage" type="texte"/>
                   <xs:attribute name="proprietaireId" type="identifiant" use="required"/>
                   <xs:attribute name="statut" use="required">
                     <xs:simpleType>
@@ -261,6 +274,21 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+
+        <xs:element name="lieux" minOccurs="0"><xs:complexType><xs:sequence>
+          <xs:element name="lieu" minOccurs="0" maxOccurs="unbounded"><xs:complexType>
+            <xs:sequence>
+              <xs:element name="nom" type="texte" minOccurs="0"/>
+              <xs:element name="latitude" type="xs:decimal"/><xs:element name="longitude" type="xs:decimal"/>
+              <xs:element name="acces" type="texte"/><xs:element name="position" type="texte"/>
+              <xs:element name="sourceUrl" type="xs:anyURI"/><xs:element name="collecteLe" type="xs:dateTime"/>
+              <xs:element name="verifieLe" type="xs:dateTime" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="identifiant" use="required"/><xs:attribute name="categorie" type="texte" use="required"/>
+            <xs:attribute name="actif" type="xs:boolean" use="required"/><xs:attribute name="source" type="texte" use="required"/>
+            <xs:attribute name="identifiant" type="texte" use="required"/>
+          </xs:complexType></xs:element>
+        </xs:sequence></xs:complexType></xs:element>
 
       </xs:sequence>
       <xs:attribute name="dateExport" type="xs:dateTime" use="required"/>
