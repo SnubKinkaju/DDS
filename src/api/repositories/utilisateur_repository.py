@@ -1,7 +1,7 @@
 def find_by_id(connection, utilisateur_id):
     return connection.execute(
         """
-        SELECT id, prenom, nom, email, telephone, role, date_creation
+        SELECT id, prenom, nom, email, telephone, role, est_admin, date_creation
         FROM utilisateur
         WHERE id = ?
         """,
@@ -15,7 +15,7 @@ def find_public_profile(connection, utilisateur_id):
         SELECT utilisateur.id, prenom, nom, email, telephone,
                COUNT(logement.id) AS nombre_logements
         FROM utilisateur
-        JOIN logement ON logement.proprietaire_id = utilisateur.id
+        JOIN logement_public AS logement ON logement.proprietaire_id = utilisateur.id
         WHERE utilisateur.id = ? AND logement.statut = 'publie'
         GROUP BY utilisateur.id
         """,
@@ -33,6 +33,7 @@ def find_by_email(connection, email):
             email,
             telephone,
             role,
+            est_admin,
             date_creation,
             mot_de_passe_hash
         FROM utilisateur

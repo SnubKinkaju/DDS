@@ -15,6 +15,7 @@ def _serialize_utilisateur(row):
         "email": row["email"],
         "telephone": row["telephone"],
         "role": row["role"],
+        "estAdmin": bool(row["est_admin"]),
         "dateCreation": row["date_creation"],
     }
 
