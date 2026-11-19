@@ -25,6 +25,7 @@ export default function ReservationsPage() {
   useEffect(() => {
     let active = true;
     setLoading(true);
+    setReservations([]);
     setError(null);
     listReservations(received)
       .then((data) => {
@@ -53,10 +54,7 @@ export default function ReservationsPage() {
     setError(null);
     setNotice("");
     try {
-      const response = await setReservationStatus(item.id, status);
-      setReservations((items) =>
-        items.map((row) => (row.id === item.id ? response.reservation : row)),
-      );
+      await setReservationStatus(item.id, status);
       setNotice(
         status === "acceptee"
           ? "Séjour accepté. Les dates sont réservées et les demandes concurrentes refusées."
@@ -64,8 +62,7 @@ export default function ReservationsPage() {
             ? "Demande refusée."
             : "Réservation annulée.",
       );
-      const data = await listReservations(received);
-      setReservations(data.reservations);
+      setRefresh((value) => value + 1);
     } catch (err) {
       setError(err);
     } finally {
