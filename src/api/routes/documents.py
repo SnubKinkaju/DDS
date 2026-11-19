@@ -1,11 +1,12 @@
 from pathlib import Path
 
-from flask import Blueprint, Response, abort, render_template, request, send_from_directory
+from flask import Blueprint, Response, abort, current_app, jsonify, render_template, request, send_from_directory
 
 from src.api.errors import NotFoundError
 from src.api.repositories.utilisateur_repository import find_public_profile
 from src.api.services.logement_service import get_published
-from src.api.services.logement_documents import render_logement
+from src.api.services.logement_documents import render_logement, graphe
+from src.api.services.territoire import environnement
 from src.api.validation import FORMATS_DIR, SCHEMAS_DIR
 from src.db.flask import get_db
 
@@ -58,16 +59,31 @@ def factures_xsd():
     return send_from_directory(FORMATS_DIR.parent / 'xml', 'factures.xsd', mimetype='application/xml')
 
 
+def contexte(logement_id):
+    db = get_db()
+    db.execute('BEGIN')
+    return (get_published(db, logement_id), environnement(db, logement_id),
+            (current_app.config.get('PUBLIC_ORIGIN') or request.host_url).rstrip('/'))
+
+
+@documents_blueprint.get('/logements/<int:logement_id>/lieux.jsonld')
+def logement_jsonld(logement_id):
+    document, env, origin = contexte(logement_id)
+    response = jsonify(graphe(document, env, origin))
+    response.mimetype = 'application/ld+json'
+    return response
+
+
 @documents_blueprint.get('/logements/<int:logement_id>/fiche.html')
 def logement_html(logement_id):
-    document = get_published(get_db(), logement_id)
-    return Response(render_logement(document, 'html'), content_type='text/html; charset=utf-8')
+    document, env, origin = contexte(logement_id)
+    return Response(render_logement(document, env, 'html', origin), content_type='text/html; charset=utf-8')
 
 
 @documents_blueprint.get('/logements/<int:logement_id>/fiche.txt')
 def logement_text(logement_id):
-    document = get_published(get_db(), logement_id)
-    response = Response(render_logement(document, 'txt'), content_type='text/plain; charset=utf-8')
+    document, env, origin = contexte(logement_id)
+    response = Response(render_logement(document, env, 'txt', origin), content_type='text/plain; charset=utf-8')
     if request.args.get('telecharger') == '1':
         response.headers['Content-Disposition'] = f'attachment; filename="logement-{logement_id}.txt"'
     return response

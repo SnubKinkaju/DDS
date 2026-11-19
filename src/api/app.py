@@ -40,6 +40,7 @@ def create_app(test_config=None):
     app = Flask(__name__, template_folder="documents")
     app.config.from_mapping(
         DATABASE=get_database_path(),
+        PUBLIC_ORIGIN=os.getenv("REFUGE_PUBLIC_ORIGIN"),
         SECRET_KEY=os.getenv("REFUGE_SECRET_KEY"),
         PERMANENT_SESSION_LIFETIME=timedelta(days=7),
         SESSION_COOKIE_HTTPONLY=True,
