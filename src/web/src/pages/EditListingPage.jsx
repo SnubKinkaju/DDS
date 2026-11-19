@@ -5,6 +5,7 @@ import { Link, useLocation, useParams } from "react-router";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import PageLayout from "../components/PageLayout.jsx";
 import ListingForm from "../components/listings/ListingForm.jsx";
+import Disponibilites from "../components/listings/Disponibilites.jsx";
 import PhotoManager from "../components/listings/PhotoManager.jsx";
 import { getOwnedLogement, updateLogement } from "../services/logementApi.js";
 
@@ -88,6 +89,7 @@ export default function EditListingPage() {
       {logement && (
         <>
           <div className="border-b border-hairline-soft">
+            <Disponibilites id={logement.id} />
             <PhotoManager logement={logement} onChange={setLogement} />
           </div>
           <div className="pt-10">

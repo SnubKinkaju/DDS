@@ -11,6 +11,7 @@ import { formatDate, numberOfNights, todayInParis } from "../../utils/dates.js";
 export default function ReservationForm({ logement, isOwner }) {
   const { utilisateur, chargement } = useAuth();
   const [form, setForm] = useState({ dateDebut: "", dateFin: "", nombreVoyageurs: 1 });
+  const [openings, setOpenings] = useState([]);
   const [periods, setPeriods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [availabilityError, setAvailabilityError] = useState(null);
@@ -25,7 +26,7 @@ export default function ReservationForm({ logement, isOwner }) {
     setAvailabilityError(null);
     getBookedDates(logement.id)
       .then((data) => {
-        if (active) setPeriods(data.periodes);
+        if (active) { setPeriods(data.periodes); setOpenings(data.ouvertures); }
       })
       .catch((err) => {
         if (active) setAvailabilityError(err);
@@ -43,7 +44,8 @@ export default function ReservationForm({ logement, isOwner }) {
   const overlap = periods.some(
     (period) => period.dateDebut < form.dateFin && period.dateFin > form.dateDebut,
   );
-  const validDates = nights > 0 && form.dateDebut >= today && !overlap;
+  const open = !openings.length || openings.some(p => p.dateDebut <= form.dateDebut && p.dateFin >= form.dateFin);
+  const validDates = nights > 0 && form.dateDebut >= today && !overlap && open;
 
   function update(event) {
     const { name, value } = event.target;
@@ -99,6 +101,8 @@ export default function ReservationForm({ logement, isOwner }) {
         </div>
       ) : (
         <form onSubmit={submit} className="mt-6">
+          {openings.length > 0 && <details className="mb-4 text-sm"><summary>Périodes ouvertes</summary>
+            {openings.map(p => <p key={p.dateDebut}>{formatDate(p.dateDebut)} → {formatDate(p.dateFin)}</p>)}</details>}
           <fieldset disabled={busy} className="space-y-4">
             <FormField
               id="arrival"
@@ -137,7 +141,7 @@ export default function ReservationForm({ logement, isOwner }) {
             <p role="alert" className="mt-3 text-sm text-error">
               {overlap
                 ? "Ces dates croisent un séjour déjà réservé."
-                : "Choisissez une arrivée à partir d’aujourd’hui et un départ après l’arrivée."}
+                : !open ? "Le logement n’est pas ouvert pendant toute cette période." : "Choisissez une arrivée à partir d’aujourd’hui et un départ après l’arrivée."}
             </p>
           )}
           {nights > 0 && (
