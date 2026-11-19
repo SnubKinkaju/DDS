@@ -61,13 +61,14 @@ export default function EditListingPage() {
               </p>
             )}
           </div>
-          {logement?.statut === "publie" && (
+          {logement?.statut === "publie" && !logement.motifSuspension && (
             <Link className="button-secondary button-small" to={`/logements/${logementId}`}>
               <ExternalLink aria-hidden="true" size={15} />
               Voir l’annonce
             </Link>
           )}
         </div>
+        {logement?.motifSuspension && <p className="mt-4 rounded-sm bg-amber-50 p-3 text-sm">Diffusion suspendue par la mairie · {logement.motifSuspension}</p>}
         {message && (
           <p
             role="status"
