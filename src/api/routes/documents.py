@@ -14,6 +14,7 @@ documents_blueprint = Blueprint('documents', __name__, url_prefix='/api')
 DOCUMENTS_DIR = Path(__file__).resolve().parents[1] / 'documents'
 PUBLIC_SCHEMAS = {
     'facture.schema.json': FORMATS_DIR,
+    'environnement.schema.json': FORMATS_DIR,
     'logement.schema.json': FORMATS_DIR,
     'logement-commun.schema.json': FORMATS_DIR,
     'logement-partiel.schema.json': FORMATS_DIR,
