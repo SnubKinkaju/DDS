@@ -7,6 +7,7 @@ from tempfile import NamedTemporaryFile
 from flask import Flask
 
 from src.api.errors import register_error_handlers
+from src.api.routes.admin import admin_blueprint
 from src.api.routes.territoire import territoire_blueprint
 from src.api.routes.auth import auth_blueprint
 from src.api.routes.health import health_blueprint
@@ -60,6 +61,7 @@ def create_app(test_config=None):
 
     init_database(app)
     register_error_handlers(app)
+    app.register_blueprint(admin_blueprint)
     app.register_blueprint(territoire_blueprint)
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(health_blueprint)
