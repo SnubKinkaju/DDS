@@ -53,6 +53,11 @@ def base_de_donnees_xsd():
     return send_from_directory(FORMATS_DIR.parent / 'xml', 'base_de_donnees.xsd', mimetype='application/xml')
 
 
+@documents_blueprint.get('/formats/xml/factures.xsd')
+def factures_xsd():
+    return send_from_directory(FORMATS_DIR.parent / 'xml', 'factures.xsd', mimetype='application/xml')
+
+
 @documents_blueprint.get('/logements/<int:logement_id>/fiche.html')
 def logement_html(logement_id):
     document = get_published(get_db(), logement_id)

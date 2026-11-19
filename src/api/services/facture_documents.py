@@ -76,3 +76,13 @@ def render_document(document, format_name):
         return etree.tostring(xml, encoding='UTF-8', xml_declaration=True, pretty_print=True)
     params = {'styles': etree.XSLT.strparam(STYLES_PATH.read_text(encoding='utf-8'))} if format_name == 'html' else {}
     return bytes(_transform(format_name)(xml, **params))
+
+
+def collection_xml(connection):
+    from src.api.services.facture_service import serialize
+    root = etree.Element('factures')
+    for row in connection.execute('SELECT * FROM facture ORDER BY numero'):
+        root.append(build_xml(serialize(connection, row)))
+    schema = etree.XMLSchema(etree.parse(str(FORMATS_DIR / 'xml/factures.xsd')))
+    schema.assertValid(root)
+    return etree.tostring(root, encoding='utf-8', xml_declaration=True, pretty_print=True)

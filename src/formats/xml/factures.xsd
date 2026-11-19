@@ -1,0 +1,9 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="facture.xsd"/>
+  <xs:element name="factures">
+    <xs:complexType><xs:sequence>
+      <xs:element ref="facture" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence></xs:complexType>
+    <xs:unique name="numeroUnique"><xs:selector xpath="facture"/><xs:field xpath="@numero"/></xs:unique>
+  </xs:element>
+</xs:schema>
