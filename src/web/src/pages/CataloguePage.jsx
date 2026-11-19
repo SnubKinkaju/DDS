@@ -19,17 +19,19 @@ const normalize = (value) =>
 
 export default function CataloguePage() {
   const { logements, loading, error } = useListings();
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
   const search = params.get("recherche") || "";
   const type = params.get("type") || "";
   const guests = Math.max(1, Number(params.get("voyageurs")) || 1);
   const filtered = logements.filter(
     (item) =>
       (!type || item.typeLogement === type) &&
+      (!params.has("volets") || item.volets) &&
+      (!params.has("ombre") || ["partiel", "important"].includes(item.ombrage)) &&
       item.capacite >= guests &&
       normalize(`${item.titre} ${item.description}`).includes(normalize(search)),
   );
-  const hasFilters = Boolean(search || type || guests > 1);
+  const hasFilters = Boolean(search || type || guests > 1 || params.has("ombre") || params.has("volets"));
 
   const summary = [
     type ? typeLabel(type) : "Tous les logements",
@@ -49,6 +51,15 @@ export default function CataloguePage() {
         <TypeFilter params={params} />
       </div>
 
+      <fieldset className="mt-5 flex flex-wrap gap-5 text-sm">
+        <legend className="sr-only">Protections contre la chaleur</legend>
+        {[["volets", "Volets"], ["ombre", "Extérieur ombragé"]].map(([key,label]) => <label className="flex items-center gap-2" key={key}>
+          <input type="checkbox" checked={params.has(key)} onChange={(e) => {
+            const next = new URLSearchParams(params);
+            if (e.target.checked) next.set(key, "1"); else next.delete(key);
+            setParams(next);
+          }} />{label}</label>)}
+      </fieldset>
       <div className="mt-8 mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-[22px] font-semibold text-ink">{summary}</h1>

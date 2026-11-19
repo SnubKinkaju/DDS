@@ -4,6 +4,8 @@ import { Link } from "react-router";
 
 import FormField from "../auth/FormField.jsx";
 import ErrorMessage from "../ErrorMessage.jsx";
+import AdresseField from "../territoire/AdresseField.jsx";
+import { ombrages } from "../../data/territoire.js";
 import FormSection from "./FormSection.jsx";
 import ListingAiPrefill from "./ListingAiPrefill.jsx";
 import { amenityIcon, listingTypes } from "../../data/listingTypes.js";
@@ -20,6 +22,8 @@ export default function ListingForm({ logement, onSave }) {
     typeLogement: logement?.typeLogement ?? "",
     capacite: logement?.capacite ?? "",
     prixNuit: logement ? logement.prixNuitCentimes / 100 : "",
+    ombrage: logement?.ombrage ?? "non_renseigne",
+    adresseIgn: null,
     rue: logement?.adresse.rue ?? "",
     equipements: logement?.equipements.map(({ id }) => id) ?? [],
   });
@@ -62,12 +66,13 @@ export default function ListingForm({ logement, onSave }) {
       "typeLogement",
       "capacite",
       "equipements",
+      "ombrage",
     ]) {
       if (proposal[key] !== undefined) values[key] = proposal[key];
     }
     if (proposal.prixNuitCentimes !== undefined)
       values.prixNuit = proposal.prixNuitCentimes / 100;
-    if (proposal.adresse?.rue !== undefined) values.rue = proposal.adresse.rue;
+    if (proposal.adresse?.rue !== undefined) { values.rue = proposal.adresse.rue; values.adresseIgn = null; }
     setForm((current) => ({ ...current, ...values }));
     setError(null);
     return Object.keys(values).length;
@@ -104,6 +109,8 @@ export default function ListingForm({ logement, onSave }) {
         typeLogement: form.typeLogement,
         capacite: Number(form.capacite),
         prixNuitCentimes: Math.round(Number(form.prixNuit) * 100),
+        ombrage: form.ombrage,
+        ...(form.adresseIgn ? { adresseIgn: form.adresseIgn } : {}),
         adresse: { rue: form.rue, codePostal: "74220", ville: "La Clusaz" },
         equipements: form.equipements,
       });
@@ -280,17 +287,9 @@ export default function ListingForm({ logement, onSave }) {
             description="Les logements sont situés à La Clusaz."
           >
             <div className="space-y-5">
-              <FormField
-                id="rue"
-                label="Rue et numéro"
-                name="rue"
-                required
-                minLength={3}
-                maxLength={160}
-                autoComplete="address-line1"
-                value={form.rue}
-                onChange={change}
-              />
+              <AdresseField rue={form.rue} onChange={(rue, adresseIgn) =>
+                setForm((current) => ({ ...current, rue, adresseIgn }))} />
+              {form.adresseIgn && <p className="text-sm text-success">Adresse IGN sélectionnée.</p>}
               <div className="grid gap-5 sm:grid-cols-2">
                 <FormField
                   id="codePostal"
@@ -308,6 +307,12 @@ export default function ListingForm({ logement, onSave }) {
             </div>
           </FormSection>
 
+          <FormSection title="Protection contre la chaleur" description="Les volets, l’ombre et l’aération aident le voyageur à choisir son refuge.">
+            <label className="field-label" htmlFor="ombrage">Ombrage extérieur en été</label>
+            <select id="ombrage" name="ombrage" className="form-control" value={form.ombrage} onChange={change}>
+              {Object.entries(ombrages).map(([code, label]) => <option key={code} value={code}>{label}</option>)}
+            </select>
+          </FormSection>
           <FormSection
             title="Équipements"
             description="Indiquez ce qui est à disposition des voyageurs."
