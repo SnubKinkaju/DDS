@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router";
 
 import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
+import AdminPage from "./pages/AdminPage.jsx";
 import AccountPage from "./pages/AccountPage.jsx";
 import CataloguePage from "./pages/CataloguePage.jsx";
 import HomePage from "./pages/HomePage.jsx";
@@ -17,6 +18,7 @@ import ReservationsPage from "./pages/ReservationsPage.jsx";
 function App() {
   return (
     <Routes>
+      <Route path="/administration" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
       <Route path="/" element={<HomePage />} />
       <Route path="/logements" element={<CataloguePage />} />
       <Route path="/logements/:logementId" element={<ListingDetailPage />} />

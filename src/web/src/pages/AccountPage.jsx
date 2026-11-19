@@ -93,6 +93,7 @@ function AccountPage() {
             </ul>
           </section>
 
+          {utilisateur.estAdmin && <Link className="button-secondary mt-4" to="/administration">Administration municipale</Link>}
           <ErrorMessage error={error} />
           <button
             type="button"

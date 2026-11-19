@@ -31,7 +31,7 @@ export default function MobileNav() {
           active:
             pathname === "/compte" ||
             pathname.startsWith("/mes-logements") ||
-            ["/reservations", "/favoris", "/messages"].includes(pathname),
+            ["/reservations", "/favoris", "/administration"].includes(pathname),
         }
       : {
           to: "/connexion",
