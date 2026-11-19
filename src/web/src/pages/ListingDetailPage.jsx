@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router";
 
 import EmptyState from "../components/EmptyState.jsx";
 import PageLayout from "../components/PageLayout.jsx";
+import FavoriteButton from "../components/listings/FavoriteButton.jsx";
 import Environnement from "../components/territoire/Environnement.jsx";
 import PhotoGallery from "../components/listings/PhotoGallery.jsx";
 import ReservationForm from "../components/listings/ReservationForm.jsx";
@@ -63,6 +64,7 @@ function ListingDetailPage() {
       {logement && (
         <Listing
           logement={logement}
+          connected={Boolean(utilisateur)}
           isOwner={utilisateur?.id === logement.proprietaire.id}
         />
       )}
@@ -70,7 +72,7 @@ function ListingDetailPage() {
   );
 }
 
-function Listing({ logement, isOwner }) {
+function Listing({ logement, isOwner, connected }) {
   const { adresse, proprietaire } = logement;
   const [profileOpen, setProfileOpen] = useState(false);
 
@@ -80,6 +82,7 @@ function Listing({ logement, isOwner }) {
         <h1 className="text-[26px] leading-tight font-semibold text-ink first-letter:uppercase">
           {logement.titre}
         </h1>
+        {connected && !isOwner && <FavoriteButton key={logement.id} id={logement.id} />}
         {isOwner && (
           <Link
             className="button-secondary button-small"

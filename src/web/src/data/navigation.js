@@ -1,19 +1,4 @@
-import { CalendarDays, Heart, House, MessageCircle, UserRound } from "lucide-react";
-
-export const upcomingPages = [
-  {
-    path: "/favoris",
-    title: "Mes favoris",
-    description: "Vous pourrez enregistrer vos logements préférés pour les retrouver facilement.",
-    Icon: Heart,
-  },
-  {
-    path: "/messages",
-    title: "Messages",
-    description: "Vous pourrez échanger avec les propriétaires et les voyageurs depuis cet espace.",
-    Icon: MessageCircle,
-  },
-];
+import { CalendarDays, Heart, House, UserRound } from "lucide-react";
 
 /** Liens de l’espace personnel, partagés par le menu compte et la page compte. */
 export const accountLinks = [
@@ -21,12 +6,7 @@ export const accountLinks = [
     label: "Voyager",
     items: [
       { to: "/reservations", label: "Mes séjours", Icon: CalendarDays },
-      ...upcomingPages.map(({ path, title, Icon }) => ({
-        to: path,
-        label: title,
-        Icon,
-        upcoming: true,
-      })),
+      { to: "/favoris", label: "Mes favoris", Icon: Heart },
     ],
   },
   {

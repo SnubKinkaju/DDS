@@ -11,9 +11,8 @@ import PublishListingPage from "./pages/PublishListingPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import MyListingsPage from "./pages/MyListingsPage.jsx";
 import EditListingPage from "./pages/EditListingPage.jsx";
-import UpcomingPage from "./pages/UpcomingPage.jsx";
+import FavorisPage from "./pages/FavorisPage.jsx";
 import ReservationsPage from "./pages/ReservationsPage.jsx";
-import { upcomingPages } from "./data/navigation.js";
 
 function App() {
   return (
@@ -23,13 +22,7 @@ function App() {
       <Route path="/logements/:logementId" element={<ListingDetailPage />} />
       <Route path="/carte" element={<MapPage />} />
       <Route path="/reservations" element={<ProtectedRoute><ReservationsPage /></ProtectedRoute>} />
-      {upcomingPages.map(({ path, title, description, Icon }) => (
-        <Route
-          key={path}
-          path={path}
-          element={<UpcomingPage title={title} description={description} Icon={Icon} />}
-        />
-      ))}
+      <Route path="/favoris" element={<ProtectedRoute><FavorisPage /></ProtectedRoute>} />
       <Route
         path="/mes-logements"
         element={
