@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import Meteo from "../territoire/Meteo.jsx";
 import ErrorMessage from "../ErrorMessage.jsx";
@@ -11,7 +11,13 @@ import { formatDate, numberOfNights, todayInParis } from "../../utils/dates.js";
 
 export default function ReservationForm({ logement, isOwner }) {
   const { utilisateur, chargement } = useAuth();
-  const [form, setForm] = useState({ dateDebut: "", dateFin: "", nombreVoyageurs: 1 });
+  const { state } = useLocation();
+  const [form, setForm] = useState(() => {
+    const draft = state?.reservation;
+    return draft?.logementId === logement.id
+      ? { dateDebut: draft.dateDebut, dateFin: draft.dateFin, nombreVoyageurs: draft.nombreVoyageurs }
+      : { dateDebut: "", dateFin: "", nombreVoyageurs: 1 };
+  });
   const [openings, setOpenings] = useState([]);
   const [periods, setPeriods] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -179,7 +185,7 @@ export default function ReservationForm({ logement, isOwner }) {
             <Link
               className="button-primary mt-5 w-full"
               to="/connexion"
-              state={{ from: `/logements/${logement.id}` }}
+              state={{ from: `/logements/${logement.id}`, reservation: { logementId: logement.id, ...form } }}
             >
               Se connecter pour réserver
             </Link>

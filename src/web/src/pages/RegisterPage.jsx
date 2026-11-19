@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router";
+import { Link, Navigate } from "react-router";
 
 import ErrorMessage from "../components/ErrorMessage.jsx";
+import { useRetourConnexion } from "../components/auth/retour.js";
 import AuthLayout from "../components/auth/AuthLayout.jsx";
 import FormField from "../components/auth/FormField.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -16,14 +17,14 @@ const initialForm = {
 };
 
 function RegisterPage() {
-  const navigate = useNavigate();
+  const { destination, reservation } = useRetourConnexion();
   const { utilisateur, chargement, inscription } = useAuth();
   const [form, setForm] = useState(initialForm);
   const [erreur, setErreur] = useState("");
   const [envoi, setEnvoi] = useState(false);
 
   if (!chargement && utilisateur) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={destination} replace state={{ reservation }} />;
   }
 
   function updateField(event) {
@@ -50,7 +51,6 @@ function RegisterPage() {
         telephone: form.telephone || null,
         motDePasse: form.motDePasse,
       });
-      navigate("/", { replace: true });
     } catch (error) {
       setErreur(error.message);
     } finally {
@@ -66,7 +66,7 @@ function RegisterPage() {
       footer={
         <>
           Vous avez déjà un compte ?{" "}
-          <Link className="font-semibold text-ink underline underline-offset-4" to="/connexion">
+          <Link className="font-semibold text-ink underline underline-offset-4" to="/connexion" state={{ from: destination, reservation }}>
             Se connecter
           </Link>
         </>

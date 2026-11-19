@@ -1,25 +1,21 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate, useLocation } from "react-router";
+import { Link, Navigate } from "react-router";
 
 import ErrorMessage from "../components/ErrorMessage.jsx";
+import { useRetourConnexion } from "../components/auth/retour.js";
 import AuthLayout from "../components/auth/AuthLayout.jsx";
 import FormField from "../components/auth/FormField.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
 function LoginPage() {
-  const navigate = useNavigate();
-  const { state } = useLocation();
-  const destination =
-    state?.from?.startsWith("/") && !state.from.startsWith("//")
-      ? state.from
-      : "/";
+  const { destination, reservation } = useRetourConnexion();
   const { utilisateur, chargement, connexion } = useAuth();
   const [form, setForm] = useState({ email: "", motDePasse: "" });
   const [erreur, setErreur] = useState("");
   const [envoi, setEnvoi] = useState(false);
 
   if (!chargement && utilisateur) {
-    return <Navigate to={destination} replace />;
+    return <Navigate to={destination} replace state={{ reservation }} />;
   }
 
   function updateField(event) {
@@ -34,7 +30,6 @@ function LoginPage() {
 
     try {
       await connexion(form);
-      navigate(destination, { replace: true });
     } catch (error) {
       setErreur(error.message);
     } finally {
@@ -52,7 +47,7 @@ function LoginPage() {
           Pas encore de compte ?{" "}
           <Link
             className="font-semibold text-ink underline underline-offset-4"
-            to="/inscription"
+            to="/inscription" state={{ from: destination, reservation }}
           >
             Créer un compte
           </Link>
