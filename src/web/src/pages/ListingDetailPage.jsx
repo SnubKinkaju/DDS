@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router";
 
 import EmptyState from "../components/EmptyState.jsx";
 import PageLayout from "../components/PageLayout.jsx";
+import Environnement from "../components/territoire/Environnement.jsx";
 import PhotoGallery from "../components/listings/PhotoGallery.jsx";
 import ReservationForm from "../components/listings/ReservationForm.jsx";
 import OwnerProfileDialog from "../components/listings/OwnerProfileDialog.jsx";
@@ -165,13 +166,14 @@ function Listing({ logement, isOwner }) {
             )}
           </section>
 
+          <Environnement logement={logement} />
           <section className="py-8">
             <h2 className="text-[22px] font-semibold text-ink">Emplacement</h2>
             <p className="mt-4 flex items-center gap-3 text-base text-body">
               <MapPin aria-hidden="true" size={20} className="shrink-0" />
               {adresse.rue}, {adresse.codePostal} {adresse.ville}
             </p>
-            <Link to="/carte" className="button-tertiary mt-4">
+            <Link to={`/carte?logement=${logement.id}`} className="button-tertiary mt-4">
               Voir la carte de La Clusaz
             </Link>
           </section>
@@ -184,6 +186,7 @@ function Listing({ logement, isOwner }) {
               aria-label="Documents du logement"
               className="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm"
             >
+              <a className="button-tertiary" href={`/api/logements/${logement.id}/lieux.jsonld`}>Lieux en JSON-LD</a>
               <a
                 className="button-tertiary"
                 href={`/api/logements/${logement.id}`}
