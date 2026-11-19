@@ -69,7 +69,7 @@ export default function MyListingsPage() {
     }
   }
 
-  const online = logements.filter((item) => item.statut === "publie").length;
+  const online = logements.filter((item) => item.statut === "publie" && !item.motifSuspension).length;
 
   return (
     <PageLayout width="narrow">
@@ -154,9 +154,9 @@ export default function MyListingsPage() {
                     <p className="mt-2 flex items-center gap-2 text-sm font-medium text-ink">
                       <span
                         aria-hidden="true"
-                        className={`size-2 rounded-full ${published ? "bg-success" : "bg-muted-soft"}`}
+                        className={`size-2 rounded-full ${published && !logement.motifSuspension ? "bg-success" : "bg-muted-soft"}`}
                       />
-                      {published ? "En ligne" : "Masqué"}
+                      {logement.motifSuspension ? `Suspendu par la mairie · ${logement.motifSuspension}` : published ? "En ligne" : "Masqué"}
                     </p>
                   </div>
                 </Link>
@@ -182,7 +182,7 @@ export default function MyListingsPage() {
                     )}
                     {busy === logement.id ? "En cours…" : published ? "Masquer" : "Publier"}
                   </button>
-                  {published && (
+                  {published && !logement.motifSuspension && (
                     <Link
                       to={`/logements/${logement.id}`}
                       className="icon-button"

@@ -113,7 +113,7 @@ def delete_photo(listing_id, photo_id):
 @logements_blueprint.get('/photos/fichier/<filename>')
 def photo_file(filename):
     row = owner_repository.photo_owner(get_db(), photo_service.URL_PREFIX + filename)
-    if row is None or (row['statut'] != 'publie'
+    if row is None or ((row['statut'] != 'publie' or row['motif_suspension'])
                        and row['proprietaire_id'] != session.get('utilisateur_id')):
         raise NotFoundError("Cette photo n'est pas disponible.")
     response = send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)

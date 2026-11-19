@@ -18,7 +18,7 @@ def find_published(connection):
                 ORDER BY photo_logement.position, photo_logement.id
                 LIMIT 1
             ) AS photo_principale
-        FROM logement
+        FROM logement_public AS logement
         JOIN adresse ON adresse.id = logement.adresse_id
         WHERE logement.statut = 'publie'
         ORDER BY logement.date_creation DESC, logement.id DESC
@@ -34,6 +34,7 @@ def find_by_id(connection, logement_id):
             logement.statut,
             logement.adresse_id,
             logement.proprietaire_id,
+            logement.motif_suspension,
             logement.titre,
             logement.description,
             logement.type_logement,

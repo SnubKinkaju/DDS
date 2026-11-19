@@ -69,7 +69,7 @@ def delete_photo(connection, listing_id, photo_id):
 
 def photo_owner(connection, url):
     return connection.execute(
-        """SELECT logement.proprietaire_id, logement.statut FROM photo_logement
+        """SELECT logement.proprietaire_id, logement.statut, logement.motif_suspension FROM photo_logement
            JOIN logement ON logement.id=photo_logement.logement_id WHERE url=?""",
         (url,),
     ).fetchone()

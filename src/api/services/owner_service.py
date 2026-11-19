@@ -15,7 +15,8 @@ def require_owner(connection, listing_id, owner_id):
 
 
 def get_owned(connection, listing_id, owner_id):
-    return serialize_detail(connection, require_owner(connection, listing_id, owner_id))
+    row = require_owner(connection, listing_id, owner_id)
+    return {**serialize_detail(connection, row), 'motifSuspension': row['motif_suspension']}
 
 
 def list_owned(connection, owner_id):

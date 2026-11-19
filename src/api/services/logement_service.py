@@ -37,7 +37,7 @@ def list_published(connection):
 
 def get_published(connection, logement_id):
     row = logement_repository.find_by_id(connection, logement_id)
-    if row is None or row['statut'] != 'publie':
+    if row is None or row['statut'] != 'publie' or row['motif_suspension']:
         raise NotFoundError("Le logement demandé n'existe pas.")
 
     document = serialize_detail(connection, row)
