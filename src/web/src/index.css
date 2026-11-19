@@ -111,3 +111,44 @@
     @apply border-t border-hairline-soft;
   }
 }
+
+@layer components {
+  .lieu-icone {
+    @apply inline-grid size-9 shrink-0 place-items-center rounded-full;
+    color: var(--teinte);
+    background: color-mix(in srgb, var(--teinte) 10%, white);
+  }
+  .filtre-lieu {
+    @apply inline-flex min-h-10 items-center gap-2 rounded-full border border-hairline bg-white px-3 text-xs font-semibold transition-colors hover:border-ink sm:px-4 sm:text-sm;
+    svg { color: var(--teinte); }
+    &[aria-pressed=true] { @apply border-ink bg-ink text-white; svg { color: white; } }
+  }
+  .grille-carte { @apply grid min-w-0 gap-3 md:grid-cols-[minmax(235px,30%)_minmax(0,1fr)]; }
+  .carte-liste, .carte-cadre { @apply min-w-0 overflow-hidden rounded-lg border border-hairline; }
+  .carte-liste { @apply order-2 flex max-h-[50dvh] flex-col md:order-none md:h-[min(64dvh,640px)] md:max-h-none; }
+  .carte-cadre { @apply relative isolate order-1 h-[48dvh] min-h-72 md:order-none md:h-[min(64dvh,640px)]; }
+  .carte-commandes { @apply absolute top-3 right-3 grid overflow-hidden rounded-md border border-hairline bg-white shadow-floating; }
+  .carte-commandes button { @apply grid size-10 place-items-center enabled:hover:bg-surface-soft disabled:text-muted-soft; }
+  .carte-commandes button + button { @apply border-t border-hairline-soft; }
+  .carte-commandes svg { @apply size-[18px]; }
+  .carte-selection { @apply absolute right-3 bottom-7 left-3 flex max-w-sm items-start gap-3 rounded-md border border-hairline bg-white p-3 shadow-floating sm:right-auto sm:min-w-64; }
+  .carte-hors-ligne { @apply absolute top-3 left-3 max-w-[60%] rounded-sm bg-white/95 px-2 py-1 text-xs font-medium text-muted; }
+}
+
+@layer components {
+  .climat-mesure { @apply inline-flex items-center gap-2 rounded-sm bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-950; }
+  .climat-mesure svg { @apply shrink-0 text-emerald-700; }
+}
+
+@layer components {
+  .admin-export { @apply flex items-center gap-3 rounded-md border border-hairline bg-white p-5 text-left text-sm font-semibold hover:border-ink hover:bg-surface-soft; }
+}
+
+@media (max-width: 639px) {
+  .table-territoire thead { @apply sr-only; }
+  .table-territoire tbody, .table-territoire tr { display: block; }
+  .table-territoire tbody tr { @apply grid grid-cols-4 gap-y-1 p-3; }
+  .table-territoire td:first-child { @apply col-span-4 mb-1 p-0; }
+  .table-territoire td[data-label] { @apply p-0 text-sm font-semibold; }
+  .table-territoire td[data-label]::before { content: attr(data-label); @apply block text-[11px] font-normal text-muted; }
+}

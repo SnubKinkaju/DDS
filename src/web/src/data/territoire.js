@@ -24,3 +24,14 @@ export const couleurs = {
   alimentation: "#9c592a",
   lieu_frais: "#46743d",
 };
+
+export const categoriesSingulier = {
+  logement: "Logement",
+  eau: "Eau potable",
+  pharmacie: "Pharmacie",
+  transport: "Arrêt de bus",
+  lac: "Lac",
+  piscine: "Piscine",
+  alimentation: "Commerce alimentaire",
+  lieu_frais: "Lieu de fraîcheur",
+};
