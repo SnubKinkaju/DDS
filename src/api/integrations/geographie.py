@@ -45,44 +45,6 @@ def nombre(value):
     return type(value) is int or (type(value) is float and isfinite(value))
 
 
-def adresses(texte):
-    response = lire_json(
-        'https://data.geopf.fr/geocodage/search',
-        {
-            'q': texte,
-            'index': 'address',
-            'citycode': '74080',
-            'limit': 5,
-        },
-    )
-    resultats = []
-    if not isinstance(response.get('features'), list):
-        raise ServiceIndisponible("Réponse d’adresses illisible.")
-    for feature in response['features']:
-        if not isinstance(feature, dict):
-            continue
-        props = feature.get('properties')
-        if not isinstance(props, dict):
-            continue
-        if (
-            props.get('type') != 'housenumber'
-            or props.get('citycode') != '74080'
-            or props.get('postcode') != '74220'
-            or not isinstance(props.get('id'), str) or not props['id']
-            or not isinstance(props.get('name'), str) or not props['name']
-        ):
-            continue
-        geometry = feature.get('geometry')
-        coords = geometry.get('coordinates') if isinstance(geometry, dict) else None
-        if not isinstance(coords, list) or len(coords) != 2 or not all(map(nombre, coords)):
-            continue
-        lon, lat = coords
-        if not (6.34 < lon < 6.60 and 45.81 < lat < 45.99):
-            continue
-        resultats.append({'id': props['id'], 'rue': props['name'], 'longitude': lon, 'latitude': lat})
-    return resultats
-
-
 def altitude(lon, lat):
     data = lire_json(
         'https://data.geopf.fr/altimetrie/1.0/calcul/alti/rest/elevation.json',

@@ -1,21 +1,24 @@
 from src.api.errors import ValidationError
 from src.api.integrations import geographie
+from src.api.services import adresses
 
 
-def verifier(payload):
-    identifiant = payload.get('adresseIgn')
-    if not identifiant:
-        return None
-    rue = payload['adresse']['rue'].strip()
-    try:
-        suggestions = geographie.adresses(rue)
-    except geographie.ServiceIndisponible:
-        return None
-    adresse = next((x for x in suggestions if x['id'] == identifiant and x['rue'] == rue), None)
+def verifier(db, payload, actuelle=None):
+    """Vérifie l'adresse choisie et fixe son libellé officiel dans le payload.
+
+    Seule une adresse du référentiel de La Clusaz est acceptée. Retourne la
+    position à enregistrer, ou None si le logement garde la même adresse (il est
+    alors inutile de redemander l'altitude à l'IGN).
+    """
+    adresse = adresses.trouver(db, payload.get('adresseIgn'))
     if adresse is None:
         raise ValidationError(
-            "L’adresse sélectionnée a changé. Choisissez une suggestion de La Clusaz."
+            "Choisissez une adresse de La Clusaz dans la liste proposée.",
+            [{"champ": "adresse.rue", "message": "Adresse absente du référentiel de La Clusaz."}],
         )
+    payload['adresse']['rue'] = adresse['rue']
+    if adresse['id'] == actuelle:
+        return None
     try:
         z = geographie.altitude(adresse['longitude'], adresse['latitude'])
     except geographie.ServiceIndisponible:

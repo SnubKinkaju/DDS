@@ -5,8 +5,9 @@
   "ombrage": "partiel",
   "capacite": 4,
   "prixNuitCentimes": 6550,
+  "adresseIgn": "74080_0255_00164",
   "adresse": {
-    "rue": "20 route des Aravis",
+    "rue": "164 Route du Col des Aravis",
     "codePostal": "74220",
     "ville": "La Clusaz"
   },

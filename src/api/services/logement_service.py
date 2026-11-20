@@ -117,9 +117,8 @@ def create_published(connection, proprietaire_id, payload):
     adresse = payload["adresse"]
     titre = _required_text(payload["titre"], "titre", 3)
     description = _required_text(payload["description"], "description", 10)
-    rue = _required_text(adresse["rue"], "adresse.rue", 3)
-
-    position = localisation.verifier(payload)
+    position = localisation.verifier(connection, payload)
+    rue = adresse["rue"]
     try:
         adresse_id = logement_repository.create_address(
             connection,
@@ -139,8 +138,7 @@ def create_published(connection, proprietaire_id, payload):
         )
         connection.execute("UPDATE logement SET ombrage=? WHERE id=?",
                            (payload.get("ombrage", "non_renseigne"), logement_id))
-        if position:
-            localisation.enregistrer(connection, logement_id, position)
+        localisation.enregistrer(connection, logement_id, position)
         utilisateur_repository.promote_to_owner(connection, proprietaire_id)
         owner_repository.replace_equipment(connection, logement_id, payload.get('equipements', []))
         connection.commit()

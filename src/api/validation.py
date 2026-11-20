@@ -70,11 +70,16 @@ def validate_json(payload, schema_name):
     if not errors:
         return
 
-    details = [
-        {
-            "champ": ".".join(str(part) for part in error.path) or "$",
-            "message": _translate_message(error),
-        }
-        for error in errors
-    ]
+    details = []
+    for error in errors:
+        chemin = [str(part) for part in error.path]
+        if error.validator == "required" and isinstance(error.instance, dict):
+            # Un détail par champ manquant, nommé : « adresseIgn », « adresse.rue »…
+            details.extend(
+                {"champ": ".".join([*chemin, champ]), "message": "Ce champ est obligatoire."}
+                for champ in error.validator_value
+                if champ not in error.instance
+            )
+            continue
+        details.append({"champ": ".".join(chemin) or "$", "message": _translate_message(error)})
     raise ValidationError("Les données envoyées sont invalides.", details)

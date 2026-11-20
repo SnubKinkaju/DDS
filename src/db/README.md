@@ -44,4 +44,6 @@ réservations existantes : l'émission est déclenchée par l'acceptation dans l
 
 La migration 005 introduit l’habilitation de la mairie et la suspension de diffusion. La vue `logement_public` alimente le catalogue et la carte. La migration 006 conserve les positions vérifiées, le catalogue de lieux, l’état de l’import et le cache météo. Une annonce antérieure conserve son adresse avec une localisation à confirmer.
 
+La migration 007 charge le référentiel des 2 544 adresses de La Clusaz issues de la Base Adresse Nationale. Elle est générée par `src/api/scripts/import_adresses.py` depuis le fichier départemental `adresses-74.csv.gz` ; pour actualiser le référentiel, générer une nouvelle migration plutôt que modifier celle-ci.
+
 Les tables et leurs relations figurent dans le [DBML](../../docs/schemas/schema-bdd-v1.dbml). Le rapprochement entre un logement et un lieu se calcule depuis leurs coordonnées. [Données de démonstration et attribution](seeds/territoire/README.md)

@@ -23,7 +23,7 @@ export default function ListingForm({ logement, onSave }) {
     capacite: logement?.capacite ?? "",
     prixNuit: logement ? logement.prixNuitCentimes / 100 : "",
     ombrage: logement?.ombrage ?? "non_renseigne",
-    adresseIgn: null,
+    adresseIgn: logement?.adresseIgn ?? null,
     rue: logement?.adresse.rue ?? "",
     equipements: logement?.equipements.map(({ id }) => id) ?? [],
   });
@@ -284,12 +284,16 @@ export default function ListingForm({ logement, onSave }) {
 
           <FormSection
             title="Adresse"
-            description="Les logements sont situés à La Clusaz."
+            description="Seules les adresses de La Clusaz, issues de la Base Adresse Nationale, sont acceptées."
           >
             <div className="space-y-5">
-              <AdresseField rue={form.rue} onChange={(rue, adresseIgn) =>
-                setForm((current) => ({ ...current, rue, adresseIgn }))} />
-              {form.adresseIgn && <p className="text-sm text-success">Adresse IGN sélectionnée.</p>}
+              <AdresseField
+                rue={form.rue}
+                adresseIgn={form.adresseIgn}
+                onChange={(rue, adresseIgn) =>
+                  setForm((current) => ({ ...current, rue, adresseIgn }))
+                }
+              />
               <div className="grid gap-5 sm:grid-cols-2">
                 <FormField
                   id="codePostal"

@@ -8,7 +8,9 @@ from pathlib import Path
 
 from werkzeug.security import generate_password_hash
 
+from src.api.integrations.geographie import maintenant
 from src.api.repositories import logement_repository, owner_repository, utilisateur_repository
+from src.api.services import localisation
 from src.api.services.logement_service import get_published
 from src.api.validation import validate_json
 from src.db.connection import connect
@@ -48,16 +50,26 @@ def generate_user(data, rng, used_emails):
     return payload
 
 
-def generate_logement(data, rng, equipment_ids):
+def generate_logement(data, rng, equipment_ids, adresse):
     kind = rng.choice(data['types'])
+    titre = rng.choice(kind['titres'])
+    description = rng.choice(kind['descriptions'])
+    capacite = rng.randint(*kind['capacite'])
+    prix = rng.randint(*kind['prixNuitCentimes'])
+    # Les deux tirages de l'ancienne rue fictive (numéro, puis une voie parmi cinq)
+    # sont conservés : sans eux, les prix, capacités et séjours générés ensuite
+    # changeraient et ne correspondraient plus à docs/revue-projet.md.
+    rng.randint(1, 180)
+    rng.randrange(5)
     payload = {
-        'titre': rng.choice(kind['titres']),
-        'description': rng.choice(kind['descriptions']),
+        'titre': titre,
+        'description': description,
         'typeLogement': kind['type'],
-        'capacite': rng.randint(*kind['capacite']),
-        'prixNuitCentimes': rng.randint(*kind['prixNuitCentimes']),
+        'capacite': capacite,
+        'prixNuitCentimes': prix,
+        'adresseIgn': adresse['id'],
         'adresse': {
-            'rue': f"{rng.randint(1, 180)} {rng.choice(data['voies'])}",
+            'rue': adresse['libelle'],
             'codePostal': data['ville']['codePostal'],
             'ville': data['ville']['nom'],
         },
@@ -80,6 +92,12 @@ def populate(count=100, users=20, seed=1, database=None):
         people = [generate_user(data, rng, used_emails) for _ in range(users)]
         hashes = [generate_password_hash(DEMO_PASSWORD) for _ in people]
         equipment_ids = [row['id'] for row in owner_repository.list_equipment(connection)]
+        # Adresses réelles de La Clusaz (référentiel BAN chargé par les migrations),
+        # tirées avec leur propre générateur pour ne pas décaler les autres données.
+        adresse_rng = random.Random(f'adresses-{seed}')
+        adresses = connection.execute(
+            'SELECT id, libelle, longitude, latitude FROM adresse_reference ORDER BY id'
+        ).fetchall()
 
         # Les repositories utilisés ici ne valident pas la transaction eux-mêmes.
         # Tout le lot est validé ensemble, ou annulé si une insertion échoue.
@@ -99,7 +117,7 @@ def populate(count=100, users=20, seed=1, database=None):
 
             for index in range(count):
                 owner_id = owners[index] if index < owner_count else rng.choice(owners)
-                payload = generate_logement(data, rng, equipment_ids)
+                payload = generate_logement(data, rng, equipment_ids, adresse_rng.choice(adresses))
                 address = payload['adresse']
                 address_id = logement_repository.create_address(
                     connection, address['rue'], address['codePostal'], address['ville'],
@@ -109,6 +127,11 @@ def populate(count=100, users=20, seed=1, database=None):
                     payload['typeLogement'], payload['capacite'], payload['prixNuitCentimes'],
                 )
                 owner_repository.replace_equipment(connection, listing_id, payload['equipements'])
+                position = next(a for a in adresses if a['id'] == payload['adresseIgn'])
+                localisation.enregistrer(connection, listing_id, {
+                    'id': position['id'], 'longitude': position['longitude'],
+                    'latitude': position['latitude'], 'altitude': None, 'verifieLe': maintenant(),
+                })
                 get_published(connection, listing_id)  # Vérifie aussi le document JSON de sortie.
 
     print(f'Ajout terminé : {users} utilisateurs ({owner_count} propriétaires), {count} logements.')

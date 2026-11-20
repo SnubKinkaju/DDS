@@ -2,7 +2,6 @@
   "prenoms": ["Léa", "Hugo", "Chloé", "Lucas", "Emma", "Nathan", "Inès", "Adam", "Jade", "Louis", "Alice", "Gabriel", "Lina", "Arthur", "Zoé", "Noah", "Louise", "Jules", "Manon", "Rayan"],
   "noms": ["Dupont", "Martin", "Bernard", "Petit", "Robert", "Richard", "Durand", "Moreau", "Simon", "Laurent", "Lefebvre", "Michel", "Garcia", "David", "Bertrand", "Roux", "Vincent", "Fournier", "Morel", "Girard"],
   "ville": {"nom": "La Clusaz", "codePostal": "74220"},
-  "voies": ["route des Aravis", "chemin du Bossonnet", "route du Col des Aravis", "route de l'Étale", "place de l'Église"],
   "types": [
     {
       "type": "chambre", "capacite": [1, 2], "prixNuitCentimes": [2500, 6000],

@@ -15,9 +15,20 @@ def require_owner(connection, listing_id, owner_id):
     return row
 
 
+def adresse_actuelle(connection, listing_id):
+    row = connection.execute(
+        'SELECT adresse_ign FROM localisation_logement WHERE logement_id=?', (listing_id,),
+    ).fetchone()
+    return row['adresse_ign'] if row else None
+
+
 def get_owned(connection, listing_id, owner_id):
     row = require_owner(connection, listing_id, owner_id)
-    return {**serialize_detail(connection, row), 'motifSuspension': row['motif_suspension']}
+    return {
+        **serialize_detail(connection, row),
+        'adresseIgn': adresse_actuelle(connection, listing_id),
+        'motifSuspension': row['motif_suspension'],
+    }
 
 
 def list_owned(connection, owner_id):
@@ -37,16 +48,13 @@ def update(connection, listing_id, owner_id, payload):
     validate_equipment(connection, payload.get('equipements', []))
     payload['titre'] = _required_text(payload['titre'], 'titre', 3)
     payload['description'] = _required_text(payload['description'], 'description', 10)
-    payload['adresse']['rue'] = _required_text(payload['adresse']['rue'], 'adresse.rue', 3)
     ancienne_rue = row['rue']
-    position = localisation.verifier(payload)
+    position = localisation.verifier(connection, payload, adresse_actuelle(connection, listing_id))
     with connection:
         connection.execute('BEGIN IMMEDIATE')
         row = require_owner(connection, listing_id, owner_id)
         if row['rue'] not in (ancienne_rue, payload['adresse']['rue']):
             raise ConflictError("L’adresse a changé pendant la vérification. Rechargez l’annonce.")
-        if row['rue'] != payload['adresse']['rue']:
-            connection.execute('DELETE FROM localisation_logement WHERE logement_id=?', (listing_id,))
         if position:
             localisation.enregistrer(connection, listing_id, position)
         connection.execute('UPDATE logement SET ombrage=? WHERE id=?',

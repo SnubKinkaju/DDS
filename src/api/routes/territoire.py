@@ -1,8 +1,7 @@
 from flask import Blueprint, jsonify, request
 
 from src.api.errors import ValidationError
-from src.api.integrations.geographie import adresses
-from src.api.services import meteo, territoire
+from src.api.services import adresses, meteo, territoire
 from src.api.validation import validate_json
 from src.db.flask import get_db
 
@@ -13,9 +12,9 @@ territoire_blueprint = Blueprint('territoire', __name__, url_prefix='/api')
 @territoire_blueprint.get('/territoire/adresses')
 def suggestions():
     q = request.args.get('q', '').strip()
-    if not 3 <= len(q) <= 160:
-        raise ValidationError("Saisissez de 3 à 160 caractères pour chercher une adresse.")
-    return jsonify(adresses=adresses(q))
+    if not 1 <= len(q) <= 160:
+        raise ValidationError("Saisissez de 1 à 160 caractères pour chercher une adresse.")
+    return jsonify(adresses.rechercher(get_db(), q))
 
 
 @territoire_blueprint.get('/territoire/carte.geojson')

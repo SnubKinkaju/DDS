@@ -11,10 +11,15 @@
     "typeLogement",
     "capacite",
     "prixNuitCentimes",
-    "adresse"
+    "adresse",
+    "adresseIgn"
   ],
   "properties": {
-    "adresseIgn": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "adresseIgn": {
+      "description": "Identifiant BAN de l'adresse choisie dans le référentiel de La Clusaz (même clé que le géocodeur IGN).",
+      "type": "string",
+      "pattern": "^74080_[0-9a-z]{4,6}_[0-9]{5}(_[0-9a-z]+)?$"
+    },
     "ombrage": { "$ref": "logement-commun.schema.json#/$defs/ombrage" },
     "titre": {
       "$ref": "logement-commun.schema.json#/$defs/titre"

@@ -175,9 +175,21 @@ Ref: reservation.demandeur_id > utilisateur.id
 Ref: reservation.id - facture.reservation_id
 Ref: ligne_facture.facture_id > facture.id [delete: cascade]
 
+Table adresse_reference {
+  id text [pk, note: "Identifiant BAN, ex. 74080_0255_00164"]
+  numero integer [not null]
+  suffixe text
+  voie text [not null]
+  libelle text [not null, note: "Libellé officiel, ex. 164 Route du Col des Aravis"]
+  voie_recherche text [not null, note: "Voie sans accents ni ponctuation, pour la recherche"]
+  longitude real [not null]
+  latitude real [not null]
+  Note: "Les 2 544 adresses de La Clusaz (BAN, Licence Ouverte 2.0). Seules ces adresses sont acceptées pour un logement."
+}
+
 Table localisation_logement {
   logement_id integer [pk]
-  adresse_ign text [not null]
+  adresse_ign text [not null, note: "Contrôlée par l'API : doit exister dans adresse_reference"]
   longitude real [not null]
   latitude real [not null]
   verifie_le datetime [not null]
@@ -222,4 +234,5 @@ Table cache_meteo {
 }
 
 Ref: logement.id - localisation_logement.logement_id [delete: cascade]
+Ref: localisation_logement.adresse_ign > adresse_reference.id
 Ref: point_interet.auteur_id > utilisateur.id

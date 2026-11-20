@@ -37,7 +37,7 @@ Pour refaire rapidement la première manipulation, utiliser [l’extrait de deux
 
 ## Données et limites de la démonstration
 
-Le scénario initial produit 20 utilisateurs fictifs, 100 logements, 103 demandes et 101 factures, dont une annulée. Sur une démo créée depuis la revue, six annonces ont une adresse de référence géolocalisée, du centre du village au col des Aravis. L’extrait du 19 novembre 2026 donne 164 objets territoriaux actifs dans la commune et ses abords. L’absence de pharmacie recensée à moins de 2 km d’une fiche décrit la couverture de cet extrait. [Origine et réutilisation des données](../src/db/seeds/territoire/README.md)
+Le scénario initial produit 20 utilisateurs fictifs, 100 logements, 103 demandes et 101 factures, dont une annulée. Les 100 annonces sont placées à des adresses réelles du référentiel BAN de La Clusaz, seules adresses acceptées à la publication. Six d’entre elles, du centre du village au col des Aravis, servent de référence avec leur altitude. L’extrait du 19 novembre 2026 donne 164 objets territoriaux actifs dans la commune et ses abords. L’absence de pharmacie recensée à moins de 2 km d’une fiche décrit la couverture de cet extrait. [Origine et réutilisation des données](../src/db/seeds/territoire/README.md)
 
 La météo concerne le point communal et l’extérieur. L’ombre et les équipements sont déclarés par l’hôte. Les distances utilisent une ligne droite et parfois le centre d’une surface. Une baignade autorisée ou une salle municipale ouverte pendant une canicule demande une source locale précise. Un lieu municipal peut être ajouté avec cette source puis retiré lorsqu’il ferme.
 
